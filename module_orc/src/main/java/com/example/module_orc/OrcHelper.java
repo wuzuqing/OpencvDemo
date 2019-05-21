@@ -99,10 +99,10 @@ public class OrcHelper {
         return result;
     }
 
-    public void executeCallSysn(final String type, final Bitmap bitmap, final IDiscernCallback callback) {
+    public void executeCallAsync(final String type, final Bitmap bitmap, String langName, final IDiscernCallback callback) {
         switch (type) {
             case "id":
-                mExecutor.execute(new IDCardDiscern(bitmap, "id2", callback));
+                mExecutor.execute(new IDCardDiscern(bitmap, langName, callback));
                 break;
         }
 

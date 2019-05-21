@@ -49,14 +49,15 @@ public class MainActivity1 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resIds[currentIndex % resIds.length]);
-                OrcHelper.getInstance().executeCallSysn("id", bitmap, new IDiscernCallback() {
+                String langName = vEtLangName.getText().toString().trim();
+                OrcHelper.getInstance().executeCallAsync("id", bitmap, langName, new IDiscernCallback() {
                     @Override
                     public void call(final List<OrcModel> result) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 vTestAdapter.setmDatas(result);
-                                Log.d(TAG, "executeCallSysn: " + result.toString());
+                                Log.d(TAG, "executeCallAsync: " + result.toString());
                             }
                         });
                     }
@@ -87,7 +88,6 @@ public class MainActivity1 extends AppCompatActivity {
         vRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         vRecyclerView.setAdapter(vTestAdapter);
     }
-
 
 
     private static final String TAG = "MainActivity";
