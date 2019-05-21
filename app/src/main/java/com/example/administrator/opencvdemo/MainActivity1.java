@@ -13,7 +13,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.module_orc.IDiscernCallback;
+import com.example.module_orc.OpenCVHelper;
+import com.example.module_orc.OrcHelper;
+import com.example.module_orc.OrcModel;
+
 import java.util.List;
+
 
 public class MainActivity1 extends AppCompatActivity {
 
@@ -45,7 +51,7 @@ public class MainActivity1 extends AppCompatActivity {
                 Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resIds[currentIndex % resIds.length]);
                 OrcHelper.getInstance().executeCallSysn("id", bitmap, new IDiscernCallback() {
                     @Override
-                    public void call(final List<Model> result) {
+                    public void call(final List<OrcModel> result) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

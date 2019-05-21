@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.module_orc.OrcModel;
+
 import java.util.List;
 
 /**
@@ -18,13 +20,13 @@ import java.util.List;
  */
 public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
 
-    private List<Model> mDatas;
+    private List<OrcModel> mDatas;
 
-    public List<Model> getmDatas() {
+    public List<OrcModel> getmDatas() {
         return mDatas;
     }
 
-    public void setmDatas(List<Model> mDatas) {
+    public void setmDatas(List<OrcModel> mDatas) {
         this.mDatas = mDatas;
         notifyDataSetChanged();
     }
