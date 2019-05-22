@@ -37,7 +37,7 @@ public class OrcHelper {
     public void init(Context context) {
         mContext = context.getApplicationContext();
         cacheDir = context.getExternalCacheDir().getAbsolutePath();
-        copyLanguagePackageToSDCard("id2");
+        copyLanguagePackageToSDCard("id3");
     }
 
     private String copyLanguagePackageToSDCard(String langName) {
@@ -50,7 +50,8 @@ public class OrcHelper {
         String filePath = dirPath + "/" + langName + ".traineddata";
         File file = new File(filePath);
         if (file.exists()) {
-            return file.getAbsolutePath();
+//            return file.getAbsolutePath();
+            file.delete();
         }
         InputStream inputStream = null;
         try {

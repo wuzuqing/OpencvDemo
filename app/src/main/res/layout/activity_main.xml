@@ -16,7 +16,7 @@
         android:id="@+id/lengName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="id2" />
+        android:text="id3" />
 
     <Button
         android:id="@+id/btn"

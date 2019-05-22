@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.module_orc.IDiscernCallback;
 import com.example.module_orc.OpenCVHelper;
@@ -25,7 +26,7 @@ public class MainActivity1 extends AppCompatActivity {
 
     private ImageView img, ivCrop;
     private Button btn;
-    private int[] resIds = {R.mipmap.wzq, R.mipmap.wxb, R.mipmap.yl, R.mipmap.wzq1};
+    private int[] resIds = {R.mipmap.wzq1,R.mipmap.wzq, R.mipmap.wxb, R.mipmap.yl, R.mipmap.wzq1};
 
     private int currentIndex = 0;
     private TextView vTvResult;
@@ -48,18 +49,24 @@ public class MainActivity1 extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resIds[currentIndex % resIds.length]);
-                String langName = vEtLangName.getText().toString().trim();
-                OrcHelper.getInstance().executeCallAsync("id", bitmap, langName, new IDiscernCallback() {
+//                Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resIds[currentIndex % resIds.length]);
+//                String langName = vEtLangName.getText().toString().trim();
+//                OrcHelper.getInstance().executeCallAsync("id", bitmap, langName, new IDiscernCallback() {
+//                    @Override
+//                    public void call(final List<OrcModel> result) {
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                vTestAdapter.setmDatas(result);
+//                                Log.d(TAG, "executeCallAsync: " + result.toString());
+//                            }
+//                        });
+//                    }
+//                });
+                PrivateMessageBarManager.getInstance().show(getWindow().getDecorView(), "1", "", "张三", "至于补间动画的使用，Animation还有如下一些比较实用的方法介绍", new View.OnClickListener() {
                     @Override
-                    public void call(final List<OrcModel> result) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                vTestAdapter.setmDatas(result);
-                                Log.d(TAG, "executeCallAsync: " + result.toString());
-                            }
-                        });
+                    public void onClick(View v) {
+                        Toast.makeText(v.getContext(),v.getTag()+"",Toast.LENGTH_SHORT).show();
                     }
                 });
             }
