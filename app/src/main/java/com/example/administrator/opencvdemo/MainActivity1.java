@@ -1,12 +1,10 @@
 package com.example.administrator.opencvdemo;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,12 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.module_orc.IDiscernCallback;
 import com.example.module_orc.OpenCVHelper;
 import com.example.module_orc.OrcHelper;
-import com.example.module_orc.OrcModel;
-
-import java.util.List;
 
 
 public class MainActivity1 extends AppCompatActivity {
@@ -87,6 +81,7 @@ public class MainActivity1 extends AppCompatActivity {
             public void onClick(View v) {
                 currentIndex++;
                 img.setImageResource(resIds[currentIndex % resIds.length]);
+                startActivity(new Intent(MainActivity1.this,ScanActivity.class));
             }
         });
         img.setImageResource(resIds[currentIndex % resIds.length]);
