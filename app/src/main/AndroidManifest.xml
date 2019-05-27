@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ScanActivity" android:screenOrientation="landscape" >
+        <activity android:name=".ScanActivity"  >
 
         </activity>
     </application>

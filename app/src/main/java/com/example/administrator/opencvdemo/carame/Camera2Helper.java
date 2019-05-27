@@ -217,7 +217,7 @@ public class Camera2Helper {
      * 开始预览
      */
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void takePreview() {
+    public void takePreview() {
         try {
             // 创建预览需要的CaptureRequest.Builder
             mPreviewRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
