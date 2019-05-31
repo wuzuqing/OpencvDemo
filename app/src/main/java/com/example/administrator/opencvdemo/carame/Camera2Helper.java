@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
@@ -195,7 +196,7 @@ public class Camera2Helper {
             @Override
             public void onImageAvailable(ImageReader reader) {
                 // 拿到拍照照片数据
-                childHandler.post(new ImageSaver(reader.acquireNextImage(), mCameraID, new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() + "/temp.jpg")));
+                childHandler.post(new ImageSaver(reader.acquireNextImage(), mCameraID, new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() + "/temp.jpg"),mOnCallBack));
             }
         }, mainHandler);
         //获取摄像头管理
@@ -212,6 +213,15 @@ public class Camera2Helper {
         }
     }
 
+    private OnCallBack mOnCallBack;
+
+    public void setOnCallBack(OnCallBack onCallBack) {
+        mOnCallBack = onCallBack;
+    }
+
+    public interface OnCallBack{
+        void talePicture(String path, Bitmap bitmap);
+    }
 
     /**
      * 开始预览

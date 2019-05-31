@@ -57,4 +57,9 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/result" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/resultText"
+        android:layout_height="wrap_content" />
 </android.support.constraint.ConstraintLayout>

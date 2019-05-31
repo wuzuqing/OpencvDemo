@@ -17,11 +17,12 @@ public class ImageSaver implements Runnable {
     private Image mImage;
     private int mCameraID;
     private File saveFile;
-
-    public ImageSaver(Image image, int cameraID, File file) {
+    Camera2Helper.OnCallBack callBack;
+    public ImageSaver(Image image, int cameraID, File file,Camera2Helper.OnCallBack callBack) {
         mImage = image;
         mCameraID = cameraID;
         saveFile = file;
+      this.  callBack = callBack;
 
     }
 
@@ -37,6 +38,9 @@ public class ImageSaver implements Runnable {
                 bitmap = adjustPhotoRotation(bitmap, 180);
             }
             writeToFile(bitmap);
+            if (callBack!=null){
+                callBack.talePicture(saveFile.getAbsolutePath(),bitmap);
+            }
         }
 
     }

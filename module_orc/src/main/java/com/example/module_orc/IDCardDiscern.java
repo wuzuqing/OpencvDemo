@@ -17,5 +17,15 @@ public class IDCardDiscern extends AbsDiscern {
     protected boolean ignoreRect(Rect rect) {
         return rect.width == 640 || rect.x < 110 || rect.x > 400 || rect.height > 45 || rect.height < 20;
     }
-
+    private int idHeight=340;
+    private int mingZuX = 190;
+    @Override
+    protected OrcModel createOrdModel(Rect rect, Bitmap bitmap) {
+        if (rect.y>idHeight){
+            return new OrcModel(rect, OrcHelper.getInstance().orcText(bitmap, "id"), bitmap);
+        }else if (rect.x >mingZuX){
+            return new OrcModel(rect, OrcHelper.getInstance().orcText(bitmap, langName), bitmap);
+        }
+        return super.createOrdModel(rect, bitmap);
+    }
 }

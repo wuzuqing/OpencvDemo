@@ -1,19 +1,25 @@
 package com.example.administrator.opencvdemo;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.module_orc.IDiscernCallback;
 import com.example.module_orc.OpenCVHelper;
 import com.example.module_orc.OrcHelper;
+import com.example.module_orc.OrcModel;
+
+import java.util.List;
 
 
 public class MainActivity1 extends AppCompatActivity {
@@ -43,26 +49,22 @@ public class MainActivity1 extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resIds[currentIndex % resIds.length]);
-//                String langName = vEtLangName.getText().toString().trim();
-//                OrcHelper.getInstance().executeCallAsync("id", bitmap, langName, new IDiscernCallback() {
-//                    @Override
-//                    public void call(final List<OrcModel> result) {
-//                        runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                vTestAdapter.setmDatas(result);
-//                                Log.d(TAG, "executeCallAsync: " + result.toString());
-//                            }
-//                        });
-//                    }
-//                });
-                PrivateMessageBarManager.getInstance().show(getWindow().getDecorView(), "1", "", "张三", "至于补间动画的使用，Animation还有如下一些比较实用的方法介绍", new View.OnClickListener() {
+                Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resIds[currentIndex % resIds.length]);
+                String langName = vEtLangName.getText().toString().trim();
+                OrcHelper.getInstance().executeCallAsync("id", bitmap, langName, new IDiscernCallback() {
                     @Override
-                    public void onClick(View v) {
-                        Toast.makeText(v.getContext(),v.getTag()+"",Toast.LENGTH_SHORT).show();
+                    public void call(final List<OrcModel> result) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                vTestAdapter.setmDatas(result);
+                                vTvResult.setText(result.toString());
+                                Log.d(TAG, "executeCallAsync: " + result.toString());
+                            }
+                        });
                     }
                 });
+
             }
         });
 

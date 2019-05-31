@@ -24,7 +24,7 @@ public abstract class AbsDiscern implements Runnable {
     protected int thresh = 165;
 
     private Bitmap bitmap1;
-    private String langName;
+    protected String langName;
     private IDiscernCallback callback;
     private long start;
 
@@ -75,7 +75,8 @@ public abstract class AbsDiscern implements Runnable {
             dst = new Mat(src, rect);
             Bitmap bitmap = Bitmap.createBitmap(dst.cols(), dst.rows(), Bitmap.Config.RGB_565);
             Utils.matToBitmap(dst, bitmap);
-            orcModels.add(new OrcModel(rect, OrcHelper.getInstance().orcText(bitmap, langName), bitmap));
+            OrcModel model = createOrdModel(rect, bitmap);
+            orcModels.add(model);
         }
 
         src.release();
@@ -83,6 +84,10 @@ public abstract class AbsDiscern implements Runnable {
         hierarchy.release();
         callback.call(orcModels);
         Log.d(TAG, "discern: usedTime" + (System.currentTimeMillis() - start));
+    }
+
+    protected OrcModel createOrdModel(Rect rect, Bitmap bitmap) {
+        return new OrcModel(rect, OrcHelper.getInstance().orcText(bitmap, langName), bitmap);
     }
 
     /**
