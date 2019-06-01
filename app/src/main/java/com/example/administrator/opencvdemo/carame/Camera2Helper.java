@@ -6,8 +6,8 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
+import android.graphics.RectF;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
@@ -84,9 +84,11 @@ public class Camera2Helper {
                         ((Activity) mSurfaceView.getContext()).requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                     } else {
                         initCamera2();
+//                        setupCamera(mSurfaceView.getWidth(),mSurfaceView.getHeight());
                     }
                 } else {
                     initCamera2();
+//                    setupCamera(mSurfaceView.getWidth(),mSurfaceView.getHeight());
                 }
             }
 
@@ -149,6 +151,7 @@ public class Camera2Helper {
                 mCameraID = Integer.parseInt(cameraId);
                 break;
             }
+            initCamera2();
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
@@ -191,12 +194,12 @@ public class Camera2Helper {
         mainHandler = new Handler(Looper.getMainLooper());
         mCameraID = BACK_CAMERA;//后摄像头
         Log.d(TAG, "initCamera2: " + CameraCharacteristics.LENS_FACING_BACK);
-        mImageReader = ImageReader.newInstance(1080, 1920, ImageFormat.JPEG, 1);
+        mImageReader = ImageReader.newInstance(1080,1920, ImageFormat.JPEG, 1);
         mImageReader.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() { //可以在这里处理拍照得到的临时照片 例如，写入本地
             @Override
             public void onImageAvailable(ImageReader reader) {
                 // 拿到拍照照片数据
-                childHandler.post(new ImageSaver(reader.acquireNextImage(), mCameraID, new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() + "/temp.jpg"),mOnCallBack));
+                childHandler.post(new ImageSaver(reader.acquireNextImage(), mCameraID, new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath() + "/temp.jpg"),mOnCallBack,cropRect));
             }
         }, mainHandler);
         //获取摄像头管理
@@ -219,9 +222,7 @@ public class Camera2Helper {
         mOnCallBack = onCallBack;
     }
 
-    public interface OnCallBack{
-        void talePicture(String path, Bitmap bitmap);
-    }
+
 
     /**
      * 开始预览
@@ -241,10 +242,10 @@ public class Camera2Helper {
                     // 当摄像头已经准备好时，开始显示预览
                     mCameraCaptureSession = cameraCaptureSession;
                     try {
-                        // 自动对焦
-                        mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
-                        // 打开闪光灯
-                        mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.FLASH_MODE_OFF);
+//                        // 自动对焦
+//                        mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
+//                        // 打开闪光灯
+//                        mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.FLASH_MODE_OFF);
                         // 显示预览
                         CaptureRequest previewRequest = mPreviewRequestBuilder.build();
                         mCameraCaptureSession.setRepeatingRequest(previewRequest, null, childHandler);
@@ -313,6 +314,7 @@ public class Camera2Helper {
                 }
             }
             initCamera2();
+//            setupCamera(mSurfaceView.getWidth(),mSurfaceView.getHeight());
         }
     }
 
@@ -320,9 +322,38 @@ public class Camera2Helper {
      * 拍照
      */
     @SuppressLint("NewApi")
-    private void takePicture(Activity activity) {
+    public void takePicture(Activity activity) {
         if (mCameraDevice == null) return;
         // 创建拍照需要的CaptureRequest.Builder
+        final CaptureRequest.Builder captureRequestBuilder;
+        try {
+            captureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
+            // 将imageReader的surface作为CaptureRequest.Builder的目标
+            captureRequestBuilder.addTarget(mImageReader.getSurface());
+            // 自动对焦
+            captureRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE, CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
+            // 自动曝光
+            captureRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
+            // 获取手机方向
+            int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
+            // 根据设备方向计算设置照片的方向
+            captureRequestBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
+            //拍照
+            CaptureRequest mCaptureRequest = captureRequestBuilder.build();
+            mCameraCaptureSession.capture(mCaptureRequest, null, childHandler);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+    }
+    private RectF cropRect;
+    /**
+     * 拍照
+     */
+    @SuppressLint("NewApi")
+    public void takePicture(Activity activity, RectF crop) {
+        if (mCameraDevice == null) return;
+        // 创建拍照需要的CaptureRequest.Builder
+        cropRect = crop;
         final CaptureRequest.Builder captureRequestBuilder;
         try {
             captureRequestBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);

@@ -39,7 +39,6 @@ public class MainActivity1 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        OrcHelper.getInstance().init(this);
         this.btn = (Button) findViewById(R.id.btn);
         this.img = (ImageView) findViewById(R.id.img);
         this.vTvResult = findViewById(R.id.result);

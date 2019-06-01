@@ -10,7 +10,6 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.graphics.Xfermode;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.View;
 
 public class MarkView1 extends View {
@@ -102,12 +101,7 @@ public class MarkView1 extends View {
         canvas.restoreToCount(sc);
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-
-        }
-        return super.onTouchEvent(event);
+    public RectF getContentRect() {
+        return vContentRect;
     }
-
 }
