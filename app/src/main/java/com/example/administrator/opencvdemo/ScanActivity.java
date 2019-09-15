@@ -15,6 +15,7 @@ import com.example.administrator.opencvdemo.carame.OnCallBack;
 import com.example.module_orc.IDiscernCallback;
 import com.example.module_orc.OrcHelper;
 import com.example.module_orc.OrcModel;
+import com.example.module_orc.WorkMode;
 
 import java.util.List;
 
@@ -25,6 +26,7 @@ public class ScanActivity extends AppCompatActivity {
     //    private Camera2Helper mCamera2Helper;
     private ImageView iv;
     private TextView vTv;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,20 +37,20 @@ public class ScanActivity extends AppCompatActivity {
         vTv = findViewById(R.id.tvResult);
         vSurfaceView.setOnCallBack(new OnCallBack() {
             @Override
-            public void talePicture(String path,final Bitmap bitmap) {
-               runOnUiThread(new Runnable() {
-                   @Override
-                   public void run() {
-                       iv.setImageBitmap(bitmap);
-                       orcBitmap(bitmap);
-                   }
-               });
+            public void talePicture(String path, final Bitmap bitmap) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        iv.setImageBitmap(bitmap);
+                        orcBitmap(bitmap);
+                    }
+                });
             }
         });
     }
 
-    private void orcBitmap(Bitmap bitmap){
-        OrcHelper.getInstance().executeCallAsync("id", bitmap, "id3", new IDiscernCallback() {
+    private void orcBitmap(Bitmap bitmap) {
+        OrcHelper.getInstance().executeCallAsync(WorkMode.ID_CARD, bitmap, "id3", new IDiscernCallback() {
             @Override
             public void call(final List<OrcModel> result) {
                 runOnUiThread(new Runnable() {
@@ -60,8 +62,6 @@ public class ScanActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
 
     @Override

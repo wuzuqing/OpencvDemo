@@ -19,16 +19,16 @@
         <activity android:name=".MainActivity1"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
             >
-
-        </activity>
-
-        <activity android:name=".SecondActivity"    >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity android:name=".SecondActivity"    >
+
         </activity>
     </application>
 

@@ -28,7 +28,10 @@ public  class OrcModel {
             this.result = result;
         }
 
-        public Rect getRect() {
+    public OrcModel() {
+    }
+
+    public Rect getRect() {
             return rect;
         }
 

@@ -101,10 +101,31 @@ public class OrcHelper {
         return result;
     }
 
-    public void executeCallAsync(final String type, final Bitmap bitmap, String langName, final IDiscernCallback callback) {
-        switch (type) {
-            case "id":
+    public void executeCallAsync(final WorkMode mode, final Bitmap bitmap, String langName, final IDiscernCallback callback) {
+        switch (mode) {
+            case ID_CARD:
                 mExecutor.execute(new IDCardDiscern(bitmap, langName, callback));
+                break;
+            case NORMAL:
+                mExecutor.execute(new NormalCardDiscern(bitmap, langName, callback));
+                break;
+            case ONLY_BITMAP:
+                mExecutor.execute(new OnlyCardDiscern(bitmap, langName, callback));
+                break;
+        }
+
+    }
+
+    public void executeCallAsync(final WorkMode mode, final Bitmap bitmap, String langName, String pex, final IDiscernCallback callback) {
+        switch (mode) {
+            case ID_CARD:
+                mExecutor.execute(new IDCardDiscern(bitmap, langName, callback));
+                break;
+            case NORMAL:
+                mExecutor.execute(new NormalCardDiscern(bitmap, langName, callback));
+                break;
+            case ONLY_BITMAP:
+                mExecutor.execute(new OnlyCardDiscern(bitmap, pex, langName, callback));
                 break;
         }
 

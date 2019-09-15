@@ -31,12 +31,30 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
         notifyDataSetChanged();
     }
 
+    private OnItemClickListener<OrcModel> mOrcModelOnItemClickListener;
+
+    public void setOrcModelOnItemClickListener(OnItemClickListener<OrcModel> orcModelOnItemClickListener) {
+        mOrcModelOnItemClickListener = orcModelOnItemClickListener;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_img,viewGroup,false);
-
-        return new ViewHolder(view);
+        final ViewHolder viewHolder = new ViewHolder(view);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOrcModelOnItemClickListener!=null){
+                    int position = viewHolder.getLayoutPosition();
+                    mOrcModelOnItemClickListener.onItemClick(viewHolder,mDatas.get(position),position);
+                }
+            }
+        });
+        return viewHolder;
+    }
+    public  interface OnItemClickListener<T>{
+        void onItemClick(ViewHolder holder, T data,int position);
     }
 
     @Override
