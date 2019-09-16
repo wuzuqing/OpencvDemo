@@ -1,10 +1,12 @@
 package com.example.module_orc;
 
 import android.graphics.Bitmap;
+import android.os.Environment;
 import android.util.Log;
 
 import com.example.module_orc.ignore.IIgnoreRect;
 import com.example.module_orc.ignore.IgnoreRectHelper;
+
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -14,6 +16,9 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -112,7 +117,17 @@ public class OnlyCardDiscern implements Runnable {
             ////                orcModels.add(model);
             //            }
             //            callback.call(orcModels);
-
+//            src = dst;
+            try {
+                Rect rect = rects.get(0);
+                dst = new Mat(src, rect);
+                Bitmap bitmap = Bitmap.createBitmap(dst.cols(), dst.rows(), Bitmap.Config.RGB_565);
+                String format = String.format("crop/%d,%d_%dx%d_%s", rect.x, rect.y ,rect.width, rect.height,page);
+                                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, new FileOutputStream(new File(Environment
+                                            .getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC),format)));
+                                } catch (FileNotFoundException e) {
+                                    e.printStackTrace();
+                                }
             OrcModel orcModel = new OrcModel();
             //            Bitmap bitmap = Bitmap.createBitmap(dst.cols(), dst.rows(), Bitmap.Config.RGB_565);
             //            Utils.matToBitmap(dst, bitmap);
@@ -131,15 +146,15 @@ public class OnlyCardDiscern implements Runnable {
     }
 
     private boolean ignoreRect(Rect rect) {
-        if (rect.height == 11 || rect.height == 22) {
-            Log.d(TAG, "ignoreRect: " + rect.toString());
-            return false;
-        }
+//        if (rect.height == 11 || rect.height == 22) {
+//            Log.d(TAG, "ignoreRect: " + rect.toString());
+//            return false;
+//        }
         if (
             rect.x < 1
-                || rect.y < 35
-                || rect.height < 19
-                || rect.height > 26
+//                || rect.y < 35
+                || rect.height < 17
+//                || rect.height > 26
             // || (rect.height > rect.width)
         ) {
             return true;

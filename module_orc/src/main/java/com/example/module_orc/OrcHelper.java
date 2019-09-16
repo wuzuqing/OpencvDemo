@@ -125,7 +125,7 @@ public class OrcHelper {
                 mExecutor.execute(new NormalCardDiscern(bitmap, langName, callback));
                 break;
             case ONLY_BITMAP:
-                mExecutor.execute(new OnlyCardDiscern(bitmap, pex, langName, callback));
+                mExecutor.execute(new OnlyCardDiscern(bitmap,  langName,pex, callback));
                 break;
         }
 

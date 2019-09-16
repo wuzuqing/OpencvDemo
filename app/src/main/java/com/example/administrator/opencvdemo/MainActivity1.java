@@ -3,22 +3,27 @@ package com.example.administrator.opencvdemo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.module_orc.IDiscernCallback;
 import com.example.module_orc.OpenCVHelper;
 import com.example.module_orc.OrcHelper;
 import com.example.module_orc.OrcModel;
 import com.example.module_orc.WorkMode;
 
+import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -26,8 +31,8 @@ public class MainActivity1 extends AppCompatActivity {
 
     private ImageView img, ivCrop;
     private Button btn;
-    private int[] resIds = {R.mipmap.chufu, R.mipmap.chuligongwu, R.mipmap.zisi, R.mipmap.zican, R.mipmap.hongyanzhiji,R.mipmap.wzq1};
-    private String[] resNames = {"main","clgw", "wdzs", "jyzc", "hyzj","sfz"};
+    private int[] resIds = {R.mipmap.chufu, R.mipmap.chuligongwu, R.mipmap.zisi, R.mipmap.zican, R.mipmap.hongyanzhiji, R.mipmap.wzq1};
+    private String[] resNames = {"main", "clgw", "wdzs", "jyzc", "hyzj", "sfz"};
 //    private int[] resIds = {R.mipmap.wzq1,R.mipmap.wzq, R.mipmap.wxb, R.mipmap.yl, R.mipmap.wzq1};
 
     private int currentIndex = 0;
@@ -37,6 +42,7 @@ public class MainActivity1 extends AppCompatActivity {
     private RecyclerView vRecyclerView;
     private TestAdapter vTestAdapter;
     OrcModel orcModel;
+    File[] listFiles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,31 +54,56 @@ public class MainActivity1 extends AppCompatActivity {
         this.ivCrop = findViewById(R.id.img_crop);
         this.vEtLangName = findViewById(R.id.lengName);
         this.vRecyclerView = findViewById(R.id.rcv);
+        File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
+        File imagePath = new File(directory, "/image");
+        listFiles = imagePath.listFiles();
+        Log.d(TAG, "onCreate: " + Arrays.toString(listFiles));
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resIds[currentIndex % resIds.length]);
+                Bitmap bitmap = null;
+//                if (listFiles == null) {
+//
+//                    bitmap = BitmapFactory.decodeResource(getResources(), resIds[currentIndex % resIds.length]);
+//                } else {
+//                    bitmap = BitmapFactory.decodeFile(listFiles[currentIndex % listFiles.length].getAbsolutePath());
+//                }
+//                if (bitmap == null) {
+//                    return;
+//                }
+//                String langName = vEtLangName.getText().toString().trim();
+//                String pageName = listFiles == null ? resNames[currentIndex % resIds.length] : listFiles[currentIndex % listFiles.length].getName();
+//                OrcHelper.getInstance().executeCallAsync(WorkMode.ONLY_BITMAP, bitmap, langName, pageName, new IDiscernCallback() {
+//                    @Override
+//                    public void call(final List<OrcModel> result) {
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+////                                vTestAdapter.setmDatas(result);
+////                                vTvResult.setText(result.toString());
+////                                Log.d(TAG, "executeCallAsync: " + result.toString());
+//                                try {
+//                                    orcModel = result.get(0);
+//                                    img.setImageBitmap(orcModel.getBitmap());
+//                                } catch (Exception e) {
+//                                    e.printStackTrace();
+//                                }
+//                            }
+//                        });
+//                    }
+//                });
                 String langName = vEtLangName.getText().toString().trim();
-                OrcHelper.getInstance().executeCallAsync(WorkMode.ONLY_BITMAP, bitmap, langName, resNames[currentIndex % resIds.length], new IDiscernCallback() {
-                    @Override
-                    public void call(final List<OrcModel> result) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-//                                vTestAdapter.setmDatas(result);
-//                                vTvResult.setText(result.toString());
-//                                Log.d(TAG, "executeCallAsync: " + result.toString());
-                                try {
-                                    orcModel = result.get(0);
-                                    img.setImageBitmap(orcModel.getBitmap());
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-                    }
-                });
+                String pageName="";
+                for (File file : listFiles) {
+                    bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                    pageName = file.getName();
+                    OrcHelper.getInstance().executeCallAsync(WorkMode.ONLY_BITMAP, bitmap, langName, pageName, new IDiscernCallback() {
+                        @Override
+                        public void call(final List<OrcModel> result) {
 
+                        }
+                    });
+                }
             }
         });
         img.setOnClickListener(new View.OnClickListener() {
@@ -90,6 +121,10 @@ public class MainActivity1 extends AppCompatActivity {
                 if (currentIndex < 0) {
                     currentIndex = 0;
                 }
+                if (listFiles != null) {
+                    Glide.with(MainActivity1.this).load(listFiles[currentIndex % listFiles.length]).into(img);
+                    return;
+                }
                 img.setImageResource(resIds[currentIndex % resIds.length]);
             }
         });
@@ -97,6 +132,10 @@ public class MainActivity1 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 currentIndex++;
+                if (listFiles != null) {
+                    Glide.with(MainActivity1.this).load(listFiles[currentIndex % listFiles.length]).into(img);
+                    return;
+                }
                 img.setImageResource(resIds[currentIndex % resIds.length]);
 //                startActivity(new Intent(MainActivity1.this,ScanActivity.class));
             }
