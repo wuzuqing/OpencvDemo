@@ -52,6 +52,7 @@ public class OnlyCardDiscern implements Runnable {
         Mat src = new Mat();
         Mat dst = new Mat();
         Mat hierarchy = new Mat();
+        Mat threshold = new Mat();
         //bit to mat
         Utils.bitmapToMat(bitmap1, src);
         //归一化
@@ -60,6 +61,7 @@ public class OnlyCardDiscern implements Runnable {
         Imgproc.cvtColor(src, dst, Imgproc.COLOR_BGRA2GRAY);
         //二值化
         Imgproc.threshold(dst, dst, thresh, 255, Imgproc.THRESH_BINARY_INV);
+        threshold = dst.clone();
         //        //膨胀
         Mat erodeElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(14, 1));
         Imgproc.erode(dst, dst, erodeElement);
@@ -120,7 +122,7 @@ public class OnlyCardDiscern implements Runnable {
 //            src = dst;
             try {
                 Rect rect = rects.get(0);
-                dst = new Mat(src, rect);
+                dst = new Mat(threshold, rect);
                 Bitmap bitmap = Bitmap.createBitmap(dst.cols(), dst.rows(), Bitmap.Config.RGB_565);
                 Utils.matToBitmap(dst, bitmap);
                 String format = String.format("crop/%d,%d_%dx%d_%s", rect.x, rect.y ,rect.width, rect.height,page);
