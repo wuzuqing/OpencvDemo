@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.module_orc.BaseCallBack;
+import com.example.module_orc.BaseCallBack1;
 import com.example.module_orc.IDiscernCallback;
 import com.example.module_orc.OpenCVHelper;
 import com.example.module_orc.OrcHelper;
@@ -61,7 +63,6 @@ public class MainActivity1 extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bitmap bitmap = null;
 //                if (listFiles == null) {
 //
 //                    bitmap = BitmapFactory.decodeResource(getResources(), resIds[currentIndex % resIds.length]);
@@ -92,18 +93,23 @@ public class MainActivity1 extends AppCompatActivity {
 //                        });
 //                    }
 //                });
-                String langName = vEtLangName.getText().toString().trim();
-                String pageName="";
-                for (File file : listFiles) {
-                    bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-                    pageName = file.getName();
-                    OrcHelper.getInstance().executeCallAsync(WorkMode.ONLY_BITMAP, bitmap, langName, pageName, new IDiscernCallback() {
-                        @Override
-                        public void call(final List<OrcModel> result) {
+                final String langName = vEtLangName.getText().toString().trim();
+                OrcHelper.getInstance().fileToBitmap(new BaseCallBack1<Bitmap>() {
+                    @Override
+                    public void call(final Bitmap bitmap, final String name) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                OrcHelper.getInstance().executeCallAsync(WorkMode.ONLY_BITMAP, bitmap, langName, name, new IDiscernCallback() {
+                                    @Override
+                                    public void call(final List<OrcModel> result) {
 
-                        }
-                    });
-                }
+                                    }
+                                });
+                            }
+                        });
+                    }
+                },listFiles);
             }
         });
         img.setOnClickListener(new View.OnClickListener() {
