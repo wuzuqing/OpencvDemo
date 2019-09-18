@@ -75,6 +75,8 @@ public class OnlyCardDiscern implements Runnable {
                 return rect1.y - rect2.y;
             }
         });
+
+//        List<Rect> rectList = megerRect(contoursList);
         List<Rect> rects = new ArrayList<>();
         String pageName = "1";
         IIgnoreRect ignoreRect = IgnoreRectHelper.getInstance().getIgnoreRect(pageName);
@@ -106,8 +108,8 @@ public class OnlyCardDiscern implements Runnable {
 //                String format = String.format("crop/%d,%d_%dx%d_%s", rect.x, rect.y, rect.width, rect.height, page);
 //                bitmap.compress(Bitmap.CompressFormat.PNG, 80, new FileOutputStream(new File(Environment
 //                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC), format)));
-              String text =  OrcHelper.getInstance().orcText(bitmap, "zwp");
-                Log.d(TAG, "orcText: "+text);
+                String text = OrcHelper.getInstance().orcText(bitmap, "zwp");
+                Log.d(TAG, "orcText: " + text);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -122,6 +124,35 @@ public class OnlyCardDiscern implements Runnable {
             callback.call(Collections.singletonList(orcModel));
         }
         Log.d(TAG, "discern: usedTime" + (System.currentTimeMillis() - start) + " newW:" + newW + " newH:" + newH);
+    }
+
+    private List<Rect> megerRect(List<MatOfPoint> contoursList) {
+        List<Rect> list = new ArrayList<>();
+        Rect currentPoint = null;
+        Rect temp;
+        int nextIndex = 0;
+        int maxSize = contoursList.size();
+        for (int i = 0; i < maxSize; ) {
+            currentPoint = Imgproc.boundingRect(contoursList.get(i));
+            if (i == maxSize - 1) {
+                list.add(currentPoint);
+                break;
+            }
+            nextIndex = i;
+            while (true) {
+                nextIndex++;
+                if (nextIndex == maxSize) {
+                    break;
+                }
+                temp = Imgproc.boundingRect(contoursList.get(nextIndex));
+                if (!currentPoint.contains(temp.br())) {
+                    i = nextIndex;
+                    break;
+                }
+            }
+            list.add(currentPoint);
+        }
+        return list;
     }
 
     protected OrcModel createOrdModel(Rect rect, Bitmap bitmap) {
