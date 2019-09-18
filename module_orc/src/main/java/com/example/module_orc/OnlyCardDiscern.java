@@ -122,8 +122,9 @@ public class OnlyCardDiscern implements Runnable {
 //            src = dst;
             try {
                 Rect rect = rects.get(0);
+                rect.set(new double[]{rect.x-10,rect.y,rect.width+20,rect.height+10});
                 dst = new Mat(threshold, rect);
-                Bitmap bitmap = Bitmap.createBitmap(dst.cols(), dst.rows(), Bitmap.Config.RGB_565);
+                Bitmap bitmap = Bitmap.createBitmap(dst.cols(), dst.rows(), Bitmap.Config.ARGB_8888);
                 Utils.matToBitmap(dst, bitmap);
                 String format = String.format("crop/%d,%d_%dx%d_%s", rect.x, rect.y ,rect.width, rect.height,page);
                                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, new FileOutputStream(new File(Environment
