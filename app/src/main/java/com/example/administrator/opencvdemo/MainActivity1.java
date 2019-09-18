@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.module_orc.BaseCallBack1;
 import com.example.module_orc.IDiscernCallback;
 import com.example.module_orc.OpenCVHelper;
 import com.example.module_orc.OrcHelper;
@@ -71,7 +72,7 @@ public class MainActivity1 extends AppCompatActivity {
                 if (bitmap == null) {
                     return;
                 }
-                String langName = vEtLangName.getText().toString().trim();
+                final String langName = vEtLangName.getText().toString().trim();
                 String pageName = listFiles == null ? resNames[currentIndex % resIds.length] : listFiles[currentIndex % listFiles.length].getName();
                 OrcHelper.getInstance().executeCallAsync(WorkMode.ONLY_BITMAP, bitmap, langName, pageName, new IDiscernCallback() {
                     @Override

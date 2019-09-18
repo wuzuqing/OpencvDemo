@@ -1,6 +1,7 @@
 package com.example.module_orc;
 
 import android.graphics.Bitmap;
+import android.os.Environment;
 import android.util.Log;
 
 import com.example.module_orc.ignore.IIgnoreRect;
@@ -15,6 +16,8 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -118,12 +121,15 @@ public class OnlyCardDiscern implements Runnable {
 //            src = dst;
             try {
                 Rect rect = rects.get(0);
+                if (rect.x>6 && rect.y>10){
+                    rect.set(new double[]{rect.x-3,rect.y-10,rect.width+30,rect.height+20});
+                }
                 dst = new Mat(threshold, rect);
                 Bitmap bitmap = Bitmap.createBitmap(dst.cols(), dst.rows(), Bitmap.Config.RGB_565);
                 Utils.matToBitmap(dst, bitmap);
-//                String format = String.format("crop/%d,%d_%dx%d_%s", rect.x, rect.y ,rect.width, rect.height,page);
-//                                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, new FileOutputStream(new File(Environment
-//                                            .getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC),format)));
+               // String format = String.format("crop/%d,%d_%dx%d_%s", rect.x, rect.y ,rect.width, rect.height,page);
+               //                     bitmap.compress(Bitmap.CompressFormat.PNG, 80, new FileOutputStream(new File(Environment
+               //                             .getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC),format)));
               String text =  OrcHelper.getInstance().orcText(bitmap, "zwp");
                 Log.d(TAG, "orcText: "+text);
                                 } catch (Exception e) {
