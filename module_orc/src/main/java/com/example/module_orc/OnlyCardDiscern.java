@@ -118,15 +118,17 @@ public class OnlyCardDiscern implements Runnable {
 //            src = dst;
             try {
                 Rect rect = rects.get(0);
-                rect.set(new double[]{rect.x-10,rect.y,rect.width+20,rect.height+10});
+                if (rect.x>15 && rect.height>10){
+                    rect.set(new double[]{rect.x-15,rect.y-10,rect.width+30,rect.height+20});
+                }
                 dst = new Mat(threshold, rect);
                 Bitmap bitmap = Bitmap.createBitmap(dst.cols(), dst.rows(), Bitmap.Config.ARGB_8888);
                 Utils.matToBitmap(dst, bitmap);
 //                String format = String.format("crop/%d,%d_%dx%d_%s", rect.x, rect.y ,rect.width, rect.height,page);
 //                                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, new FileOutputStream(new File(Environment
 //                                            .getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC),format)));
-              String text =  OrcHelper.getInstance().orcText(bitmap, "zwp");
-                Log.d(TAG, "orcText: "+text);
+//               String text =  OrcHelper.getInstance().orcText(bitmap, "zwp");
+//                 Log.d(TAG, "orcText: "+text);
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
