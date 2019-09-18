@@ -1,7 +1,6 @@
 package com.example.module_orc;
 
 import android.graphics.Bitmap;
-import android.os.Environment;
 import android.util.Log;
 
 import com.example.module_orc.ignore.IIgnoreRect;
@@ -16,8 +15,6 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -31,6 +28,7 @@ public class OnlyCardDiscern implements Runnable {
     private IDiscernCallback callback;
     protected Size mSize = new Size(1080 / 2, 1920 / 2);
     private String page;
+    private int halfWidth = 1080 / 4;
 
     public OnlyCardDiscern(Bitmap bitmap1, String langName, IDiscernCallback callback) {
         this.bitmap1 = bitmap1;
@@ -64,8 +62,6 @@ public class OnlyCardDiscern implements Runnable {
         //        //膨胀
         Mat erodeElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(14, 1));
         Imgproc.erode(dst, dst, erodeElement);
-        //         erodeElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(1, 10));
-        //        Imgproc.erode(dst, dst, erodeElement);
 
         //寻找符合坐标
         List<MatOfPoint> contoursList = new ArrayList<>();
@@ -99,42 +95,22 @@ public class OnlyCardDiscern implements Runnable {
 
         int newW = 0, newH = 0;
         if (callback != null) {
-
-            //            final List<OrcModel> orcModels = new ArrayList<>(rects.size());
-            //            for (Rect rect : rects) {
-            //                dst = new Mat(src, rect);
-            //                Bitmap bitmap = Bitmap.createBitmap(dst.cols(), dst.rows(), Bitmap.Config.RGB_565);
-            //                Utils.matToBitmap(dst, bitmap);
-            //                try {
-            //                    String format = String.format("crop/%dx%d_%d,%d.png", rect.width, rect.height, rect.x, rect.y);
-            //                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, new FileOutputStream(new File(Environment.getExternalStorageDirectory(),format)));
-            //                } catch (FileNotFoundException e) {
-            //                    e.printStackTrace();
-            //                }
-            ////                OrcModel model = createOrdModel(rect, bitmap);
-            ////                if(TextUtils.isEmpty(model.getResult())){
-            ////                    continue;
-            ////                }
-            ////                orcModels.add(model);
-            //            }
-            //            callback.call(orcModels);
-//            src = dst;
             try {
                 Rect rect = rects.get(0);
-                if (rect.x>6 && rect.y>10){
-                    rect.set(new double[]{rect.x-3,rect.y-10,rect.width+30,rect.height+20});
-                }
+//                if (rect.x > 4 && rect.y > 8 && rect.x < halfWidth) {
+//                    rect.set(new double[]{rect.x - 4, rect.y - 8, rect.width + 8, rect.height + 16});
+//                }
                 dst = new Mat(threshold, rect);
                 Bitmap bitmap = Bitmap.createBitmap(dst.cols(), dst.rows(), Bitmap.Config.RGB_565);
                 Utils.matToBitmap(dst, bitmap);
-               // String format = String.format("crop/%d,%d_%dx%d_%s", rect.x, rect.y ,rect.width, rect.height,page);
-               //                     bitmap.compress(Bitmap.CompressFormat.PNG, 80, new FileOutputStream(new File(Environment
-               //                             .getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC),format)));
+//                String format = String.format("crop/%d,%d_%dx%d_%s", rect.x, rect.y, rect.width, rect.height, page);
+//                bitmap.compress(Bitmap.CompressFormat.PNG, 80, new FileOutputStream(new File(Environment
+//                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC), format)));
               String text =  OrcHelper.getInstance().orcText(bitmap, "zwp");
                 Log.d(TAG, "orcText: "+text);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             OrcModel orcModel = new OrcModel();
             //            Bitmap bitmap = Bitmap.createBitmap(dst.cols(), dst.rows(), Bitmap.Config.RGB_565);
             //            Utils.matToBitmap(dst, bitmap);
@@ -158,12 +134,12 @@ public class OnlyCardDiscern implements Runnable {
 //            return false;
 //        }
         if (
-            rect.x < 1
+                rect.x < 1
 //                || rect.y < 35
-                || rect.height < 17
+                        || rect.height < 17
 //                || rect.height > 26
             // || (rect.height > rect.width)
-        ) {
+                ) {
             return true;
         }
         Log.d(TAG, "ignoreRect: " + rect.toString());

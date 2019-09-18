@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.module_orc.BaseCallBack1;
 import com.example.module_orc.IDiscernCallback;
 import com.example.module_orc.OpenCVHelper;
 import com.example.module_orc.OrcHelper;
