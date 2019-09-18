@@ -127,11 +127,11 @@ public class OnlyCardDiscern implements Runnable {
                 dst = new Mat(threshold, rect);
                 Bitmap bitmap = Bitmap.createBitmap(dst.cols(), dst.rows(), Bitmap.Config.RGB_565);
                 Utils.matToBitmap(dst, bitmap);
-               String format = String.format("crop/%d,%d_%dx%d_%s", rect.x, rect.y ,rect.width, rect.height,page);
-                                   bitmap.compress(Bitmap.CompressFormat.PNG, 80, new FileOutputStream(new File(Environment
-                                           .getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC),format)));
-//               String text =  OrcHelper.getInstance().orcText(bitmap, "zwp");
-//                 Log.d(TAG, "orcText: "+text);
+               // String format = String.format("crop/%d,%d_%dx%d_%s", rect.x, rect.y ,rect.width, rect.height,page);
+               //                     bitmap.compress(Bitmap.CompressFormat.PNG, 80, new FileOutputStream(new File(Environment
+               //                             .getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC),format)));
+              String text =  OrcHelper.getInstance().orcText(bitmap, "zwp");
+                Log.d(TAG, "orcText: "+text);
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
