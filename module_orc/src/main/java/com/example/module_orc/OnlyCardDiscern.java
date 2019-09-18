@@ -1,7 +1,6 @@
 package com.example.module_orc;
 
 import android.graphics.Bitmap;
-import android.os.Environment;
 import android.util.Log;
 
 import com.example.module_orc.ignore.IIgnoreRect;
@@ -16,9 +15,6 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -126,10 +122,12 @@ public class OnlyCardDiscern implements Runnable {
                 dst = new Mat(threshold, rect);
                 Bitmap bitmap = Bitmap.createBitmap(dst.cols(), dst.rows(), Bitmap.Config.ARGB_8888);
                 Utils.matToBitmap(dst, bitmap);
-                String format = String.format("crop/%d,%d_%dx%d_%s", rect.x, rect.y ,rect.width, rect.height,page);
-                                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, new FileOutputStream(new File(Environment
-                                            .getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC),format)));
-                                } catch (FileNotFoundException e) {
+//                String format = String.format("crop/%d,%d_%dx%d_%s", rect.x, rect.y ,rect.width, rect.height,page);
+//                                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, new FileOutputStream(new File(Environment
+//                                            .getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC),format)));
+              String text =  OrcHelper.getInstance().orcText(bitmap, "zwp");
+                Log.d(TAG, "orcText: "+text);
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
             OrcModel orcModel = new OrcModel();
