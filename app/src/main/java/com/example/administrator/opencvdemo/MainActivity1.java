@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.module_orc.BaseCallBack1;
 import com.example.module_orc.IDiscernCallback;
 import com.example.module_orc.OpenCVHelper;
 import com.example.module_orc.OrcHelper;
@@ -73,42 +74,42 @@ public class MainActivity1 extends AppCompatActivity {
                 }
                 final String langName = vEtLangName.getText().toString().trim();
                 String pageName = listFiles == null ? resNames[currentIndex % resIds.length] : listFiles[currentIndex % listFiles.length].getName();
-                OrcHelper.getInstance().executeCallAsync(WorkMode.ONLY_BITMAP, bitmap, langName, pageName, new IDiscernCallback() {
-                    @Override
-                    public void call(final List<OrcModel> result) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-//                                vTestAdapter.setmDatas(result);
-//                                vTvResult.setText(result.toString());
-//                                Log.d(TAG, "executeCallAsync: " + result.toString());
-                                try {
-                                    orcModel = result.get(0);
-                                    img.setImageBitmap(orcModel.getBitmap());
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        });
-                    }
-                });
-//                final String langName = "zwp";
-//                OrcHelper.getInstance().fileToBitmap(new BaseCallBack1<Bitmap>() {
+//                OrcHelper.getInstance().executeCallAsync(WorkMode.ONLY_BITMAP, bitmap, langName, pageName, new IDiscernCallback() {
 //                    @Override
-//                    public void call(final Bitmap bitmap, final String name) {
+//                    public void call(final List<OrcModel> result) {
 //                        runOnUiThread(new Runnable() {
 //                            @Override
 //                            public void run() {
-//                                OrcHelper.getInstance().executeCallAsync(WorkMode.ONLY_BITMAP, bitmap, langName, name, new IDiscernCallback() {
-//                                    @Override
-//                                    public void call(final List<OrcModel> result) {
-//
-//                                    }
-//                                });
+////                                vTestAdapter.setmDatas(result);
+////                                vTvResult.setText(result.toString());
+////                                Log.d(TAG, "executeCallAsync: " + result.toString());
+//                                try {
+//                                    orcModel = result.get(0);
+//                                    img.setImageBitmap(orcModel.getBitmap());
+//                                } catch (Exception e) {
+//                                    e.printStackTrace();
+//                                }
 //                            }
 //                        });
 //                    }
-//                },listFiles);
+//                });
+//                final String langName = "zwp";
+                OrcHelper.getInstance().fileToBitmap(new BaseCallBack1<Bitmap>() {
+                    @Override
+                    public void call(final Bitmap bitmap, final String name) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                OrcHelper.getInstance().executeCallAsync(WorkMode.ONLY_BITMAP, bitmap, langName, name, new IDiscernCallback() {
+                                    @Override
+                                    public void call(final List<OrcModel> result) {
+
+                                    }
+                                });
+                            }
+                        });
+                    }
+                },listFiles);
             }
         });
         img.setOnClickListener(new View.OnClickListener() {
