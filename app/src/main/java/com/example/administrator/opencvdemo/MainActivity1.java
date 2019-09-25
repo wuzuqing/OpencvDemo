@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,9 +17,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.module_orc.BaseCallBack1;
 import com.example.module_orc.IDiscernCallback;
 import com.example.module_orc.OpenCVHelper;
+import com.example.module_orc.OrcConfig;
 import com.example.module_orc.OrcHelper;
 import com.example.module_orc.OrcModel;
 import com.example.module_orc.WorkMode;
@@ -39,6 +40,9 @@ public class MainActivity1 extends AppCompatActivity {
     private int currentIndex = 0;
     private TextView vTvResult;
     private EditText vEtLangName;
+    private EditText vEtThresh;
+    private EditText vEtThreshType;
+    private EditText vEtWidth;
 
     private RecyclerView vRecyclerView;
     private TestAdapter vTestAdapter;
@@ -54,6 +58,9 @@ public class MainActivity1 extends AppCompatActivity {
         this.vTvResult = findViewById(R.id.resultText);
         this.ivCrop = findViewById(R.id.img_crop);
         this.vEtLangName = findViewById(R.id.lengName);
+        this.vEtThresh = findViewById(R.id.et_thresh);
+        this.vEtThreshType = findViewById(R.id.et_type);
+        this.vEtWidth = findViewById(R.id.et_width);
         this.vRecyclerView = findViewById(R.id.rcv);
         File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
         File imagePath = new File(directory, "/image");
@@ -74,42 +81,60 @@ public class MainActivity1 extends AppCompatActivity {
                 }
                 final String langName = vEtLangName.getText().toString().trim();
                 String pageName = listFiles == null ? resNames[currentIndex % resIds.length] : listFiles[currentIndex % listFiles.length].getName();
-//                 OrcHelper.getInstance().executeCallAsync(WorkMode.ONLY_BITMAP, bitmap, langName, pageName, new IDiscernCallback() {
-//                     @Override
-//                     public void call(final List<OrcModel> result) {
-//                         runOnUiThread(new Runnable() {
-//                             @Override
-//                             public void run() {
-// //                                vTestAdapter.setmDatas(result);
-// //                                vTvResult.setText(result.toString());
-// //                                Log.d(TAG, "executeCallAsync: " + result.toString());
-//                                 try {
-//                                     orcModel = result.get(0);
-//                                     img.setImageBitmap(orcModel.getBitmap());
-//                                 } catch (Exception e) {
-//                                     e.printStackTrace();
-//                                 }
-//                             }
-//                         });
-//                     }
-//                 });
+                String thresh = MainActivity1.this.vEtThresh.getText().toString();
+                if (TextUtils.isEmpty(thresh)){
+                    OrcConfig.thresh = 135;
+                }else{
+                    OrcConfig.thresh = Integer.valueOf(thresh);
+                }
+                String type = MainActivity1.this.vEtThreshType.getText().toString();
+                if (TextUtils.isEmpty(type)){
+                    OrcConfig.threshType = 1;
+                }else{
+                    OrcConfig.threshType = Integer.valueOf(type);
+                }
+                String width = MainActivity1.this.vEtWidth.getText().toString();
+                if (TextUtils.isEmpty(width)){
+                    OrcConfig.width = 14;
+                }else{
+                    OrcConfig.width = Integer.valueOf(width);
+                }
+                OrcHelper.getInstance().executeCallAsync(WorkMode.ONLY_BITMAP, bitmap, langName, pageName, new IDiscernCallback() {
+                    @Override
+                    public void call(final List<OrcModel> result) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+//                                vTestAdapter.setmDatas(result);
+//                                vTvResult.setText(result.toString());
+//                                Log.d(TAG, "executeCallAsync: " + result.toString());
+                                try {
+                                    orcModel = result.get(0);
+                                    img.setImageBitmap(orcModel.getBitmap());
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                    }
+                });
 //                final String langName = "zwp";
-               OrcHelper.getInstance().fileToBitmap(new BaseCallBack1<Bitmap>() {
-                   @Override
-                   public void call(final Bitmap bitmap, final String name) {
-                       runOnUiThread(new Runnable() {
-                           @Override
-                           public void run() {
-                               OrcHelper.getInstance().executeCallAsync(WorkMode.ONLY_BITMAP, bitmap, langName, name, new IDiscernCallback() {
-                                   @Override
-                                   public void call(final List<OrcModel> result) {
-
-                                   }
-                               });
-                           }
-                       });
-                   }
-               },listFiles);
+//                OrcHelper.getInstance().fileToBitmap(new BaseCallBack1<Bitmap>() {
+//                    @Override
+//                    public void call(final Bitmap bitmap, final String name) {
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                OrcHelper.getInstance().executeCallAsync(WorkMode.ONLY_BITMAP, bitmap, langName, name, new IDiscernCallback() {
+//                                    @Override
+//                                    public void call(final List<OrcModel> result) {
+//
+//                                    }
+//                                });
+//                            }
+//                        });
+//                    }
+//                },listFiles);
             }
         });
         img.setOnClickListener(new View.OnClickListener() {

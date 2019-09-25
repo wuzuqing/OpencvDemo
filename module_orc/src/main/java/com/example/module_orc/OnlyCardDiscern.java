@@ -31,7 +31,7 @@ public class OnlyCardDiscern implements Runnable {
     protected int thresh = 135;
     private long start;
     private IDiscernCallback callback;
-    protected Size mSize = new Size(1080 / 2, 1920 / 2);
+    protected Size mSize = new Size(1080 / 3, 1920 / 3);
     private String page;
     private int halfWidth = 1080 / 4;
 
@@ -50,6 +50,10 @@ public class OnlyCardDiscern implements Runnable {
 
     @Override
     public void run() {
+        if(bitmap1==null){
+            return;
+        }
+//        bitmap1 = OrcConfig.changeToColor(bitmap1);
         start = System.currentTimeMillis();
         Mat src = new Mat();
         Mat dst = new Mat();
@@ -62,65 +66,64 @@ public class OnlyCardDiscern implements Runnable {
         //灰度化
         Imgproc.cvtColor(src, dst, Imgproc.COLOR_BGRA2GRAY);
         //二值化
-        Imgproc.threshold(dst, dst, thresh, 255, Imgproc.THRESH_BINARY_INV);
-        threshold = dst.clone();
-        //        //膨胀
-        // Mat erodeElement = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(14, 1));
-        // Imgproc.erode(dst, dst, erodeElement);
-        //
-        // //寻找符合坐标
-        // List<MatOfPoint> contoursList = new ArrayList<>();
-        // Imgproc.findContours(dst, contoursList, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE, new Point(0, 0));
-        // //外包矩形区域
-        // Collections.sort(contoursList, new Comparator<MatOfPoint>() {
-        //     @Override
-        //     public int compare(MatOfPoint o1, MatOfPoint o2) {
-        //         Rect rect1 = Imgproc.boundingRect(o1);
-        //         Rect rect2 = Imgproc.boundingRect(o2);
-        //         return rect1.y - rect2.y;
-        //     }
-        // });
-        //
-        // List<Rect> rectList = megerRect(contoursList);
-        // List<Rect> rects = new ArrayList<>();
-        // String pageName = "1";
-        // IIgnoreRect ignoreRect = IgnoreRectHelper.getInstance().getIgnoreRect(pageName);
-        //
-        // for (int i = 0; i < rectList.size(); i++) {
-        //     Rect rect = rectList.get(i);
-        //     //排除无效区域
-        //     if (ignoreRect != null) {
-        //         if (ignoreRect.ignoreRect(rect)) {
-        //             continue;
-        //         }
-        //     } else if (ignoreRect(rect)) {
-        //         continue;
-        //     }
-        //     rects.add(rect);
-        //     Imgproc.rectangle(src, rect, new Scalar(0, 255, 0), 1, 8, 0);
-        // }
+        Imgproc.threshold(dst, dst, OrcConfig.thresh, 255, OrcConfig.threshType);
+//        //        //膨胀
+        Mat erodeElement = Imgproc.getStructuringElement(Imgproc.MORPH_CROSS, new Size(OrcConfig.width, 1));
+        Imgproc.erode(dst, dst, erodeElement);
+//
+//        //寻找符合坐标
+        List<MatOfPoint> contoursList = new ArrayList<>();
+        Imgproc.findContours(dst, contoursList, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE, new Point(0, 0));
+        //外包矩形区域
+        Collections.sort(contoursList, new Comparator<MatOfPoint>() {
+            @Override
+            public int compare(MatOfPoint o1, MatOfPoint o2) {
+                Rect rect1 = Imgproc.boundingRect(o1);
+                Rect rect2 = Imgproc.boundingRect(o2);
+                return rect1.y - rect2.y;
+            }
+        });
+//
+        List<Rect> rects = new ArrayList<>();
+        String pageName = "1";
+        IIgnoreRect ignoreRect = IgnoreRectHelper.getInstance().getIgnoreRect(pageName);
+
+        for (int i = 0; i < contoursList.size(); i++) {
+            Rect rect = Imgproc.boundingRect(contoursList.get(i));
+            //排除无效区域
+            if (ignoreRect != null) {
+                if (ignoreRect.ignoreRect(rect)) {
+                    continue;
+                }
+            }
+            else if (ignoreRect(rect)) {
+                continue;
+            }
+            rects.add(rect);
+            Imgproc.rectangle(src, rect, new Scalar(0, 255, 0), 1, 8, 0);
+        }
 
         int newW = 0, newH = 0;
         if (callback != null) {
             try {
-                // Rect rect = rects.get(0);
-                //                if (rect.x > 4 && rect.y > 8 && rect.x < halfWidth) {
-                //                    rect.set(new double[]{rect.x - 4, rect.y - 8, rect.width + 8, rect.height + 16});
-                //                }
-                // dst = new Mat(threshold, rect);
-                Bitmap bitmap = Bitmap.createBitmap(threshold.cols(), threshold.rows(), Bitmap.Config.RGB_565);
-                Utils.matToBitmap(threshold, bitmap);
-                String format = String.format("crop/full/%s",  page);
-                bitmap.compress(Bitmap.CompressFormat.PNG, 60, new FileOutputStream(new File(Environment
-                    .getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC), format)));
-                // String text = OrcHelper.getInstance().orcText(bitmap, "zwp");
-                // Log.d(TAG, "orcText: " + text);
+//                Rect rect = rects.get(0);
+////                if (rect.x > 4 && rect.y > 8 && rect.x < halfWidth) {
+////                    rect.set(new double[]{rect.x - 4, rect.y - 8, rect.width + 8, rect.height + 16});
+////                }
+//                dst = new Mat(threshold, rect);
+//                Bitmap bitmap = Bitmap.createBitmap(dst.cols(), dst.rows(), Bitmap.Config.RGB_565);
+//                Utils.matToBitmap(dst, bitmap);
+//                String format = String.format("crop/full/%s",  page);
+//                bitmap.compress(Bitmap.CompressFormat.PNG, 70, new FileOutputStream(new File(Environment
+//                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC), format)));
+//                String text = OrcHelper.getInstance().orcText(bitmap, "zwp");
+//                Log.d(TAG, "orcText: " + text);
             } catch (Exception e) {
                 e.printStackTrace();
             }
             OrcModel orcModel = new OrcModel();
-            //            Bitmap bitmap = Bitmap.createBitmap(dst.cols(), dst.rows(), Bitmap.Config.RGB_565);
-            //            Utils.matToBitmap(dst, bitmap);
+//                        Bitmap bitmap = Bitmap.createBitmap(dst.cols(), dst.rows(), Bitmap.Config.RGB_565);
+//                        Utils.matToBitmap(dst, bitmap);
             Bitmap bitmap = Bitmap.createBitmap(src.cols(), src.rows(), Bitmap.Config.RGB_565);
             Utils.matToBitmap(src, bitmap);
             orcModel.setBitmap(bitmap);
@@ -189,17 +192,17 @@ public class OnlyCardDiscern implements Runnable {
     }
 
     private boolean ignoreRect(Rect rect) {
-        //        if (rect.height == 11 || rect.height == 22) {
-        //            Log.d(TAG, "ignoreRect: " + rect.toString());
-        //            return false;
-        //        }
+//        if (rect.height == 11 || rect.height == 22) {
+//            Log.d(TAG, "ignoreRect: " + rect.toString());
+//            return false;
+//        }
         if (
-            rect.x < 1
-                //                || rect.y < 35
-                || rect.height < 17
-            //                || rect.height > 26
+                rect.x < OrcConfig.baseIgnoreX
+//                || rect.y < 35
+                        || rect.height < OrcConfig.baseIgnoreHeight
+//                || rect.height > 26
             // || (rect.height > rect.width)
-        ) {
+                ) {
             return true;
         }
         Log.d(TAG, "ignoreRect: " + rect.toString());

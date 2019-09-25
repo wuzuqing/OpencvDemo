@@ -1,12 +1,15 @@
 package com.example.administrator.opencvdemo;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -26,13 +29,19 @@ public class BitmapPreviewFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    private static final String TAG = "BitmapPreviewFragment";
+    Bitmap bitmap;
+    int widthPixels;
+    int heightPixels;
+
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ImageView view1 = view.findViewById(R.id.img);
         Bundle arguments = getArguments();
         if (arguments != null) {
-            Bitmap bitmap = arguments.getParcelable("bitmap");
+            bitmap = arguments.getParcelable("bitmap");
             view1.setImageBitmap(bitmap);
         }
         view.findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
@@ -42,6 +51,29 @@ public class BitmapPreviewFragment extends Fragment {
                 if (activity != null) {
                     activity.getSupportFragmentManager().beginTransaction().remove(BitmapPreviewFragment.this).commitAllowingStateLoss();
                 }
+            }
+        });
+        widthPixels = getResources().getDisplayMetrics().widthPixels;
+        heightPixels = getResources().getDisplayMetrics().heightPixels;
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    float rawX = event.getRawX();
+                    float rawY = event.getRawY();
+                    if (bitmap != null) {
+                        int width = bitmap.getWidth();
+                        int height = bitmap.getHeight();
+                        Log.d(TAG, "onTouch: bitmap:"+width + "x"+height);
+                        int color = bitmap.getPixel((int)( rawX/3), (int) (rawY/3));
+//                        Color.
+                        float roaitX = rawX / widthPixels;
+                        float roaitY = rawY / heightPixels;
+                        Log.d(TAG, "onTouch: " + rawX + "," + rawY + "  width:" + widthPixels + "x" + heightPixels +
+                                " color:" + ("#"+Integer.toHexString(color)) + " roait:" + roaitX + "," + roaitY);
+                    }
+                }
+                return false;
             }
         });
     }
