@@ -55,7 +55,7 @@ public class BitmapPreviewFragment extends Fragment {
         });
         widthPixels = getResources().getDisplayMetrics().widthPixels;
         heightPixels = getResources().getDisplayMetrics().heightPixels;
-        view.setOnTouchListener(new View.OnTouchListener() {
+        view1.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {

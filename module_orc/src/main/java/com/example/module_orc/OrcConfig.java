@@ -2,6 +2,7 @@ package com.example.module_orc;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.PointF;
 
 import org.opencv.imgproc.Imgproc;
 
@@ -22,10 +23,35 @@ public class OrcConfig {
     }
 
 
+    public interface BangDan{
+         PointF title = new PointF(0.32562444f,0.03539823f);
+         PointF moBai = new PointF(0.7113784f,0.8308173f);
+         PointF tab = new PointF(0.040703055f,0.17178553f);
+    }
 
+    /**
+     * 排行榜
+     */
+    public interface Paihangbang{
+        PointF title = new PointF(0.32562444f,0.03539823f);
+        PointF benFu = new PointF(0.4625347f,0.37948984f);
+        PointF kuaFu = new PointF(0.46438482f,0.669443f);
+    }
 
+    /**
+     * 处理公务
+     */
+    public interface Chuligongwu{
+        PointF title = new PointF(0.32562444f,0.03539823f);
+    }
 
-
+    /**
+     * 红颜知己
+     */
+    public interface Hongyanzhiji{
+        PointF yijianchuanhuan = new PointF(0.049953748f,0.95731384f);
+        PointF suijichuanhuan = new PointF(0.7419057f,0.9448204f);
+    }
 
 
 
