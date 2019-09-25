@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.module_orc.OrcConfig;
+
 public class BitmapPreviewFragment extends Fragment {
 
     public static void show(FragmentActivity activity, Bitmap bitmap) {
@@ -65,7 +67,7 @@ public class BitmapPreviewFragment extends Fragment {
                         int width = bitmap.getWidth();
                         int height = bitmap.getHeight();
                         Log.d(TAG, "onTouch: bitmap:"+width + "x"+height);
-                        int color = bitmap.getPixel((int)( rawX/3), (int) (rawY/3));
+                        int color = bitmap.getPixel((int)( rawX/OrcConfig.topColorXishu), (int) (rawY/OrcConfig.topColorXishu));
 //                        Color.
                         float roaitX = rawX / widthPixels;
                         float roaitY = rawY / heightPixels;

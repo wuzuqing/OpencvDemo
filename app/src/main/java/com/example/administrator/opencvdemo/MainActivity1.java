@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -70,35 +69,19 @@ public class MainActivity1 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Bitmap bitmap = null;
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inSampleSize = OrcConfig.topColorXishu;
                 if (listFiles == null) {
-
-                    bitmap = BitmapFactory.decodeResource(getResources(), resIds[currentIndex % resIds.length]);
+                    bitmap = BitmapFactory.decodeResource(getResources(), resIds[currentIndex % resIds.length], options);
                 } else {
-                    bitmap = BitmapFactory.decodeFile(listFiles[currentIndex % listFiles.length].getAbsolutePath());
+                    bitmap = BitmapFactory.decodeFile(listFiles[currentIndex % listFiles.length].getAbsolutePath(), options);
                 }
                 if (bitmap == null) {
                     return;
                 }
                 final String langName = vEtLangName.getText().toString().trim();
                 String pageName = listFiles == null ? resNames[currentIndex % resIds.length] : listFiles[currentIndex % listFiles.length].getName();
-                String thresh = MainActivity1.this.vEtThresh.getText().toString();
-                if (TextUtils.isEmpty(thresh)){
-                    OrcConfig.thresh = 135;
-                }else{
-                    OrcConfig.thresh = Integer.valueOf(thresh);
-                }
-                String type = MainActivity1.this.vEtThreshType.getText().toString();
-                if (TextUtils.isEmpty(type)){
-                    OrcConfig.threshType = 1;
-                }else{
-                    OrcConfig.threshType = Integer.valueOf(type);
-                }
-                String width = MainActivity1.this.vEtWidth.getText().toString();
-                if (TextUtils.isEmpty(width)){
-                    OrcConfig.width = 14;
-                }else{
-                    OrcConfig.width = Integer.valueOf(width);
-                }
+
                 OrcHelper.getInstance().executeCallAsync(WorkMode.ONLY_BITMAP, bitmap, langName, pageName, new IDiscernCallback() {
                     @Override
                     public void call(final List<OrcModel> result) {
