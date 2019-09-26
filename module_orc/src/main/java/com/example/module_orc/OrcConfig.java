@@ -15,10 +15,10 @@ public class OrcConfig {
     public static int baseIgnoreX = 1;
     public static int topColorXishu = 3;
 
-    private static int topColorX = 108;
-    private static int topColorWidth = 927;
+    private static int topColorX = 372;
+    private static int topColorWidth = 327;
     private static int topColorY = 42;
-    private static int topColorHeight = 167;
+    private static int topColorHeight = 107;
 
     public interface Zican {
 
@@ -29,16 +29,19 @@ public class OrcConfig {
     }
 
     public static int[] changeToWhiteColor;
-    static int r, g, b, startX, maxX, startY, maxY;
+    static int r, g, b, startX, maxX, startY, maxY ,ir,ig,ib;
 
     public static void init() {
         changeToWhiteColor = new int[]{ // #F4E697  #DF320A
                 Color.parseColor("#fff7f3ad")
-//            ,  Color.parseColor("#DF320A")
+                ,  Color.parseColor("#C2D1E1")
         };
         r = Color.red(changeToWhiteColor[0]);
         g = Color.green(changeToWhiteColor[0]);
         b = Color.blue(changeToWhiteColor[0]);
+        ir = Color.red(changeToWhiteColor[1]);
+        ig = Color.green(changeToWhiteColor[1]);
+        ib = Color.blue(changeToWhiteColor[1]);
         maxX = (topColorX + topColorWidth) / topColorXishu;
         maxY = (topColorY + topColorHeight) / topColorXishu;
         startX = topColorX / topColorXishu;
@@ -88,7 +91,9 @@ public class OrcConfig {
                 //在这说明一下 如果color 是全透明 或者全黑 返回值为 0
                 int color = mBitmap.getPixel(j, i);
                 //将颜色值存在一个数组中 方便后面修改
-                if (like(r, g, b, color)) {
+                if (like(ir,ig,ib,color,60)){
+                    mBitmap.setPixel(j, i, Color.BLACK);  //替换成白色
+                }else if (like(r, g, b, color,140)) {
                     mBitmap.setPixel(j, i, Color.WHITE);  //替换成白色
                 }
             }
@@ -102,16 +107,16 @@ public class OrcConfig {
 
 
     private static boolean like(int color1, int color2) {
-        return like(Color.red(color1), Color.green(color1), Color.blue(color1), color2);
+        return like(Color.red(color1), Color.green(color1), Color.blue(color1), color2,140);
     }
 
-    private static boolean like(int r, int g, int b, int color2) {
+    private static boolean like(int r, int g, int b, int color2,int offset) {
         //通过HSV比较两个子RGB的色差
         //比较两个RGB的色差
         int absR = r - Color.red(color2);
         int absG = g - Color.green(color2);
         int absB = b - Color.blue(color2);
-        return Math.sqrt(absR * absR + absG * absG + absB * absB) < 140;
+        return Math.sqrt(absR * absR + absG * absG + absB * absB) < offset;
     }
 
 }

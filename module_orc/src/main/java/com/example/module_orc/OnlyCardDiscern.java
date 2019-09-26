@@ -29,6 +29,7 @@ public class OnlyCardDiscern implements Runnable {
     private IDiscernCallback callback;
     protected Size mSize = new Size(1080 / 3, 1920 / 3);
     private String page;
+    private int halfWidth;
 
     public OnlyCardDiscern(Bitmap bitmap1, String langName, IDiscernCallback callback) {
         this.bitmap1 = bitmap1;
@@ -48,20 +49,26 @@ public class OnlyCardDiscern implements Runnable {
         if (bitmap1 == null) {
             return;
         }
+        //缩放
+        if (bitmap1.getWidth() > 800) {
+            bitmap1 = Bitmap.createScaledBitmap(bitmap1,
+                    bitmap1.getWidth() / OrcConfig.topColorXishu,
+                    bitmap1.getHeight() / OrcConfig.topColorXishu,
+                    true);
+        }
+        halfWidth = bitmap1.getWidth() / 2;
+        //颜色过滤
         bitmap1 = OrcConfig.changeToColor(bitmap1);
         start = System.currentTimeMillis();
         Mat src = new Mat();
         Mat dst = new Mat();
         Mat hierarchy = new Mat();
-        Mat threshold = new Mat();
         Utils.bitmapToMat(bitmap1, src);
         //归一化
-//        Imgproc.resize(src, src, mSize);
         //灰度化
         Imgproc.cvtColor(src, dst, Imgproc.COLOR_BGRA2GRAY);
         //二值化
         Imgproc.threshold(dst, dst, OrcConfig.thresh, 255, OrcConfig.threshType);
-        threshold = dst.clone();
 //      //膨胀
         Mat erodeElement = Imgproc.getStructuringElement(Imgproc.MARKER_CROSS, new Size(OrcConfig.width, 1));
         Imgproc.erode(dst, dst, erodeElement);
@@ -99,13 +106,13 @@ public class OnlyCardDiscern implements Runnable {
         int newW = 0, newH = 0;
         if (callback != null) {
             try {
-//                 Rect rect = rects.get(0);
-//                // if (rect.x > 4 && rect.y > 8 && rect.x < halfWidth) {
-//                //     rect.set(new double[]{rect.x - 4, rect.y - 8, rect.width + 8, rect.height + 16});
-//                // }
-//                 dst = new Mat(threshold, rect);
-//                 Bitmap bitmap = Bitmap.createBitmap(dst.cols(), dst.rows(), Bitmap.Config.RGB_565);
-//                 Utils.matToBitmap(dst, bitmap);
+                Rect rect = rects.get(0);
+                if (rect.x > 4 && rect.y > 8 && rect.x < halfWidth) {
+                    rect.set(new double[]{rect.x - 4, rect.y - 8, rect.width + 8, rect.height + 16});
+                }
+                dst = new Mat(hierarchy, rect);
+                Bitmap bitmap = Bitmap.createBitmap(dst.cols(), dst.rows(), Bitmap.Config.RGB_565);
+                Utils.matToBitmap(dst, bitmap);
 // //                String format = String.format("crop/full/%s",  page);
 // //                bitmap.compress(Bitmap.CompressFormat.PNG, 70, new FileOutputStream(new File(Environment
 // //                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC), format)));
