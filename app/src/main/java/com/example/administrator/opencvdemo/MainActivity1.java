@@ -2,12 +2,14 @@ package com.example.administrator.opencvdemo;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.system.Os;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -27,14 +29,13 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-
 public class MainActivity1 extends AppCompatActivity {
 
     private ImageView img, ivCrop;
     private Button btn;
-    private int[] resIds = {R.mipmap.chufu, R.mipmap.chuligongwu, R.mipmap.zisi, R.mipmap.zican, R.mipmap.hongyanzhiji, R.mipmap.wzq1};
-    private String[] resNames = {"main", "clgw", "wdzs", "jyzc", "hyzj", "sfz"};
-//    private int[] resIds = {R.mipmap.wzq1,R.mipmap.wzq, R.mipmap.wxb, R.mipmap.yl, R.mipmap.wzq1};
+    private int[] resIds = { R.mipmap.chufu, R.mipmap.chuligongwu, R.mipmap.zisi, R.mipmap.zican, R.mipmap.hongyanzhiji, R.mipmap.wzq1 };
+    private String[] resNames = { "main", "clgw", "wdzs", "jyzc", "hyzj", "sfz" };
+    //    private int[] resIds = {R.mipmap.wzq1,R.mipmap.wzq, R.mipmap.wxb, R.mipmap.yl, R.mipmap.wzq1};
 
     private int currentIndex = 0;
     private TextView vTvResult;
@@ -61,8 +62,10 @@ public class MainActivity1 extends AppCompatActivity {
         this.vEtThreshType = findViewById(R.id.et_type);
         this.vEtWidth = findViewById(R.id.et_width);
         this.vRecyclerView = findViewById(R.id.rcv);
-        File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
-        File imagePath = new File(directory, "/image");
+        boolean isMoble = Build.BRAND.toUpperCase().contains("Oppo".toUpperCase());
+        File directory = Environment.getExternalStoragePublicDirectory(isMoble ? Environment.DIRECTORY_DCIM : Environment.DIRECTORY_MOVIES);
+        File imagePath = new File(directory, isMoble ? "/Screenshots" : "/image");
+
         listFiles = imagePath.listFiles();
         Log.d(TAG, "onCreate: " + Arrays.toString(listFiles));
         btn.setOnClickListener(new View.OnClickListener() {
@@ -88,9 +91,9 @@ public class MainActivity1 extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-//                                vTestAdapter.setmDatas(result);
-//                                vTvResult.setText(result.toString());
-//                                Log.d(TAG, "executeCallAsync: " + result.toString());
+                                //                                vTestAdapter.setmDatas(result);
+                                //                                vTvResult.setText(result.toString());
+                                //                                Log.d(TAG, "executeCallAsync: " + result.toString());
                                 try {
                                     orcModel = result.get(0);
                                     img.setImageBitmap(orcModel.getBitmap());
@@ -101,23 +104,23 @@ public class MainActivity1 extends AppCompatActivity {
                         });
                     }
                 });
-//                final String langName = "zwp";
-//                OrcHelper.getInstance().fileToBitmap(new BaseCallBack1<Bitmap>() {
-//                    @Override
-//                    public void call(final Bitmap bitmap, final String name) {
-//                        runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                OrcHelper.getInstance().executeCallAsync(WorkMode.ONLY_BITMAP, bitmap, langName, name, new IDiscernCallback() {
-//                                    @Override
-//                                    public void call(final List<OrcModel> result) {
-//
-//                                    }
-//                                });
-//                            }
-//                        });
-//                    }
-//                },listFiles);
+                //                final String langName = "zwp";
+                //                OrcHelper.getInstance().fileToBitmap(new BaseCallBack1<Bitmap>() {
+                //                    @Override
+                //                    public void call(final Bitmap bitmap, final String name) {
+                //                        runOnUiThread(new Runnable() {
+                //                            @Override
+                //                            public void run() {
+                //                                OrcHelper.getInstance().executeCallAsync(WorkMode.ONLY_BITMAP, bitmap, langName, name, new IDiscernCallback() {
+                //                                    @Override
+                //                                    public void call(final List<OrcModel> result) {
+                //
+                //                                    }
+                //                                });
+                //                            }
+                //                        });
+                //                    }
+                //                },listFiles);
             }
         });
         img.setOnClickListener(new View.OnClickListener() {
@@ -151,7 +154,7 @@ public class MainActivity1 extends AppCompatActivity {
                     return;
                 }
                 img.setImageResource(resIds[currentIndex % resIds.length]);
-//                startActivity(new Intent(MainActivity1.this,ScanActivity.class));
+                //                startActivity(new Intent(MainActivity1.this,ScanActivity.class));
             }
         });
         img.setImageResource(resIds[currentIndex % resIds.length]);
@@ -166,7 +169,6 @@ public class MainActivity1 extends AppCompatActivity {
             }
         });
     }
-
 
     private static final String TAG = "MainActivity";
 

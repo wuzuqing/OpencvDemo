@@ -15,10 +15,10 @@ public class OrcConfig {
     public static int baseIgnoreX = 1;
     public static int topColorXishu = 3;
 
-    private static int topColorX = 372;
-    private static int topColorWidth = 327;
+    private static int topColorX = 108;
+    private static int topColorWidth = 927;
     private static int topColorY = 42;
-    private static int topColorHeight = 107;
+    private static int topColorHeight = 167;
 
     public interface Zican {
 

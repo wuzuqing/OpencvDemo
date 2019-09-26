@@ -81,7 +81,7 @@ public class OnlyCardDiscern implements Runnable {
         List<Rect> rects = new ArrayList<>();
         String pageName = "1";
         IIgnoreRect ignoreRect = IgnoreRectHelper.getInstance().getIgnoreRect(pageName);
-
+        Mat result = dst;
         for (int i = 0; i < contoursList.size(); i++) {
             Rect rect = Imgproc.boundingRect(contoursList.get(i));
             //排除无效区域
@@ -93,31 +93,31 @@ public class OnlyCardDiscern implements Runnable {
                 continue;
             }
             rects.add(rect);
-            Imgproc.rectangle(src, rect, new Scalar(0, 255, 0), 1, 8, 0);
+            Imgproc.rectangle(result, rect, new Scalar(0, 255, 0), 1, 8, 0);
         }
 
         int newW = 0, newH = 0;
         if (callback != null) {
             try {
-                Rect rect = rects.get(0);
-//                if (rect.x > 4 && rect.y > 8 && rect.x < halfWidth) {
-//                    rect.set(new double[]{rect.x - 4, rect.y - 8, rect.width + 8, rect.height + 16});
-//                }
-                dst = new Mat(threshold, rect);
-                Bitmap bitmap = Bitmap.createBitmap(dst.cols(), dst.rows(), Bitmap.Config.RGB_565);
-                Utils.matToBitmap(dst, bitmap);
-//                String format = String.format("crop/full/%s",  page);
-//                bitmap.compress(Bitmap.CompressFormat.PNG, 70, new FileOutputStream(new File(Environment
-//                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC), format)));
-                String text = OrcHelper.getInstance().orcText(bitmap, "zwp");
-                Log.d(TAG, "orcText: " + text);
+//                 Rect rect = rects.get(0);
+//                // if (rect.x > 4 && rect.y > 8 && rect.x < halfWidth) {
+//                //     rect.set(new double[]{rect.x - 4, rect.y - 8, rect.width + 8, rect.height + 16});
+//                // }
+//                 dst = new Mat(threshold, rect);
+//                 Bitmap bitmap = Bitmap.createBitmap(dst.cols(), dst.rows(), Bitmap.Config.RGB_565);
+//                 Utils.matToBitmap(dst, bitmap);
+// //                String format = String.format("crop/full/%s",  page);
+// //                bitmap.compress(Bitmap.CompressFormat.PNG, 70, new FileOutputStream(new File(Environment
+// //                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC), format)));
+//                 String text = OrcHelper.getInstance().orcText(bitmap, "zwp");
+//                 Log.d(TAG, "orcText: " + text);
             } catch (Exception e) {
                 e.printStackTrace();
             }
             OrcModel orcModel = new OrcModel();
-            Bitmap bitmap = Bitmap.createBitmap(src.cols(), src.rows(), Bitmap.Config.RGB_565);
-            Utils.matToBitmap(src, bitmap);
-            orcModel.setBitmap(bitmap);
+            Bitmap bitmap = Bitmap.createBitmap(result.cols(), result.rows(), Bitmap.Config.RGB_565);
+            Utils.matToBitmap(result, bitmap);
+            orcModel.setBitmap(bitmap1);
             callback.call(Collections.singletonList(orcModel));
         }
         Log.d(TAG, "discern: usedTime" + (System.currentTimeMillis() - start) + " newW:" + newW + " newH:" + newH);
