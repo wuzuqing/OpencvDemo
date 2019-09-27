@@ -73,8 +73,8 @@ public class OnlyCardDiscern implements Runnable {
         Mat hierarchy = new Mat();
         Mat threshold = new Mat();
         Utils.bitmapToMat(bitmap1, src);
-        Image.matchPic(src, targetMat.clone(), Imgproc.TM_SQDIFF_NORMED);
-        Image.matchPic(src, target1Mat.clone(), Imgproc.TM_SQDIFF_NORMED);
+        Image.matchPic(src, targetMat.clone(), Imgproc.TM_CCORR_NORMED);
+        Image.matchPic(src, target1Mat.clone(), Imgproc.TM_CCORR_NORMED);
         if (true) {
             return;
         }

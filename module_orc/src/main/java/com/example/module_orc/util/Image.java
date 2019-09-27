@@ -26,16 +26,20 @@ public class Image {
 
     public static void matchPic(Mat original, Mat templete, int method) {
         // 1 获取待匹配图片
+        //
+        // // 1 获取待匹配图片
+        // Mat templete=Imgcodecs.imread("C:\\Users\\hyacinth\\Pictures\\Camera Roll\\templete01.jpg");
+        // // 2 获取匹配模板
+        // Mat demo=Imgcodecs.imread("C:\\Users\\hyacinth\\Pictures\\Camera Roll\\templete02.jpg");
 
-        int width = original.cols() - templete.cols() + 1;
-        int height = original.rows() - templete.rows() + 1;
+        int width=templete.cols()-original.cols()+1;
+        int height=templete.rows()-original.rows()+1;
         // 3 创建32位模板匹配结果Mat
-        Mat result = new Mat(width, height, CvType.CV_32FC1);
+        Mat result=new Mat(width,height,CvType.CV_32FC1);
         // 4 调用 模板匹配函数
-        Log.d(TAG, "matchPic: "+templete.width() + "/"+templete.height());
-        Imgproc.matchTemplate( templete, original, result, method);
+        Imgproc.matchTemplate(templete, original, result, method);
         // 5 归一化
-        Core.normalize(result, result, 0, 1, Core.NORM_MINMAX, -1, new Mat());
+        Core.normalize(result, result,0, 1, Core.NORM_MINMAX, -1, new Mat());
         // 6 获取模板匹配结果
         Core.MinMaxLocResult mmr = Core.minMaxLoc(result);
         // 7 绘制匹配到的结果
