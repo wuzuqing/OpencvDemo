@@ -15,8 +15,8 @@ public class OrcConfig {
     public static int baseIgnoreX = 1;
     public static int topColorXishu = 3;
 
-    private static int topColorX = 372;
-    private static int topColorWidth = 327;
+    private static int topColorX = 102;
+    private static int topColorWidth = 826;
     private static int topColorY = 42;
     private static int topColorHeight = 107;
 
@@ -33,8 +33,8 @@ public class OrcConfig {
 
     public static void init() {
         changeToWhiteColor = new int[]{ // #F4E697  #DF320A
-                Color.parseColor("#fff7f3ad")
-                ,  Color.parseColor("#C2D1E1")
+            Color.parseColor("#fff7f3ad")
+            ,  Color.parseColor("#C2D1E1")
         };
         r = Color.red(changeToWhiteColor[0]);
         g = Color.green(changeToWhiteColor[0]);
