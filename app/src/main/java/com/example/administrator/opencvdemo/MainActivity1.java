@@ -2,14 +2,12 @@ package com.example.administrator.opencvdemo;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.system.Os;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -62,10 +60,7 @@ public class MainActivity1 extends AppCompatActivity {
         this.vEtThreshType = findViewById(R.id.et_type);
         this.vEtWidth = findViewById(R.id.et_width);
         this.vRecyclerView = findViewById(R.id.rcv);
-        boolean isMoble = Build.BRAND.toUpperCase().contains("Oppo".toUpperCase());
-        File directory = Environment.getExternalStoragePublicDirectory(isMoble ? Environment.DIRECTORY_DCIM : Environment.DIRECTORY_MOVIES);
-        File imagePath = new File(directory, isMoble ? "/Screenshots" : "/image");
-
+        File imagePath = OrcHelper.getInstance().rootDir;
         listFiles = imagePath.listFiles();
         Log.d(TAG, "onCreate: " + Arrays.toString(listFiles));
         btn.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +79,10 @@ public class MainActivity1 extends AppCompatActivity {
                 }
                 final String langName = vEtLangName.getText().toString().trim();
                 String pageName = listFiles == null ? resNames[currentIndex % resIds.length] : listFiles[currentIndex % listFiles.length].getName();
-
+                String string = vEtThresh.getText().toString();
+                if (!TextUtils.isEmpty(string)){
+                    OrcConfig.method = Integer.valueOf(string);
+                }
                 OrcHelper.getInstance().executeCallAsync(WorkMode.ONLY_BITMAP, bitmap, langName, pageName, new IDiscernCallback() {
                     @Override
                     public void call(final List<OrcModel> result) {
@@ -157,7 +155,15 @@ public class MainActivity1 extends AppCompatActivity {
                 //                startActivity(new Intent(MainActivity1.this,ScanActivity.class));
             }
         });
-        img.setImageResource(resIds[currentIndex % resIds.length]);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = OrcConfig.topColorXishu;
+        Bitmap bitmap = null;
+        if (listFiles == null) {
+            bitmap = BitmapFactory.decodeResource(getResources(), resIds[currentIndex % resIds.length], options);
+        } else {
+            bitmap = BitmapFactory.decodeFile(listFiles[currentIndex % listFiles.length].getAbsolutePath(), options);
+        }
+        img.setImageBitmap(bitmap);
         vTestAdapter = new TestAdapter();
 
         vRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));

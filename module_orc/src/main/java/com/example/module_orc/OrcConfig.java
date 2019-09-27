@@ -13,7 +13,8 @@ public class OrcConfig {
 
     public static int baseIgnoreHeight = 14;
     public static int baseIgnoreX = 1;
-    public static int topColorXishu = 3;
+    public static int topColorXishu = 5;
+    public static int method = 4;
 
     private static int topColorX = 102;
     private static int topColorWidth = 826;

@@ -17,6 +17,7 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.utils.OpencvUtil;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -45,8 +46,8 @@ public class OnlyCardDiscern implements Runnable {
         this.langName = langName;
         this.callback = callback;
         this.page = page;
-        targetMat = OrcHelper.getInstance().loadResource(R.drawable.title);
-        target1Mat = OrcHelper.getInstance().loadResource(R.drawable.title1);
+        targetMat = OrcHelper.getInstance().loadResource(R.drawable.a);
+//        target1Mat = OrcHelper.getInstance().loadResource(R.drawable.title1);
         // targetMat = Imgcodecs.imread(OrcHelper.getInstance().getTargetFile("/title.png").getAbsolutePath(),Imgcodecs.IMREAD_ANYDEPTH);
         // target1Mat = Imgcodecs.imread(OrcHelper.getInstance().getTargetFile("title1.png").getAbsolutePath());
     }
@@ -64,8 +65,15 @@ public class OnlyCardDiscern implements Runnable {
         Mat hierarchy = new Mat();
         Mat threshold = new Mat();
         Utils.bitmapToMat(bitmap1, src);
-        Image.matchPic(src, targetMat.clone(), Imgproc.TM_CCORR_NORMED);
-        Image.matchPic(src, target1Mat.clone(), Imgproc.TM_CCORR_NORMED);
+
+        File file = OrcHelper.getInstance().rootDir;
+        Mat mat = Image.matchPic(new File(file, "/b.jpg").getAbsolutePath(), new File(file, "/a.jpg").getAbsolutePath(),OrcConfig.method);
+//        System.out.println("end:"+(System.currentTimeMillis()-start));
+        Bitmap bitmap = Bitmap.createBitmap(mat.cols(), mat.rows(), Bitmap.Config.ARGB_8888);
+        Utils.matToBitmap(mat,bitmap);
+        OrcModel orcModel = new OrcModel();
+        orcModel.setBitmap(bitmap);
+        callback.call(Collections.singletonList(orcModel));
         if (true) {
             return;
         }
@@ -130,11 +138,11 @@ public class OnlyCardDiscern implements Runnable {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            OrcModel orcModel = new OrcModel();
-            Bitmap bitmap = Bitmap.createBitmap(result.cols(), result.rows(), Bitmap.Config.RGB_565);
-            Utils.matToBitmap(result, bitmap);
-            orcModel.setBitmap(bitmap);
-            callback.call(Collections.singletonList(orcModel));
+//            OrcModel orcModel = new OrcModel();
+//            Bitmap bitmap = Bitmap.createBitmap(result.cols(), result.rows(), Bitmap.Config.RGB_565);
+//            Utils.matToBitmap(result, bitmap);
+//            orcModel.setBitmap(bitmap);
+//            callback.call(Collections.singletonList(orcModel));
         }
         Log.d(TAG, "discern: usedTime" + (System.currentTimeMillis() - start) + " newW:" + newW + " newH:" + newH);
     }
