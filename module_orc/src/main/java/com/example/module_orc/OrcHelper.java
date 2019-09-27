@@ -3,10 +3,15 @@ package com.example.module_orc;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
+import org.opencv.android.Utils;
+import org.opencv.core.Mat;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -23,9 +28,21 @@ public class OrcHelper {
     private ExecutorService mExecutor;
     private Handler vHandler;
 
+    public File rootDir;
+
     private OrcHelper() {
         mExecutor = Executors.newCachedThreadPool();
         vHandler = new Handler(Looper.getMainLooper());
+        boolean isMoble = Build.BRAND.toUpperCase().contains("Oppo".toUpperCase());
+        File directory = Environment.getExternalStoragePublicDirectory(isMoble ? Environment.DIRECTORY_DCIM : Environment.DIRECTORY_MOVIES);
+        rootDir = new File(directory, isMoble ? "/Screenshots" : "/image");
+    }
+
+    public File getTargetFile(String target){
+        if (!TextUtils.isEmpty(target)){
+            return new File(rootDir,target);
+        }
+        return null;
     }
 
     public static OrcHelper getInstance() {
@@ -35,6 +52,14 @@ public class OrcHelper {
     private String cacheDir;
     private Context mContext;
 
+    public Mat loadResource(int id){
+        try {
+            return Utils.loadResource(mContext,id);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     public void init(Context context) {
         mContext = context.getApplicationContext();
         cacheDir = context.getExternalCacheDir().getAbsolutePath();

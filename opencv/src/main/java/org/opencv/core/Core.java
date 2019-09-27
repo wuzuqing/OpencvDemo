@@ -2706,6 +2706,16 @@ public static class MinMaxLocResult {
         minLoc=new Point();
         maxLoc=new Point();
     }
+
+    @Override
+    public String toString() {
+        return "MinMaxLocResult{" +
+            "minVal=" + minVal +
+            ", maxVal=" + maxVal +
+            ", minLoc=" + minLoc +
+            ", maxLoc=" + maxLoc +
+            '}';
+    }
 }
 
 
