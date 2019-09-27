@@ -1,12 +1,10 @@
 package com.example.administrator.opencvdemo.util;
 
-import java.util.Arrays;
-import android.graphics.ColorSpace;
-import android.media.Image;
-import com.example.module_orc.OrcConfig;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
+
+import java.util.Arrays;
 
 /**
  * 均值哈希实现图像指纹比较
