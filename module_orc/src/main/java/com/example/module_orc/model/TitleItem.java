@@ -1,0 +1,67 @@
+package com.example.module_orc.model;
+
+import android.util.Log;
+import com.example.module_orc.OrcHelper;
+import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.imgcodecs.Imgcodecs;
+
+/**
+ * 作者：士元
+ * 时间：2019/9/28 0028 14:31
+ * 邮箱：wuzuqing@linghit.com
+ * 说明：
+ */
+public class TitleItem {
+    private Mat mat;
+    private Point point;
+    private String name;
+    private String filePath;
+    private static final String TAG = "TitleItem";
+    public Mat getMat() {
+        if (mat == null) {
+            String realPath = OrcHelper.getInstance().rootDir.getAbsolutePath() + "/mid/" + filePath;
+            try {
+                Log.d(TAG, "getMat: "+realPath);
+                mat = Imgcodecs.imread(realPath);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return mat;
+    }
+
+    public Point getPoint() {
+        return point;
+    }
+
+    public void setPoint(Point point) {
+        this.point = point;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+
+    @Override
+    public String toString() {
+        return "TitleItem{" +
+            "point=" + point +
+            ", name='" + name + '\'' +
+            ", filePath='" + filePath + '\'' +
+            '}';
+    }
+}

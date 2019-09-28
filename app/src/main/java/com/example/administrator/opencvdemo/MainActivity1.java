@@ -2,6 +2,7 @@ package com.example.administrator.opencvdemo;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
@@ -60,30 +61,42 @@ public class MainActivity1 extends AppCompatActivity {
         this.vEtThreshType = findViewById(R.id.et_type);
         this.vEtWidth = findViewById(R.id.et_width);
         this.vRecyclerView = findViewById(R.id.rcv);
+        findViewById(R.id.compressBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AsyncTask.THREAD_POOL_EXECUTOR.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        OrcHelper.getInstance().compress(OrcHelper.getInstance().rootDir);
+                    }
+                });
+            }
+        });
         File imagePath = OrcHelper.getInstance().rootDir;
         listFiles = imagePath.listFiles();
         Log.d(TAG, "onCreate: " + Arrays.toString(listFiles));
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bitmap bitmap = null;
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inSampleSize = OrcConfig.topColorXishu;
-                if (listFiles == null) {
-                    bitmap = BitmapFactory.decodeResource(getResources(), resIds[currentIndex % resIds.length], options);
-                } else {
-                    bitmap = BitmapFactory.decodeFile(listFiles[currentIndex % listFiles.length].getAbsolutePath(), options);
-                }
-                if (bitmap == null) {
-                    return;
-                }
+                // Bitmap bitmap = null;
+                // BitmapFactory.Options options = new BitmapFactory.Options();
+                // options.inSampleSize = OrcConfig.topColorXishu;
+                // if (listFiles == null) {
+                //     bitmap = BitmapFactory.decodeResource(getResources(), resIds[currentIndex % resIds.length], options);
+                // } else {
+                //     bitmap = BitmapFactory.decodeFile(listFiles[currentIndex % listFiles.length].getAbsolutePath(), options);
+                // }
+                // if (bitmap == null) {
+                //     return;
+                // }
                 final String langName = vEtLangName.getText().toString().trim();
                 String pageName = listFiles == null ? resNames[currentIndex % resIds.length] : listFiles[currentIndex % listFiles.length].getName();
                 String string = vEtThresh.getText().toString();
                 if (!TextUtils.isEmpty(string)){
                     OrcConfig.method = Integer.valueOf(string);
                 }
-                OrcHelper.getInstance().executeCallAsync(WorkMode.ONLY_BITMAP, bitmap, langName, pageName, new IDiscernCallback() {
+                OrcHelper.getInstance().executeCallAsyncV2(listFiles[currentIndex % listFiles.length].getAbsolutePath(), langName, pageName, new IDiscernCallback() {
                     @Override
                     public void call(final List<OrcModel> result) {
                         runOnUiThread(new Runnable() {

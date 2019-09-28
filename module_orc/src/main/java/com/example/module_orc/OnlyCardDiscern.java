@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.module_orc.ignore.IIgnoreRect;
 import com.example.module_orc.ignore.IgnoreRectHelper;
+import com.example.module_orc.model.TitleItem;
 import com.example.module_orc.util.Image;
 
 import org.opencv.android.Utils;
@@ -14,6 +15,7 @@ import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
+import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.utils.OpencvUtil;
 
@@ -28,12 +30,11 @@ import java.util.Set;
 public class OnlyCardDiscern implements Runnable {
     private Bitmap bitmap1;
     protected String langName;
+    protected String fileName;
     private long start;
     private IDiscernCallback callback;
     protected Size mSize = new Size(1080 / 3, 1920 / 3);
     private String page;
-    private Mat targetMat;
-    private Mat target1Mat;
 
     public OnlyCardDiscern(Bitmap bitmap1, String langName, IDiscernCallback callback) {
         this.bitmap1 = bitmap1;
@@ -41,38 +42,45 @@ public class OnlyCardDiscern implements Runnable {
         this.callback = callback;
     }
 
+
     public OnlyCardDiscern(Bitmap bitmap1, String langName, String page, IDiscernCallback callback) {
         this.bitmap1 = bitmap1;
         this.langName = langName;
         this.callback = callback;
         this.page = page;
-        targetMat = OrcHelper.getInstance().loadResource(R.drawable.a);
-//        target1Mat = OrcHelper.getInstance().loadResource(R.drawable.title1);
-        // targetMat = Imgcodecs.imread(OrcHelper.getInstance().getTargetFile("/title.png").getAbsolutePath(),Imgcodecs.IMREAD_ANYDEPTH);
-        // target1Mat = Imgcodecs.imread(OrcHelper.getInstance().getTargetFile("title1.png").getAbsolutePath());
+        File file = OrcHelper.getInstance().rootDir;
     }
 
+    public OnlyCardDiscern(String fileName, String langName, String page, IDiscernCallback callback) {
+        this.fileName = fileName;
+        this.langName = langName;
+        this.callback = callback;
+        this.page = page;
+    }
 
     @Override
     public void run() {
-        if (bitmap1 == null) {
+        Mat src;
+        if (bitmap1 != null) {
+            src = new Mat();
+            Utils.bitmapToMat(bitmap1, src);
+        } else if (fileName != null) {
+            src = Imgcodecs.imread(fileName);
+        } else {
             return;
         }
         // bitmap1 = OrcConfig.changeToColor(bitmap1);
         start = System.currentTimeMillis();
-        Mat src = new Mat();
         Mat dst = new Mat();
         Mat hierarchy = new Mat();
         Mat threshold = new Mat();
-        Utils.bitmapToMat(bitmap1, src);
 
-        File file = OrcHelper.getInstance().rootDir;
-        Mat mat = Image.matchPic(new File(file, "/b.jpg").getAbsolutePath(), new File(file, "/a.jpg").getAbsolutePath(),OrcConfig.method);
-//        System.out.println("end:"+(System.currentTimeMillis()-start));
-        Bitmap bitmap = Bitmap.createBitmap(mat.cols(), mat.rows(), Bitmap.Config.ARGB_8888);
-        Utils.matToBitmap(mat,bitmap);
+        TitleItem item = Image.matchPic(new Mat(src,OrcConfig. titleMidCropRect));
+        Log.d(TAG, "run: "+item + (System.currentTimeMillis() - start));
+        // Bitmap bitmap = Bitmap.createBitmap(mat.cols(), mat.rows(), Bitmap.Config.ARGB_8888);
+        // Utils.matToBitmap(mat, bitmap);
         OrcModel orcModel = new OrcModel();
-        orcModel.setBitmap(bitmap);
+        orcModel.setBitmap(bitmap1);
         callback.call(Collections.singletonList(orcModel));
         if (true) {
             return;
@@ -107,7 +115,7 @@ public class OnlyCardDiscern implements Runnable {
         IIgnoreRect ignoreRect = IgnoreRectHelper.getInstance().getIgnoreRect(pageName);
         Mat result = dst;
         for (int i = 0; i < contoursList.size(); i++) {
-            Rect rect = Imgproc.boundingRect(contoursList.get(i));
+           Rect rect = Imgproc.boundingRect(contoursList.get(i));
             //排除无效区域
             if (ignoreRect != null) {
                 if (ignoreRect.ignoreRect(rect)) {
@@ -138,11 +146,11 @@ public class OnlyCardDiscern implements Runnable {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-//            OrcModel orcModel = new OrcModel();
-//            Bitmap bitmap = Bitmap.createBitmap(result.cols(), result.rows(), Bitmap.Config.RGB_565);
-//            Utils.matToBitmap(result, bitmap);
-//            orcModel.setBitmap(bitmap);
-//            callback.call(Collections.singletonList(orcModel));
+            //            OrcModel orcModel = new OrcModel();
+            //            Bitmap bitmap = Bitmap.createBitmap(result.cols(), result.rows(), Bitmap.Config.RGB_565);
+            //            Utils.matToBitmap(result, bitmap);
+            //            orcModel.setBitmap(bitmap);
+            //            callback.call(Collections.singletonList(orcModel));
         }
         Log.d(TAG, "discern: usedTime" + (System.currentTimeMillis() - start) + " newW:" + newW + " newH:" + newH);
     }

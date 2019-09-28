@@ -1,19 +1,33 @@
 package com.example.module_orc;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PointF;
+import android.text.TextUtils;
 
+import com.example.module_orc.model.TitleItem;
+import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Rect;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 public class OrcConfig {
+
+    public static Size screenSize = new Size(180, 320);
+    public static Rect titleMidRect =new Rect(new double[]{62,2,54,30});
+    public static Rect titleMidCropRect =new Rect(new double[]{0,0,180,60});
+
     public static int thresh = 135;
     public static int threshType = Imgproc.THRESH_BINARY_INV;
     public static int width = 14;
 
     public static int baseIgnoreHeight = 14;
     public static int baseIgnoreX = 1;
-    public static int topColorXishu = 5;
+    public static int topColorXishu = 1;
     public static int method = 4;
 
     private static int topColorX = 102;
@@ -21,12 +35,40 @@ public class OrcConfig {
     private static int topColorY = 42;
     private static int topColorHeight = 107;
 
+    public static Map<String , TitleItem> mTitleItems = new HashMap<>();
     public interface Zican {
 
     }
 
     static {
         init();
+        initTitleItem();
+    }
+
+    private static void initTitleItem() {
+        File rootDir = OrcHelper.getInstance().rootDir;
+        File midFileDir = new File(rootDir, "/mid");
+        if (midFileDir.isDirectory()){
+            File[] files = midFileDir.listFiles();
+            if ( files==null|| files.length==0){
+                return;
+            }
+            TitleItem titleItem ;
+            for (File file : files) {
+                String name = file.getName();
+                if (file.isFile() && (name.endsWith(".jpg"))){
+                    String title = Dictionary.getTitle(name);
+                    if (TextUtils.isEmpty(title)){
+                        continue;
+                    }
+                    titleItem = new TitleItem();
+                    titleItem.setName(title);
+                    titleItem.setFilePath(name);
+                    titleItem.setPoint(new Point(60,2));
+                    mTitleItems.put(name,titleItem);
+                }
+            }
+        }
     }
 
     public static int[] changeToWhiteColor;

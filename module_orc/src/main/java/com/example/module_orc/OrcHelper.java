@@ -12,6 +12,10 @@ import android.text.TextUtils;
 import com.googlecode.tesseract.android.TessBaseAPI;
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
+import org.opencv.core.Rect;
+import org.opencv.core.Size;
+import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -38,9 +42,9 @@ public class OrcHelper {
         rootDir = new File(directory, isMoble ? "/Screenshots" : "/image");
     }
 
-    public File getTargetFile(String target){
-        if (!TextUtils.isEmpty(target)){
-            return new File(rootDir,target);
+    public File getTargetFile(String target) {
+        if (!TextUtils.isEmpty(target)) {
+            return new File(rootDir, target);
         }
         return null;
     }
@@ -52,14 +56,15 @@ public class OrcHelper {
     private String cacheDir;
     private Context mContext;
 
-    public Mat loadResource(int id){
+    public Mat loadResource(int id) {
         try {
-            return Utils.loadResource(mContext,id);
+            return Utils.loadResource(mContext, id);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
+
     public void init(Context context) {
         mContext = context.getApplicationContext();
         cacheDir = context.getExternalCacheDir().getAbsolutePath();
@@ -158,13 +163,22 @@ public class OrcHelper {
         mExecutor.execute(new Runnable() {
             @Override
             public void run() {
+                mExecutor.execute(new OnlyCardDiscern(filePath, langName, pex, callback));
+            }
+        });
+    }
+
+    public void executeCallAsyncV3(final String filePath, final String langName, final String pex, final IDiscernCallback callback) {
+        mExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
                 mExecutor.execute(new OnlyCardDiscern(BitmapFactory.decodeFile(filePath), langName, pex, callback));
             }
         });
     }
 
-    public void fileToBitmap(final BaseCallBack1<Bitmap> bitmapCallable,final File... filePaths) {
-        if (filePaths==null || filePaths.length==0){
+    public void fileToBitmap(final BaseCallBack1<Bitmap> bitmapCallable, final File... filePaths) {
+        if (filePaths == null || filePaths.length == 0) {
             return;
         }
         mExecutor.execute(new Runnable() {
@@ -172,9 +186,42 @@ public class OrcHelper {
             public void run() {
                 for (File path : filePaths) {
                     Bitmap bitmap = BitmapFactory.decodeFile(path.getAbsolutePath());
-                    bitmapCallable.call(bitmap,path.getName());
+                    bitmapCallable.call(bitmap, path.getName());
                 }
             }
         });
+    }
+
+    /**
+     * 压缩文件
+     */
+    public void compress(File dir) {
+        System.out.println("compress 1");
+        if (dir == null || !dir.isDirectory()) {
+            return;
+        }
+        File[] files = dir.listFiles();
+        if (files == null || files.length == 0) {
+            return;
+        }
+        System.out.println("compress 2" + files.length);
+        Mat gray = new Mat();
+        int xishu = 6;
+        long start = 0;
+        for (File file : files) {
+            String name = file.getName();
+            System.out.println("compress 3" + name);
+            if (file.isDirectory()) {
+                continue;
+            }
+            start = System.currentTimeMillis();
+            Mat demo = Imgcodecs.imread(file.getAbsolutePath());
+            Imgproc.cvtColor(demo, gray, Imgproc.COLOR_BGRA2GRAY);
+            Imgproc.resize(gray, gray, OrcConfig.screenSize);
+            Imgcodecs.imwrite(new File(OrcHelper.getInstance().rootDir + "/scale", name.substring(0, name.indexOf(".")) + ".jpg").getAbsolutePath(), gray);
+            Mat crop = new Mat(gray, OrcConfig.titleMidRect);
+            Imgcodecs.imwrite(new File(OrcHelper.getInstance().rootDir + "/mid", "mid_" + name.substring(0, name.indexOf(".")) + ".jpg").getAbsolutePath(), crop);
+            System.out.println("used:" + (System.currentTimeMillis() - start) + " name:" + name);
+        }
     }
 }

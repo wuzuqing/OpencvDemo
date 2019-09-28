@@ -45,7 +45,12 @@
         android:layout_height="wrap_content"
         android:text="下一条"
         app:layout_constraintTop_toBottomOf="@+id/preBtn" />
-
+    <Button
+        android:id="@+id/compressBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="压缩"
+        app:layout_constraintTop_toBottomOf="@+id/nextBtn" />
 
     <EditText
         android:layout_width="150dp"
