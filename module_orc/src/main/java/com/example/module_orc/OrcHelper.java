@@ -10,10 +10,9 @@ import android.os.Looper;
 import android.text.TextUtils;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
+
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
-import org.opencv.core.Rect;
-import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
@@ -197,6 +196,7 @@ public class OrcHelper {
      */
     public void compress(File dir) {
         System.out.println("compress 1");
+        dir = new File(dir,"/other1");
         if (dir == null || !dir.isDirectory()) {
             return;
         }
@@ -216,11 +216,12 @@ public class OrcHelper {
             }
             start = System.currentTimeMillis();
             Mat demo = Imgcodecs.imread(file.getAbsolutePath());
+            Imgproc.resize(demo, demo, OrcConfig.screenSize);
             Imgproc.cvtColor(demo, gray, Imgproc.COLOR_BGRA2GRAY);
-            Imgproc.resize(gray, gray, OrcConfig.screenSize);
+            Imgproc.threshold(gray, gray, OrcConfig.thresh, 255, OrcConfig.threshType);
             Imgcodecs.imwrite(new File(OrcHelper.getInstance().rootDir + "/scale", name.substring(0, name.indexOf(".")) + ".jpg").getAbsolutePath(), gray);
-            Mat crop = new Mat(gray, OrcConfig.titleMidRect);
-            Imgcodecs.imwrite(new File(OrcHelper.getInstance().rootDir + "/mid", "mid_" + name.substring(0, name.indexOf(".")) + ".jpg").getAbsolutePath(), crop);
+            Mat crop = new Mat(gray, OrcConfig.titleMidRectSmall);
+            Imgcodecs.imwrite(new File(OrcHelper.getInstance().rootDir + "/mid1", "mid_" + name.substring(0, name.indexOf(".")) + ".jpg").getAbsolutePath(), crop);
             System.out.println("used:" + (System.currentTimeMillis() - start) + " name:" + name);
         }
     }

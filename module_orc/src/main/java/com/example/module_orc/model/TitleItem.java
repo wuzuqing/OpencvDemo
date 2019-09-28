@@ -1,7 +1,7 @@
 package com.example.module_orc.model;
 
-import android.util.Log;
 import com.example.module_orc.OrcHelper;
+
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.imgcodecs.Imgcodecs;
@@ -19,10 +19,9 @@ public class TitleItem {
     private String filePath;
     private static final String TAG = "TitleItem";
     public Mat getMat() {
-        if (mat == null) {
+        if (mat == null && filePath!=null) {
             String realPath = OrcHelper.getInstance().rootDir.getAbsolutePath() + "/mid/" + filePath;
             try {
-                Log.d(TAG, "getMat: "+realPath);
                 mat = Imgcodecs.imread(realPath);
             } catch (Exception e) {
                 e.printStackTrace();

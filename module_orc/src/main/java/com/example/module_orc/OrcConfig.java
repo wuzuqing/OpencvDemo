@@ -1,25 +1,33 @@
 package com.example.module_orc;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.text.TextUtils;
 
 import com.example.module_orc.model.TitleItem;
-import org.opencv.core.Mat;
-import org.opencv.core.Point;
+
 import org.opencv.core.Rect;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+
 public class OrcConfig {
 
     public static Size screenSize = new Size(180, 320);
-    public static Rect titleMidRect =new Rect(new double[]{62,2,54,30});
-    public static Rect titleMidCropRect =new Rect(new double[]{0,0,180,60});
+    public static Rect titleMidRect = new Rect(new double[]{62, 2, 54, 30});
+    public static Rect titleMidRectSmall = new Rect(new double[]{72, 14, 40, 13});
+    public static Rect titleMidCropRect = new Rect(new double[]{0, 0, 180, 60});
+
+//    public static Size screenSize = new Size(540, 960);
+//    public static Rect titleMidRect = new Rect(new double[]{180, 10, 180, 90});
+//    public static Rect titleMidCropRect = new Rect(new double[]{0, 0, 540, 180});
+//    public static Size screenSize = new Size(270, 480);
+//    public static Rect titleMidRect =new Rect(new double[]{78,2,110,45});
+//    public static Rect titleMidCropRect =new Rect(new double[]{0,0,270,85});
 
     public static int thresh = 135;
     public static int threshType = Imgproc.THRESH_BINARY_INV;
@@ -35,7 +43,8 @@ public class OrcConfig {
     private static int topColorY = 42;
     private static int topColorHeight = 107;
 
-    public static Map<String , TitleItem> mTitleItems = new HashMap<>();
+    public static Map<String, TitleItem> mTitleItems = new HashMap<>();
+
     public interface Zican {
 
     }
@@ -48,36 +57,43 @@ public class OrcConfig {
     private static void initTitleItem() {
         File rootDir = OrcHelper.getInstance().rootDir;
         File midFileDir = new File(rootDir, "/mid");
-        if (midFileDir.isDirectory()){
+        if (midFileDir.isDirectory()) {
             File[] files = midFileDir.listFiles();
-            if ( files==null|| files.length==0){
+            if (files == null || files.length == 0) {
                 return;
             }
-            TitleItem titleItem ;
+            TitleItem titleItem;
             for (File file : files) {
                 String name = file.getName();
-                if (file.isFile() && (name.endsWith(".jpg"))){
+                if (file.isFile() && (name.endsWith(".jpg"))) {
                     String title = Dictionary.getTitle(name);
-                    if (TextUtils.isEmpty(title)){
+                    if (TextUtils.isEmpty(title)) {
                         continue;
                     }
                     titleItem = new TitleItem();
                     titleItem.setName(title);
                     titleItem.setFilePath(name);
-                    titleItem.setPoint(new Point(60,2));
-                    mTitleItems.put(name,titleItem);
+                    titleItem.setPoint(titleMidRect.tl());
+                    mTitleItems.put(name, titleItem);
                 }
             }
         }
+//        List<String> names = Dictionary.getDefaultPage();
+//        for (String name : names) {
+//            TitleItem titleItem = new TitleItem();
+//            titleItem.setName(name);
+//            titleItem.setPoint(titleMidRect.tl());
+//            mTitleItems.put(name, titleItem);
+//        }
     }
 
     public static int[] changeToWhiteColor;
-    static int r, g, b, startX, maxX, startY, maxY ,ir,ig,ib;
+    static int r, g, b, startX, maxX, startY, maxY, ir, ig, ib;
 
     public static void init() {
         changeToWhiteColor = new int[]{ // #F4E697  #DF320A
-            Color.parseColor("#fff7f3ad")
-            ,  Color.parseColor("#C2D1E1")
+                Color.parseColor("#fff7f3ad")
+                , Color.parseColor("#C2D1E1")
         };
         r = Color.red(changeToWhiteColor[0]);
         g = Color.green(changeToWhiteColor[0]);
@@ -134,9 +150,9 @@ public class OrcConfig {
                 //在这说明一下 如果color 是全透明 或者全黑 返回值为 0
                 int color = mBitmap.getPixel(j, i);
                 //将颜色值存在一个数组中 方便后面修改
-                if (like(ir,ig,ib,color,60)){
+                if (like(ir, ig, ib, color, 60)) {
                     mBitmap.setPixel(j, i, Color.BLACK);  //替换成白色
-                }else if (like(r, g, b, color,140)) {
+                } else if (like(r, g, b, color, 140)) {
                     mBitmap.setPixel(j, i, Color.WHITE);  //替换成白色
                 }
             }
@@ -150,10 +166,10 @@ public class OrcConfig {
 
 
     private static boolean like(int color1, int color2) {
-        return like(Color.red(color1), Color.green(color1), Color.blue(color1), color2,140);
+        return like(Color.red(color1), Color.green(color1), Color.blue(color1), color2, 140);
     }
 
-    private static boolean like(int r, int g, int b, int color2,int offset) {
+    private static boolean like(int r, int g, int b, int color2, int offset) {
         //通过HSV比较两个子RGB的色差
         //比较两个RGB的色差
         int absR = r - Color.red(color2);

@@ -19,7 +19,6 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.utils.OpencvUtil;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -33,8 +32,6 @@ public class OnlyCardDiscern implements Runnable {
     protected String fileName;
     private long start;
     private IDiscernCallback callback;
-    protected Size mSize = new Size(1080 / 3, 1920 / 3);
-    private String page;
 
     public OnlyCardDiscern(Bitmap bitmap1, String langName, IDiscernCallback callback) {
         this.bitmap1 = bitmap1;
@@ -47,15 +44,12 @@ public class OnlyCardDiscern implements Runnable {
         this.bitmap1 = bitmap1;
         this.langName = langName;
         this.callback = callback;
-        this.page = page;
-        File file = OrcHelper.getInstance().rootDir;
     }
 
     public OnlyCardDiscern(String fileName, String langName, String page, IDiscernCallback callback) {
         this.fileName = fileName;
         this.langName = langName;
         this.callback = callback;
-        this.page = page;
     }
 
     @Override
@@ -69,25 +63,25 @@ public class OnlyCardDiscern implements Runnable {
         } else {
             return;
         }
-        // bitmap1 = OrcConfig.changeToColor(bitmap1);
         start = System.currentTimeMillis();
-        Mat dst = new Mat();
-        Mat hierarchy = new Mat();
-        Mat threshold = new Mat();
+        Mat mat = new Mat(src, OrcConfig.titleMidCropRect);
+        TitleItem item = Image.matchPic(mat);
 
-        TitleItem item = Image.matchPic(new Mat(src,OrcConfig. titleMidCropRect));
-        Log.d(TAG, "run: "+item + (System.currentTimeMillis() - start));
-        // Bitmap bitmap = Bitmap.createBitmap(mat.cols(), mat.rows(), Bitmap.Config.ARGB_8888);
-        // Utils.matToBitmap(mat, bitmap);
+         Bitmap bitmap = Bitmap.createBitmap(mat.cols(), mat.rows(), Bitmap.Config.ARGB_8888);
+         Utils.matToBitmap(mat, bitmap);
         OrcModel orcModel = new OrcModel();
         if (item!=null){
             orcModel.setResult(item.getName());
         }
-        orcModel.setBitmap(bitmap1);
+        orcModel.setBitmap(bitmap);
         callback.call(Collections.singletonList(orcModel));
+        Log.d(TAG, "run: "+item + (System.currentTimeMillis() - start));
         if (true) {
             return;
         }
+        Mat dst = new Mat();
+        Mat hierarchy = new Mat();
+        Mat threshold = new Mat();
         //归一化
         //        Imgproc.resize(src, src, mSize);
         //灰度化
