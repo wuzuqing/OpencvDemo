@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.module_orc.IDiscernCallback;
@@ -107,6 +108,7 @@ public class MainActivity1 extends AppCompatActivity {
                                 //                                Log.d(TAG, "executeCallAsync: " + result.toString());
                                 try {
                                     orcModel = result.get(0);
+                                    Toast.makeText(MainActivity1.this, ""+orcModel.getResult(), Toast.LENGTH_SHORT).show();
                                     img.setImageBitmap(orcModel.getBitmap());
                                 } catch (Exception e) {
                                     e.printStackTrace();

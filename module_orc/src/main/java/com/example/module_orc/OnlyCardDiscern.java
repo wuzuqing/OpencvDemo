@@ -80,6 +80,9 @@ public class OnlyCardDiscern implements Runnable {
         // Bitmap bitmap = Bitmap.createBitmap(mat.cols(), mat.rows(), Bitmap.Config.ARGB_8888);
         // Utils.matToBitmap(mat, bitmap);
         OrcModel orcModel = new OrcModel();
+        if (item!=null){
+            orcModel.setResult(item.getName());
+        }
         orcModel.setBitmap(bitmap1);
         callback.call(Collections.singletonList(orcModel));
         if (true) {
