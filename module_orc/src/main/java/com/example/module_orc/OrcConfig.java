@@ -3,23 +3,34 @@ package com.example.module_orc;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PointF;
+import android.os.AsyncTask;
 import android.text.TextUtils;
 
 import com.example.module_orc.model.TitleItem;
+import com.example.module_orc.util.GsonUtils;
 
+import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+
+import static org.opencv.imgproc.Imgproc.TM_CCORR_NORMED;
 
 public class OrcConfig {
 
     public static Size screenSize = new Size(180, 320);
     public static Rect titleMidRect = new Rect(new double[]{62, 2, 54, 30});
     public static Rect titleMidRectSmall = new Rect(new double[]{72, 14, 40, 13});
+    // 112, 13, 125, 50
+    public static Rect titleMidRectCurrent = new Rect(new double[]{112, 13, 125, 50});
     public static Rect titleMidCropRect = new Rect(new double[]{0, 0, 180, 60});
 
 //    public static Size screenSize = new Size(540, 960);
@@ -36,7 +47,7 @@ public class OrcConfig {
     public static int baseIgnoreHeight = 14;
     public static int baseIgnoreX = 1;
     public static int topColorXishu = 1;
-    public static int method = 4;
+    public static int method = TM_CCORR_NORMED;
 
     private static int topColorX = 102;
     private static int topColorWidth = 826;
@@ -50,13 +61,67 @@ public class OrcConfig {
     }
 
     static {
-        init();
-        initTitleItem();
+        AsyncTask.THREAD_POOL_EXECUTOR.execute(new Runnable() {
+            @Override
+            public void run() {
+                init();
+                initTitleItem();
+            }
+        });
+    }
+
+    public static String getSign(Mat mat) {
+        int cols = mat.cols();
+        int rows = mat.rows();
+        if (cols == 0 || rows == 0) {
+            return "";
+        }
+        boolean isSingle = mat.get(0, 0).length == 1;
+        StringBuilder sb = new StringBuilder();
+        int index = 0;
+        int value;
+        for (int i = 0; i < cols; i++) {
+            for (int j = 0; j < rows; j++) {
+                double[] doubles = mat.get(j, i);
+                if (doubles != null) {
+                    if (isSingle) {
+                        value = (int) doubles[0];
+                        if (index == 0 && value == 0) {
+                            sb.append(j).append(",").append(i).append(";");
+                            index++;
+                            sb.append(value);
+                        } else if (index > 0) {
+                            sb.append(value==0?0:1);
+                        }
+                        if (index > 80) {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return sb.toString();
     }
 
     private static void initTitleItem() {
         File rootDir = OrcHelper.getInstance().rootDir;
         File midFileDir = new File(rootDir, "/mid");
+        Map<String,String> data = new HashMap<>();
+        try {
+            StringBuilder stringBuilder = new StringBuilder();
+            FileInputStream fileInputStream = new FileInputStream( new File(midFileDir, "data.txt"));
+            //通过管理器打开文件并读取
+            BufferedReader bf = new BufferedReader(new InputStreamReader(fileInputStream));
+            String line;
+            while ((line = bf.readLine()) != null) {
+                stringBuilder.append(line);
+            }
+            fileInputStream.close();
+            bf.close();
+            data = GsonUtils.toMap(stringBuilder.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (midFileDir.isDirectory()) {
             File[] files = midFileDir.listFiles();
             if (files == null || files.length == 0) {
@@ -73,18 +138,23 @@ public class OrcConfig {
                     titleItem = new TitleItem();
                     titleItem.setName(title);
                     titleItem.setFilePath(name);
+                    titleItem.setSign(getSignByMap(data,name));
+                    Dictionary.putSign(titleItem.getSign(),titleItem.getName());
                     titleItem.setPoint(titleMidRect.tl());
                     mTitleItems.put(name, titleItem);
                 }
             }
         }
-//        List<String> names = Dictionary.getDefaultPage();
-//        for (String name : names) {
-//            TitleItem titleItem = new TitleItem();
-//            titleItem.setName(name);
-//            titleItem.setPoint(titleMidRect.tl());
-//            mTitleItems.put(name, titleItem);
-//        }
+    }
+
+    private static String getSignByMap(Map<String, String> data,String fileName) {
+        Set<String> set = data.keySet();
+        for (String key : set) {
+            if (TextUtils.equals(fileName,data.get(key))){
+                return key;
+            }
+        }
+        return "";
     }
 
     public static int[] changeToWhiteColor;
@@ -143,18 +213,23 @@ public class OrcConfig {
     public static Bitmap changeToColor(Bitmap bitmap) {
         Bitmap mBitmap = bitmap.copy(Bitmap.Config.RGB_565, true);
         //循环获得bitmap所有像素点
+        startX = 90;
+        startY = 13;
+        maxX = 112;
+        maxY = 60;
         for (int i = startY; i < maxY; i++) {
             for (int j = startX; j < maxX; j++) {
-                //获得Bitmap 图片中每一个点的color颜色值
-                //将需要填充的颜色值如果不是
-                //在这说明一下 如果color 是全透明 或者全黑 返回值为 0
-                int color = mBitmap.getPixel(j, i);
-                //将颜色值存在一个数组中 方便后面修改
-                if (like(ir, ig, ib, color, 60)) {
-                    mBitmap.setPixel(j, i, Color.BLACK);  //替换成白色
-                } else if (like(r, g, b, color, 140)) {
-                    mBitmap.setPixel(j, i, Color.WHITE);  //替换成白色
-                }
+//                //获得Bitmap 图片中每一个点的color颜色值
+//                //将需要填充的颜色值如果不是
+//                //在这说明一下 如果color 是全透明 或者全黑 返回值为 0
+//                int color = mBitmap.getPixel(j, i);
+//                //将颜色值存在一个数组中 方便后面修改
+//                if (like(ir, ig, ib, color, 60)) {
+//                    mBitmap.setPixel(j, i, Color.BLACK);  //替换成白色
+//                } else if (like(r, g, b, color, 140)) {
+//                    mBitmap.setPixel(j, i, Color.WHITE);  //替换成白色
+//                }
+                mBitmap.setPixel(j, i, Color.BLACK);  //替换成白色
             }
         }
         return mBitmap;

@@ -1,8 +1,9 @@
 package com.example.module_orc.ignore;
 
+import org.opencv.core.Rect;
+
 import java.util.HashMap;
 import java.util.Map;
-import org.opencv.core.Rect;
 
 /**
  * 作者：士元
@@ -19,7 +20,7 @@ public class IgnoreRectHelper {
     private IgnoreRectHelper() {
         addIgnoreRect("成就", new ChengjiujiangliIgnoreRect());
         addIgnoreRect("处理公务", new ChuligongwuIgnoreRect());
-        addIgnoreRect("红颜知己", new HongyanzhijiIgnoreRect());
+        addIgnoreRect("红颜知已", new HongyanzhijiIgnoreRect());
         addIgnoreRect("皇宫", new HuanggongIgnoreRect());
         addIgnoreRect("缉捕", new JibuIgnoreRect());
         addIgnoreRect("经营资产", new JingyingzicanIgnoreRect());
@@ -32,6 +33,15 @@ public class IgnoreRectHelper {
         addIgnoreRect("我的子嗣", new WodizisiIgnoreRect());
         addIgnoreRect("寻访", new XunfangIgnoreRect());
         addIgnoreRect("邮件", new YoujianIgnoreRect());
+        //////////////////////////////////////////////////
+        addIgnoreRect("排行榜", new YoujianIgnoreRect());
+        addIgnoreRect("跨服榜单", new YoujianIgnoreRect());
+        addIgnoreRect("本服榜单", new YoujianIgnoreRect());
+        addIgnoreRect("翰林院", new YoujianIgnoreRect());
+        addIgnoreRect("讨伐", new YoujianIgnoreRect());
+        addIgnoreRect("内阁", new YoujianIgnoreRect());
+        addIgnoreRect("通商", new YoujianIgnoreRect());
+        addIgnoreRect("联盟兑换", new YoujianIgnoreRect());
     }
 
     public static IgnoreRectHelper getInstance() {

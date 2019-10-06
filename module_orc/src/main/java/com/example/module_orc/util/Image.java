@@ -1,6 +1,5 @@
 package com.example.module_orc.util;
 
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.example.module_orc.OrcConfig;
@@ -39,6 +38,8 @@ public class Image {
         // 3 创建32位模板匹配结果Mat
         Mat result = new Mat(result_rows, result_cols, CvType.CV_32FC1);
         // 4 调用 模板匹配函数
+        Log.d(TAG, "getResPoint: g_src" + g_src.depth() + "," + g_src.dims() + "," + g_src.type());
+        Log.d(TAG, "getResPoint: g_tem" + g_tem.depth() + "," + g_tem.dims() + "," + g_tem.type());
         Imgproc.matchTemplate(g_src, g_tem, result, method);  // 归一化平方差匹配法
         // 5 归一化
         Core.normalize(result, result, 0, 1, Core.NORM_MINMAX, -1, new Mat());
@@ -61,32 +62,20 @@ public class Image {
     public static TitleItem matchPic(Mat g_src) {
         int method = OrcConfig.method;
         Mat g_tem = null;
-        TitleItem item =null;
-        Point point =null;
+        TitleItem item = null;
+        Point point = null;
         final Map<String, TitleItem> mTitleItems = OrcConfig.mTitleItems;
-        String orcKey = "mid_hongyanzhiji.jpg";
-         item = mTitleItems.get(orcKey);
-        g_tem = item.getMat();
-         point = getResPoint(item, g_src, g_tem, method);
-        if (point != null) {
 
-            return null;
-        } else
-            {
-            Set<String> keySet = mTitleItems.keySet();
-            for (String key : keySet) {
-                if (TextUtils.equals(orcKey, key)) {
-                    continue;
-                }
-                item = mTitleItems.get(key);
-                if (item == null) {
-                    continue;
-                }
-                g_tem = item.getMat();
-                point = getResPoint(item, g_src, g_tem, method);
-                if (point != null) {
-                    return item;
-                }
+        Set<String> keySet = mTitleItems.keySet();
+        for (String key : keySet) {
+            item = mTitleItems.get(key);
+            if (item == null) {
+                continue;
+            }
+            g_tem = item.getMat();
+            point = getResPoint(item, g_src, g_tem, method);
+            if (point != null) {
+                return item;
             }
         }
         return null;
@@ -169,4 +158,6 @@ public class Image {
         }
         return matchPic(demo, templete, method);
     }
+
+
 }

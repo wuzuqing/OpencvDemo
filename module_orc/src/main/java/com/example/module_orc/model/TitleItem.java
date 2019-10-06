@@ -17,12 +17,24 @@ public class TitleItem {
     private Point point;
     private String name;
     private String filePath;
+    private String sign;
+
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
+    }
+
     private static final String TAG = "TitleItem";
     public Mat getMat() {
         if (mat == null && filePath!=null) {
             String realPath = OrcHelper.getInstance().rootDir.getAbsolutePath() + "/mid/" + filePath;
             try {
                 mat = Imgcodecs.imread(realPath);
+//                Imgproc.cvtColor(mat, mat, Imgproc.COLOR_BGRA2GRAY);
+//                Imgproc.threshold(mat, mat, OrcConfig.thresh, 255, OrcConfig.threshType);
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -1,5 +1,7 @@
 package com.example.module_orc;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +15,7 @@ import java.util.Map;
  */
 public class Dictionary {
     private static Map<String, String> dictionary = new HashMap<>();
-    private static Map<String, String> dictionary1 = new HashMap<>();
+    private static Map<String, String> signDict = new HashMap<>();
 
     static {
         dictionary.put("mid_bangdan_benfu.jpg", "本服榜单");
@@ -22,6 +24,7 @@ public class Dictionary {
         dictionary.put("mid_fenglu_end.jpg", "领取俸禄");
         dictionary.put("mid_hanlinyuan.jpg", "翰林院");
         dictionary.put("mid_laofang.jpg", "牢房");
+        dictionary.put("mid_lianmeng_index.jpg", "联盟");
         dictionary.put("mid_lianmeng_choose.jpg", "联盟");
         dictionary.put("mid_lianmeng_duihuan.jpg", "联盟兑换");
         dictionary.put("mid_tongshang.jpg", "通商");
@@ -42,8 +45,14 @@ public class Dictionary {
     public static String getTitle(String key){
        return dictionary.get(key);
     }
-    public static String getOrcTitle(String key){
-       return dictionary1.get(key);
+
+    private static final String TAG = "Dictionary";
+    public static String getSignTitle(String sign){
+        Log.d(TAG, "getSignTitle: "+sign);
+        return signDict.get(sign);
+    }
+    public static void putSign(String sign,String name){
+        signDict.put(sign,name);
     }
 
     public static List<String > getDefaultPage(){

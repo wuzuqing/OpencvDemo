@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,15 +24,17 @@ import com.example.module_orc.OrcHelper;
 import com.example.module_orc.OrcModel;
 
 import java.io.File;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.module_orc.WorkMode.ONLY_BITMAP;
 
 public class MainActivity1 extends AppCompatActivity {
 
     private ImageView img, ivCrop;
     private Button btn;
-    private int[] resIds = { R.mipmap.chufu, R.mipmap.chuligongwu, R.mipmap.zisi, R.mipmap.zican, R.mipmap.hongyanzhiji, R.mipmap.wzq1 };
-    private String[] resNames = { "main", "clgw", "wdzs", "jyzc", "hyzj", "sfz" };
+    private int[] resIds = {R.mipmap.chufu, R.mipmap.chuligongwu, R.mipmap.zisi, R.mipmap.zican, R.mipmap.hongyanzhiji, R.mipmap.wzq1};
+    private String[] resNames = {"main", "clgw", "wdzs", "jyzc", "hyzj", "sfz"};
     //    private int[] resIds = {R.mipmap.wzq1,R.mipmap.wzq, R.mipmap.wxb, R.mipmap.yl, R.mipmap.wzq1};
 
     private int currentIndex = 0;
@@ -46,7 +47,7 @@ public class MainActivity1 extends AppCompatActivity {
     private RecyclerView vRecyclerView;
     private TestAdapter vTestAdapter;
     OrcModel orcModel;
-    File[] listFiles;
+    List<File> fileList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,29 +75,36 @@ public class MainActivity1 extends AppCompatActivity {
             }
         });
         File imagePath = OrcHelper.getInstance().rootDir;
-        listFiles = imagePath.listFiles();
-        Log.d(TAG, "onCreate: " + Arrays.toString(listFiles));
+        File[] files = imagePath.listFiles();
+        fileList = new ArrayList<>();
+        for (File file : files) {
+            if (file.isFile() && file.getName().endsWith(".jpg")) {
+                fileList.add(file);
+            }
+        }
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Bitmap bitmap = null;
-                // BitmapFactory.Options options = new BitmapFactory.Options();
-                // options.inSampleSize = OrcConfig.topColorXishu;
-                // if (listFiles == null) {
-                //     bitmap = BitmapFactory.decodeResource(getResources(), resIds[currentIndex % resIds.length], options);
-                // } else {
-                //     bitmap = BitmapFactory.decodeFile(listFiles[currentIndex % listFiles.length].getAbsolutePath(), options);
-                // }
-                // if (bitmap == null) {
-                //     return;
-                // }
+                Bitmap bitmap = null;
+//                 BitmapFactory.Options options = new BitmapFactory.Options();
+//                 options.inSampleSize = OrcConfig.topColorXishu;
+                if (fileList.isEmpty()) {
+                    bitmap = BitmapFactory.decodeResource(getResources(), resIds[currentIndex % resIds.length]);
+//                     bitmap = BitmapFactory.decodeResource(getResources(), resIds[currentIndex % resIds.length], options);
+                } else {
+                    bitmap = BitmapFactory.decodeFile(fileList.get(currentIndex % fileList.size()).getAbsolutePath());
+//                     bitmap = BitmapFactory.decodeFile(listFiles[currentIndex % listFiles.length].getAbsolutePath(), options);
+                }
+                if (bitmap == null) {
+                    return;
+                }
                 final String langName = vEtLangName.getText().toString().trim();
-                String pageName = listFiles == null ? resNames[currentIndex % resIds.length] : listFiles[currentIndex % listFiles.length].getName();
+                String pageName = fileList.isEmpty() ? resNames[currentIndex % resIds.length] : fileList.get(currentIndex % fileList.size()).getName();
                 String string = vEtThresh.getText().toString();
-                if (!TextUtils.isEmpty(string)){
+                if (!TextUtils.isEmpty(string)) {
                     OrcConfig.method = Integer.valueOf(string);
                 }
-                OrcHelper.getInstance().executeCallAsyncV2(listFiles[currentIndex % listFiles.length].getAbsolutePath(), langName, pageName, new IDiscernCallback() {
+                OrcHelper.getInstance().executeCallAsync(ONLY_BITMAP, bitmap, langName, pageName, new IDiscernCallback() {
                     @Override
                     public void call(final List<OrcModel> result) {
                         runOnUiThread(new Runnable() {
@@ -107,7 +115,7 @@ public class MainActivity1 extends AppCompatActivity {
                                 //                                Log.d(TAG, "executeCallAsync: " + result.toString());
                                 try {
                                     orcModel = result.get(0);
-                                    Toast.makeText(MainActivity1.this, ""+orcModel.getResult(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(MainActivity1.this, "" + orcModel.getResult(), Toast.LENGTH_SHORT).show();
                                     img.setImageBitmap(orcModel.getBitmap());
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -116,23 +124,7 @@ public class MainActivity1 extends AppCompatActivity {
                         });
                     }
                 });
-                //                final String langName = "zwp";
-                //                OrcHelper.getInstance().fileToBitmap(new BaseCallBack1<Bitmap>() {
-                //                    @Override
-                //                    public void call(final Bitmap bitmap, final String name) {
-                //                        runOnUiThread(new Runnable() {
-                //                            @Override
-                //                            public void run() {
-                //                                OrcHelper.getInstance().executeCallAsync(WorkMode.ONLY_BITMAP, bitmap, langName, name, new IDiscernCallback() {
-                //                                    @Override
-                //                                    public void call(final List<OrcModel> result) {
-                //
-                //                                    }
-                //                                });
-                //                            }
-                //                        });
-                //                    }
-                //                },listFiles);
+
             }
         });
         img.setOnClickListener(new View.OnClickListener() {
@@ -150,8 +142,8 @@ public class MainActivity1 extends AppCompatActivity {
                 if (currentIndex < 0) {
                     currentIndex = 0;
                 }
-                if (listFiles != null) {
-                    Glide.with(MainActivity1.this).load(listFiles[currentIndex % listFiles.length]).into(img);
+                if (!fileList.isEmpty()) {
+                    Glide.with(MainActivity1.this).load(fileList.get(currentIndex % fileList.size())).into(img);
                     return;
                 }
                 img.setImageResource(resIds[currentIndex % resIds.length]);
@@ -161,10 +153,11 @@ public class MainActivity1 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 currentIndex++;
-                if (listFiles != null) {
-                    Glide.with(MainActivity1.this).load(listFiles[currentIndex % listFiles.length]).into(img);
+                if (!fileList.isEmpty()) {
+                    Glide.with(MainActivity1.this).load(fileList.get(currentIndex % fileList.size())).into(img);
                     return;
                 }
+
                 img.setImageResource(resIds[currentIndex % resIds.length]);
                 //                startActivity(new Intent(MainActivity1.this,ScanActivity.class));
             }
@@ -172,12 +165,13 @@ public class MainActivity1 extends AppCompatActivity {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = OrcConfig.topColorXishu;
         Bitmap bitmap = null;
-        if (listFiles == null) {
+        if (fileList.isEmpty()) {
             bitmap = BitmapFactory.decodeResource(getResources(), resIds[currentIndex % resIds.length], options);
+            img.setImageBitmap(bitmap);
         } else {
-            bitmap = BitmapFactory.decodeFile(listFiles[currentIndex % listFiles.length].getAbsolutePath(), options);
+            Glide.with(MainActivity1.this).load(fileList.get(currentIndex % fileList.size())).into(img);
         }
-        img.setImageBitmap(bitmap);
+
         vTestAdapter = new TestAdapter();
 
         vRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));

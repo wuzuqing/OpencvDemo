@@ -9,10 +9,12 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 
+import com.example.module_orc.util.GsonUtils;
 import com.googlecode.tesseract.android.TessBaseAPI;
 
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
+import org.opencv.core.Rect;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
@@ -21,6 +23,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -120,7 +124,6 @@ public class OrcHelper {
                 baseApi.init(cacheDir, langName);
             }
         }
-        bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
         baseApi.setImage(bitmap);
         //        baseApi.setVariable("tessedit_char_whitelist", "0123456789X");
         result = baseApi.getUTF8Text();
@@ -196,7 +199,7 @@ public class OrcHelper {
      */
     public void compress(File dir) {
         System.out.println("compress 1");
-        dir = new File(dir,"/other1");
+        dir = new File(dir, "/other1");
         if (dir == null || !dir.isDirectory()) {
             return;
         }
@@ -208,6 +211,7 @@ public class OrcHelper {
         Mat gray = new Mat();
         int xishu = 6;
         long start = 0;
+        Map<String, String> data = new HashMap<>();
         for (File file : files) {
             String name = file.getName();
             System.out.println("compress 3" + name);
@@ -215,14 +219,76 @@ public class OrcHelper {
                 continue;
             }
             start = System.currentTimeMillis();
-            Mat demo = Imgcodecs.imread(file.getAbsolutePath());
-            Imgproc.resize(demo, demo, OrcConfig.screenSize);
+            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+            Mat demo = new Mat();
+            Utils.bitmapToMat(bitmap, demo);
+
             Imgproc.cvtColor(demo, gray, Imgproc.COLOR_BGRA2GRAY);
             Imgproc.threshold(gray, gray, OrcConfig.thresh, 255, OrcConfig.threshType);
-            Imgcodecs.imwrite(new File(OrcHelper.getInstance().rootDir + "/scale", name.substring(0, name.indexOf(".")) + ".jpg").getAbsolutePath(), gray);
-            Mat crop = new Mat(gray, OrcConfig.titleMidRectSmall);
-            Imgcodecs.imwrite(new File(OrcHelper.getInstance().rootDir + "/mid1", "mid_" + name.substring(0, name.indexOf(".")) + ".jpg").getAbsolutePath(), crop);
+
+            Imgproc.resize(gray, gray, OrcConfig.screenSize);
+
+//            Imgcodecs.imwrite(new File(OrcHelper.getInstance().rootDir + "/scale", name.substring(0, name.indexOf(".")) + ".jpg").getAbsolutePath(), gray);
+            Mat crop = new Mat(gray, OrcConfig.titleMidRect);
+            String sign = OrcConfig.getSign(crop);
+            File file1 = new File(OrcHelper.getInstance().rootDir + "/mid", "mid_" + name.substring(0, name.indexOf(".")) + ".jpg");
+            data.put(sign, file1.getName());
+            Imgcodecs.imwrite(file1.getAbsolutePath(), crop);
             System.out.println("used:" + (System.currentTimeMillis() - start) + " name:" + name);
+        }
+        try {
+            File dataFile = new File(OrcHelper.getInstance().rootDir + "/mid", "data.txt");
+            String json = GsonUtils.toJson(data);
+            FileOutputStream stream = new FileOutputStream(dataFile);
+            byte[] bytes = json.getBytes("gbk");
+            stream.write(bytes);
+            stream.flush();
+            stream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 压缩文件
+     */
+    public void compressPngToJpg(File dir) {
+        dir = new File(dir, "/other");
+        if (!dir.isDirectory()) {
+            return;
+        }
+        File[] files = dir.listFiles();
+        if (files == null || files.length == 0) {
+            return;
+        }
+        System.out.println("compress 2" + files.length);
+        Rect rectCurrent = OrcConfig.titleMidRectCurrent;
+        int x = rectCurrent.x;
+        int y = rectCurrent.y;
+        int width = rectCurrent.width;
+        int height = rectCurrent.height;
+        for (File file : files) {
+            String name = file.getName();
+            System.out.println("compress 3" + name);
+            if (file.isDirectory()) {
+                continue;
+            }
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inSampleSize = 3;
+            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+            try {
+                Bitmap crop = Bitmap.createBitmap(bitmap, x, y, width, height);
+                FileOutputStream outputStream = new FileOutputStream(new File(OrcHelper.getInstance().rootDir, name.substring(0, name.indexOf(".")) + ".jpg").getAbsolutePath());
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 90, outputStream);
+                outputStream.flush();
+                outputStream.close();
+                outputStream = new FileOutputStream(new File(OrcHelper.getInstance().rootDir + "/mid1", "mid_" + name.substring(0, name.indexOf(".")) + ".jpg").getAbsolutePath());
+                crop.compress(Bitmap.CompressFormat.JPEG, 90, outputStream);
+                outputStream.flush();
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
