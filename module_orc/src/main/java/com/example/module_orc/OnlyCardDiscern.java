@@ -13,6 +13,7 @@ import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
+import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 import java.util.ArrayList;
@@ -118,7 +119,7 @@ public class OnlyCardDiscern implements Runnable {
         IIgnoreRect ignoreRect = IgnoreRectHelper.getInstance().getIgnoreRect(pageName);
         if (ignoreRect == null) {
             Mat resize = new Mat();
-            Imgproc.resize(threshold, resize, OrcConfig.screenSize);
+            Imgproc.resize(threshold, resize, OrcConfig.compressScreenSize);
             Mat crop = new Mat(resize, OrcConfig.titleMidRect);
             String sign = OrcConfig.getSign(crop);
             pageName = Dictionary.getSignTitle(sign);
@@ -126,7 +127,21 @@ public class OnlyCardDiscern implements Runnable {
         }
         Log.d(TAG, "run: pageName:" + pageName + " ignoreRect:" + ignoreRect);
         Mat result = src;
-
+        List<OrcModel> orcModels = new ArrayList<>();
+        if (ignoreRect != null) {
+            orcModels = ignoreRect.ignoreRect(rects);
+//            Imgcodecs.imwrite(OrcHelper.getInstance().getTargetFile("/some/full.jpg").getAbsolutePath(),threshold);
+            for (OrcModel model : orcModels) {
+                dst = new Mat(threshold, model.getSmallRect());
+                Imgcodecs.imwrite(OrcHelper.getInstance().getTargetFile("/some/"+model.getRect().toString()+".jpg").getAbsolutePath(),dst);
+                bitmap = Bitmap.createBitmap(dst.cols(), dst.rows(), Bitmap.Config.ARGB_8888);
+                Utils.matToBitmap(dst, bitmap);
+                model.setBitmap(bitmap);
+                String value = OrcHelper.getInstance().orcText(bitmap, "small");
+                model.setResult(value);
+            }
+            Log.d(TAG, "run: pageName:" + pageName + " result:" + orcModels.toString());
+        }
         int newW = 0, newH = 0;
         if (callback != null) {
 
@@ -135,7 +150,8 @@ public class OnlyCardDiscern implements Runnable {
             Utils.matToBitmap(result, bitmap);
             orcModel.setBitmap(bitmap);
             orcModel.setResult(pageName);
-            callback.call(Collections.singletonList(orcModel));
+            orcModels.add(0, orcModel);
+            callback.call(orcModels);
         }
         Log.d(TAG, "discern: usedTime" + (System.currentTimeMillis() - start) + " newW:" + newW + " newH:" + newH);
     }

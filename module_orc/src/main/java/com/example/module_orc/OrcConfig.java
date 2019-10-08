@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.PointF;
 import android.os.AsyncTask;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.example.module_orc.model.TitleItem;
 import com.example.module_orc.util.GsonUtils;
@@ -26,17 +27,22 @@ import static org.opencv.imgproc.Imgproc.TM_CCORR_NORMED;
 
 public class OrcConfig {
 
-    public static Size screenSize = new Size(180, 320);
+    /**
+     * 压缩图片大小
+     */
+    public static Size sScreenSize = new Size(180, 320);
+    public static Size compressScreenSize = new Size(180, 320);
+    public static Size defaultScreenSize = new Size(360, 640);
     public static Rect titleMidRect = new Rect(new double[]{62, 2, 54, 30});
     public static Rect titleMidRectSmall = new Rect(new double[]{72, 14, 40, 13});
     // 112, 13, 125, 50
     public static Rect titleMidRectCurrent = new Rect(new double[]{112, 13, 125, 50});
     public static Rect titleMidCropRect = new Rect(new double[]{0, 0, 180, 60});
 
-//    public static Size screenSize = new Size(540, 960);
+//    public static Size compressScreenSize = new Size(540, 960);
 //    public static Rect titleMidRect = new Rect(new double[]{180, 10, 180, 90});
 //    public static Rect titleMidCropRect = new Rect(new double[]{0, 0, 540, 180});
-//    public static Size screenSize = new Size(270, 480);
+//    public static Size compressScreenSize = new Size(270, 480);
 //    public static Rect titleMidRect =new Rect(new double[]{78,2,110,45});
 //    public static Rect titleMidCropRect =new Rect(new double[]{0,0,270,85});
 
@@ -56,11 +62,9 @@ public class OrcConfig {
 
     public static Map<String, TitleItem> mTitleItems = new HashMap<>();
 
-    public interface Zican {
 
-    }
 
-    static {
+    public static void initFirst(){
         AsyncTask.THREAD_POOL_EXECUTOR.execute(new Runnable() {
             @Override
             public void run() {
@@ -68,6 +72,12 @@ public class OrcConfig {
                 initTitleItem();
             }
         });
+    }
+
+    public static void resetScreenSize(int width,int height){
+        sScreenSize.width = width;
+        sScreenSize.height = height;
+        topColorXishu = (int) (width/defaultScreenSize.width);
     }
 
     public static String getSign(Mat mat) {
@@ -119,6 +129,7 @@ public class OrcConfig {
             fileInputStream.close();
             bf.close();
             data = GsonUtils.toMap(stringBuilder.toString());
+            Log.d(TAG, "initTitleItem: "+data.values().toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -176,6 +187,15 @@ public class OrcConfig {
         startX = topColorX / topColorXishu;
         startY = topColorY / topColorXishu;
     }
+
+    public static OrcModel append( Rect rect) {
+        OrcModel orcModel = new OrcModel();
+
+        orcModel.setRect(rect);
+        return orcModel;
+    }
+
+
 
 
     public interface BangDan {

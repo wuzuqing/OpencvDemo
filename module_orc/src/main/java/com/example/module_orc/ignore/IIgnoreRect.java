@@ -1,6 +1,10 @@
 package com.example.module_orc.ignore;
 
+import com.example.module_orc.OrcModel;
+
 import org.opencv.core.Rect;
+
+import java.util.List;
 
 /**
  * 作者：士元
@@ -13,5 +17,6 @@ public interface IIgnoreRect {
     /**
      * 排除无效区域
      */
-    boolean ignoreRect(Rect rect);
+//    boolean ignoreRect(Rect rect);
+    List<OrcModel> ignoreRect(List<Rect> rects );
 }

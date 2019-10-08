@@ -1,7 +1,5 @@
 package com.example.module_orc.ignore;
 
-import org.opencv.core.Rect;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,14 +32,14 @@ public class IgnoreRectHelper {
         addIgnoreRect("寻访", new XunfangIgnoreRect());
         addIgnoreRect("邮件", new YoujianIgnoreRect());
         //////////////////////////////////////////////////
-        addIgnoreRect("排行榜", new YoujianIgnoreRect());
-        addIgnoreRect("跨服榜单", new YoujianIgnoreRect());
-        addIgnoreRect("本服榜单", new YoujianIgnoreRect());
-        addIgnoreRect("翰林院", new YoujianIgnoreRect());
-        addIgnoreRect("讨伐", new YoujianIgnoreRect());
-        addIgnoreRect("内阁", new YoujianIgnoreRect());
-        addIgnoreRect("通商", new YoujianIgnoreRect());
-        addIgnoreRect("联盟兑换", new YoujianIgnoreRect());
+        addIgnoreRect("排行榜", new PaihangbangIgnoreRect());
+        addIgnoreRect("跨服榜单", new KuafubangdanIgnoreRect());
+        addIgnoreRect("本服榜单", new BenfubangdanIgnoreRect());
+        addIgnoreRect("翰林院", new HanlinyuanIgnoreRect());
+        addIgnoreRect("讨伐", new TaofaIgnoreRect());
+        addIgnoreRect("内阁", new NeigeIgnoreRect());
+        addIgnoreRect("通商", new TongshangIgnoreRect());
+        addIgnoreRect("联盟兑换", new LianmengduihuanIgnoreRect());
     }
 
     public static IgnoreRectHelper getInstance() {
@@ -58,11 +56,11 @@ public class IgnoreRectHelper {
         return iIgnoreRectMap.get(key);
     }
 
-    public boolean ignoreRect(String key, Rect rect) {
-        IIgnoreRect ignoreRect = iIgnoreRectMap.get(key);
-        if (ignoreRect != null) {
-            return ignoreRect.ignoreRect(rect);
-        }
-        return false;
-    }
+//    public boolean ignoreRect(String key, Rect rect) {
+//        IIgnoreRect ignoreRect = iIgnoreRectMap.get(key);
+//        if (ignoreRect != null) {
+//            return ignoreRect.ignoreRect(rect);
+//        }
+//        return false;
+//    }
 }

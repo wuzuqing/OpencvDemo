@@ -122,6 +122,23 @@ public  class OpencvUtil {
         }
         return mat;
     }
+    /**
+     * 清除小面积轮廓
+     * @param mat
+     * @param size
+     * @return
+     */
+    public static Mat drawContours(Mat mat,int size,int color){
+        List<MatOfPoint> cardContours=OpencvUtil.findContours(mat);
+        for (int i = 0; i < cardContours.size(); i++)
+        {
+            double area=OpencvUtil.area(cardContours.get(i));
+            if(area<size){
+                Imgproc.drawContours(mat, cardContours, i, new Scalar( color, color, color),-1 );
+            }
+        }
+        return mat;
+    }
 
     /**
      * 人脸识别

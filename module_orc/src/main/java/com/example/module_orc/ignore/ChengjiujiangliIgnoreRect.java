@@ -1,6 +1,11 @@
 package com.example.module_orc.ignore;
 
+import com.example.module_orc.OrcModel;
+
 import org.opencv.core.Rect;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 作者：士元
@@ -10,7 +15,8 @@ import org.opencv.core.Rect;
  */
 public class ChengjiujiangliIgnoreRect implements IIgnoreRect {
     @Override
-    public boolean ignoreRect(Rect rect) {
-        return false;
+    public List<OrcModel> ignoreRect(List<Rect> rects) {
+        List<OrcModel> result = new ArrayList<>();
+        return result;
     }
 }

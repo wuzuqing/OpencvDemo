@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -75,10 +76,11 @@ public class MainActivity1 extends AppCompatActivity {
             }
         });
         File imagePath = OrcHelper.getInstance().rootDir;
+        Log.d(TAG, "onCreate: ");
         File[] files = imagePath.listFiles();
         fileList = new ArrayList<>();
         for (File file : files) {
-            if (file.isFile() && file.getName().endsWith(".jpg")) {
+            if (file.isFile() && ( file.getName().endsWith(".jpg") ||  file.getName().endsWith(".png"))) {
                 fileList.add(file);
             }
         }

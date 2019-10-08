@@ -11,9 +11,9 @@ import java.util.List;
  * 作者：士元
  * 时间：2019/9/16 18:07
  * 邮箱：wuzuqing@linghit.com
- * 说明：书院
+ * 说明：跨服榜单
  */
-public class ShuyuanIgnoreRect implements IIgnoreRect {
+public class KuafubangdanIgnoreRect implements IIgnoreRect {
     @Override
     public List<OrcModel> ignoreRect(List<Rect> rects) {
         List<OrcModel> result = new ArrayList<>();

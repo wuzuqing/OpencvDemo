@@ -8,6 +8,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 
 import com.example.module_orc.util.GsonUtils;
 import com.googlecode.tesseract.android.TessBaseAPI;
@@ -23,7 +24,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -71,8 +74,9 @@ public class OrcHelper {
     public void init(Context context) {
         mContext = context.getApplicationContext();
         cacheDir = context.getExternalCacheDir().getAbsolutePath();
-        copyLanguagePackageToSDCard("id3");
-        copyLanguagePackageToSDCard("id");
+        OrcConfig.initFirst();
+        DisplayMetrics metrics = mContext.getResources().getDisplayMetrics();
+        OrcConfig.resetScreenSize(metrics.widthPixels,metrics.heightPixels);
     }
 
     private String copyLanguagePackageToSDCard(String langName) {
@@ -85,8 +89,8 @@ public class OrcHelper {
         String filePath = dirPath + "/" + langName + ".traineddata";
         File file = new File(filePath);
         if (file.exists()) {
-            //            return file.getAbsolutePath();
-            file.delete();
+           return file.getAbsolutePath();
+//            file.delete();
         }
         InputStream inputStream = null;
         try {
@@ -161,6 +165,18 @@ public class OrcHelper {
         }
     }
 
+    public  List<OrcModel> executeCallSync( final Bitmap bitmap){
+        final List<OrcModel> result  = new ArrayList<>();
+        OnlyCardDiscern discern = new OnlyCardDiscern(bitmap, "zwp", "", new IDiscernCallback() {
+            @Override
+            public void call(List<OrcModel> item) {
+                result.addAll(item);
+            }
+        });
+        discern.run();
+        return result;
+    }
+
     public void executeCallAsyncV2(final String filePath, final String langName, final String pex, final IDiscernCallback callback) {
         mExecutor.execute(new Runnable() {
             @Override
@@ -226,7 +242,7 @@ public class OrcHelper {
             Imgproc.cvtColor(demo, gray, Imgproc.COLOR_BGRA2GRAY);
             Imgproc.threshold(gray, gray, OrcConfig.thresh, 255, OrcConfig.threshType);
 
-            Imgproc.resize(gray, gray, OrcConfig.screenSize);
+            Imgproc.resize(gray, gray, OrcConfig.compressScreenSize);
 
 //            Imgcodecs.imwrite(new File(OrcHelper.getInstance().rootDir + "/scale", name.substring(0, name.indexOf(".")) + ".jpg").getAbsolutePath(), gray);
             Mat crop = new Mat(gray, OrcConfig.titleMidRect);
