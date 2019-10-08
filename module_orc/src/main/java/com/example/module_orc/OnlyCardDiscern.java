@@ -133,6 +133,7 @@ public class OnlyCardDiscern implements Runnable {
 //            Imgcodecs.imwrite(OrcHelper.getInstance().getTargetFile("/some/full.jpg").getAbsolutePath(),threshold);
             for (OrcModel model : orcModels) {
                 dst = new Mat(threshold, model.getSmallRect());
+//                OpencvUtil.drawContours(dst,50,255);
                 Imgcodecs.imwrite(OrcHelper.getInstance().getTargetFile("/some/"+model.getRect().toString()+".jpg").getAbsolutePath(),dst);
                 bitmap = Bitmap.createBitmap(dst.cols(), dst.rows(), Bitmap.Config.ARGB_8888);
                 Utils.matToBitmap(dst, bitmap);

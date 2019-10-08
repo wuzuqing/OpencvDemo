@@ -36,12 +36,12 @@ public class OrcModel {
     }
 
     public Rect getSmallRect() {
-//        Rect clone = rect.clone();
-//        clone.x += 4;
+        Rect clone = rect.clone();
+        clone.x += 5;
 //        clone.y += 2;
 //        clone.width -= 8;
 //        clone.height -= 5;
-        return rect;
+        return clone;
     }
 
 

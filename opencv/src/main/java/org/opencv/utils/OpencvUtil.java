@@ -1,5 +1,7 @@
 package org.opencv.utils;
 
+import android.util.Log;
+
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -122,6 +124,8 @@ public  class OpencvUtil {
         }
         return mat;
     }
+
+    private static final String TAG = "OpencvUtil";
     /**
      * 清除小面积轮廓
      * @param mat
@@ -129,13 +133,19 @@ public  class OpencvUtil {
      * @return
      */
     public static Mat drawContours(Mat mat,int size,int color){
-        List<MatOfPoint> cardContours=OpencvUtil.findContours(mat);
-        for (int i = 0; i < cardContours.size(); i++)
+        Mat erodeElement = Imgproc.getStructuringElement(Imgproc.MARKER_CROSS, new Size(12, 1));
+        Mat dst = new Mat();
+        Imgproc.erode(mat, dst, erodeElement);
+
+        List<MatOfPoint> cardContours = new ArrayList<>();
+        Imgproc.findContours(dst, cardContours, new Mat(), Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE, new Point(0, 0));
+        int length = cardContours.size();
+        Log.d(TAG, "drawContours size: "+cardContours.size());
+        for (int i = 0; i < length; i++)
         {
-            double area=OpencvUtil.area(cardContours.get(i));
-            if(area<size){
-                Imgproc.drawContours(mat, cardContours, i, new Scalar( color, color, color),-1 );
-            }
+            Rect rect = Imgproc.boundingRect(cardContours.get(i));
+            Log.d(TAG, "drawContours: length:"+length+" rect"+rect.toString());
+
         }
         return mat;
     }
