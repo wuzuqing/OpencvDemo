@@ -1,15 +1,14 @@
 package com.example.module_orc.ignore;
 
+import android.util.Log;
+
 import com.example.module_orc.OrcConfig;
 import com.example.module_orc.OrcModel;
 
-import org.opencv.core.Point;
 import org.opencv.core.Rect;
-import org.opencv.core.Size;
 
 import java.util.ArrayList;
 import java.util.List;
-import android.util.Log;
 
 /**
  * 作者：士元
@@ -24,6 +23,7 @@ public class ShuyuanIgnoreRect implements IIgnoreRect {
         List<OrcModel> result = new ArrayList<>();
         result.add(OrcConfig.append(new Rect(284,129,74,16)));
         for (Rect rect : rects) {
+            Log.d(TAG, "ignoreRect: "+rect.toString());
             if ( rect.height==14 && ( rect.width==81 || rect.width==80)){
                 rect.y -=24;
                 result.add(OrcConfig.append(rect));
