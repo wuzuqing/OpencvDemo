@@ -130,9 +130,9 @@ public class OnlyCardDiscern implements Runnable {
         List<OrcModel> orcModels = new ArrayList<>();
         if (ignoreRect != null) {
             orcModels = ignoreRect.ignoreRect(rects);
-//            Imgcodecs.imwrite(OrcHelper.getInstance().getTargetFile("/some/full.jpg").getAbsolutePath(),threshold);
+            Imgcodecs.imwrite(OrcHelper.getInstance().getTargetFile("/some/threshold.jpg").getAbsolutePath(),threshold);
             for (OrcModel model : orcModels) {
-                dst = new Mat(threshold, model.getSmallRect());
+                dst = new Mat(threshold, model.getRect());
 //                OpencvUtil.drawContours(dst,50,255);
                 Imgcodecs.imwrite(OrcHelper.getInstance().getTargetFile("/some/"+model.getRect().toString()+".jpg").getAbsolutePath(),dst);
                 bitmap = Bitmap.createBitmap(dst.cols(), dst.rows(), Bitmap.Config.ARGB_8888);

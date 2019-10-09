@@ -50,7 +50,7 @@ public class OrcConfig {
     public static int threshType = Imgproc.THRESH_BINARY_INV;
     public static int width = 14;
 
-    public static int baseIgnoreHeight = 14;
+    public static int baseIgnoreHeight = 12;
     public static int baseIgnoreX = 1;
     public static int topColorXishu = 1;
     public static int method = TM_CCORR_NORMED;
@@ -190,10 +190,23 @@ public class OrcConfig {
 
     public static OrcModel append( Rect rect) {
         OrcModel orcModel = new OrcModel();
-
         orcModel.setRect(rect);
         return orcModel;
     }
+
+    public static OrcModel append( Rect rect,int x, int y, int width, int height) {
+        OrcModel orcModel = new OrcModel();
+        orcModel.setRect(offset(rect, x, y, width, height));
+        return orcModel;
+    }
+    private static Rect offset(Rect rect, int x, int y, int width, int height) {
+        rect.x += x;
+        rect.y += y;
+        rect.width -= width;
+        rect.height -= height;
+        return rect;
+    }
+
 
 
 
