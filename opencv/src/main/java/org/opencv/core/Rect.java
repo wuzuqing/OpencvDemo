@@ -101,4 +101,8 @@ public class Rect {
     public String toString() {
         return "{" + x + ", " + y + ", " + width + "x" + height + "}";
     }
+
+    public android.graphics.Point getPoint() {
+        return new android.graphics.Point(x + width / 2, y + height / 2);
+    }
 }

@@ -125,20 +125,21 @@ public class OnlyCardDiscern implements Runnable {
             pageName = Dictionary.getSignTitle(sign);
             ignoreRect = IgnoreRectHelper.getInstance().getIgnoreRect(pageName);
         }
-        if (ignoreRect==null){
-
+        if (ignoreRect == null) {
+            pageName = GetPageByOther.getPage(rects);
+            ignoreRect = IgnoreRectHelper.getInstance().getIgnoreRect(pageName);
         }
         Log.d(TAG, "run: pageName:" + pageName + " ignoreRect:" + ignoreRect);
         Mat result = src;
         List<OrcModel> orcModels = new ArrayList<>();
         if (ignoreRect != null) {
             orcModels = ignoreRect.ignoreRect(rects);
-            Imgcodecs.imwrite(OrcHelper.getInstance().getTargetFile("/some/threshold.jpg").getAbsolutePath(),threshold);
+            Imgcodecs.imwrite(OrcHelper.getInstance().getTargetFile("/some/threshold.jpg").getAbsolutePath(), threshold);
             for (OrcModel model : orcModels) {
                 dst = new Mat(threshold, model.getRect());
                 Imgproc.rectangle(src, model.getRect(), new Scalar(0, 0, 255), 1, 8, 0);
 //                OpencvUtil.drawContours(dst,50,255);
-                Imgcodecs.imwrite(OrcHelper.getInstance().getTargetFile("/some/"+model.getRect().toString()+".jpg").getAbsolutePath(),dst);
+                Imgcodecs.imwrite(OrcHelper.getInstance().getTargetFile("/some/" + model.getRect().toString() + ".jpg").getAbsolutePath(), dst);
                 bitmap = Bitmap.createBitmap(dst.cols(), dst.rows(), Bitmap.Config.ARGB_8888);
                 Utils.matToBitmap(dst, bitmap);
                 model.setBitmap(bitmap);
