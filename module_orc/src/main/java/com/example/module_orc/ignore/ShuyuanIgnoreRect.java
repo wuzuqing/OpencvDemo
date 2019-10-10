@@ -24,8 +24,17 @@ public class ShuyuanIgnoreRect implements IIgnoreRect {
         result.add(OrcConfig.append(new Rect(284,129,74,16)));
         for (Rect rect : rects) {
             Log.d(TAG, "ignoreRect: "+rect.toString());
-            if ( rect.height==14 && ( rect.width==81 || rect.width==80)){
+            if (rect.y == 617 || rect.y == 459 || rect.y ==301){
                 rect.y -=24;
+                result.add(OrcConfig.append(rect));
+            }else if ( rect.height==14 && ( rect.width==81 || rect.width==80) ){
+                rect.y -=24;
+                result.add(OrcConfig.append(rect));
+            }else if (rect.x == 43 && (rect.width>95 && rect.width<115) ){
+                rect.height -=15;
+                result.add(OrcConfig.append(rect));
+            }else if (rect.x == 220 && (rect.width>95 && rect.width<115) ){
+                rect.height -=4;
                 result.add(OrcConfig.append(rect));
             }
         }
