@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import com.example.module_orc.util.GsonUtils;
 import com.googlecode.tesseract.android.TessBaseAPI;
@@ -32,6 +33,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class OrcHelper {
+    private static final String TAG = "OrcHelper";
     private static OrcHelper instance = new OrcHelper();
     private TessBaseAPI baseApi;
 
@@ -214,7 +216,7 @@ public class OrcHelper {
      * 压缩文件
      */
     public void compress(File dir) {
-        System.out.println("compress 1");
+       Log.e(TAG,"compress 1");
         dir = new File(dir, "/other1");
         if (dir == null || !dir.isDirectory()) {
             return;
@@ -223,14 +225,14 @@ public class OrcHelper {
         if (files == null || files.length == 0) {
             return;
         }
-        System.out.println("compress 2" + files.length);
+       Log.e(TAG,"compress 2" + files.length);
         Mat gray = new Mat();
         int xishu = 6;
         long start = 0;
         Map<String, String> data = new HashMap<>();
         for (File file : files) {
             String name = file.getName();
-            System.out.println("compress 3" + name);
+           Log.e(TAG,"compress 3" + name);
             if (file.isDirectory()) {
                 continue;
             }
@@ -250,7 +252,7 @@ public class OrcHelper {
             File file1 = new File(OrcHelper.getInstance().rootDir + "/mid", "mid_" + name.substring(0, name.indexOf(".")) + ".jpg");
             data.put(sign, file1.getName());
             Imgcodecs.imwrite(file1.getAbsolutePath(), crop);
-            System.out.println("used:" + (System.currentTimeMillis() - start) + " name:" + name);
+           Log.e(TAG,"used:" + (System.currentTimeMillis() - start) + " name:" + name);
         }
         try {
             File dataFile = new File(OrcHelper.getInstance().rootDir + "/mid", "data.txt");
@@ -277,7 +279,7 @@ public class OrcHelper {
         if (files == null || files.length == 0) {
             return;
         }
-        System.out.println("compress 2" + files.length);
+       Log.e(TAG,"compress 2" + files.length);
         Rect rectCurrent = OrcConfig.titleMidRectCurrent;
         int x = rectCurrent.x;
         int y = rectCurrent.y;
@@ -285,7 +287,7 @@ public class OrcHelper {
         int height = rectCurrent.height;
         for (File file : files) {
             String name = file.getName();
-            System.out.println("compress 3" + name);
+           Log.e(TAG,"compress 3" + name);
             if (file.isDirectory()) {
                 continue;
             }

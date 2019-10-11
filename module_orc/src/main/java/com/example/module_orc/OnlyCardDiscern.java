@@ -129,7 +129,7 @@ public class OnlyCardDiscern implements Runnable {
             pageName = GetPageByOther.getPage(rects);
             ignoreRect = IgnoreRectHelper.getInstance().getIgnoreRect(pageName);
         }
-        Log.d(TAG, "run: pageName:" + pageName + " ignoreRect:" + ignoreRect);
+        Log.e(TAG, "run: pageName:" + pageName + " ignoreRect:" + ignoreRect);
         Mat result = src;
         List<OrcModel> orcModels = new ArrayList<>();
         if (ignoreRect != null) {
@@ -146,7 +146,7 @@ public class OnlyCardDiscern implements Runnable {
                 String value = OrcHelper.getInstance().orcText(bitmap, "small");
                 model.setResult(value);
             }
-            Log.d(TAG, "run: pageName:" + pageName + " result:" + orcModels.toString());
+            Log.e(TAG, "run: pageName:" + pageName + " result:" + orcModels.toString());
         }
         int newW = 0, newH = 0;
         if (callback != null) {
@@ -159,7 +159,7 @@ public class OnlyCardDiscern implements Runnable {
             orcModels.add(0, orcModel);
             callback.call(orcModels);
         }
-        Log.d(TAG, "discern: usedTime" + (System.currentTimeMillis() - start) + " newW:" + newW + " newH:" + newH);
+        Log.e(TAG, "discern: usedTime" + (System.currentTimeMillis() - start) + " newW:" + newW + " newH:" + newH);
     }
 
     private String parseName(String pageName) {
@@ -174,7 +174,7 @@ public class OnlyCardDiscern implements Runnable {
                 return "排行榜";
             case "单子就":
             case "单知":
-                return "皇宫";
+                return "皇宫俸禄";
             case "的颜":
                 return "内阁";
             case "榜单服榜单":

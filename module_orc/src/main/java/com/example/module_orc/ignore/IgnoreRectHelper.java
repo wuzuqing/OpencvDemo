@@ -20,6 +20,7 @@ public class IgnoreRectHelper {
         addIgnoreRect("处理公务", new ChuligongwuIgnoreRect());
         addIgnoreRect("红颜知已", new HongyanzhijiIgnoreRect());
         addIgnoreRect("皇宫", new HuanggongIgnoreRect());
+        addIgnoreRect("皇宫俸禄", new HuanggongFengluIgnoreRect());
         addIgnoreRect("缉捕", new JibuIgnoreRect());
         addIgnoreRect("经营资产", new JingyingzicanIgnoreRect());
         addIgnoreRect("牢房", new LaofangIgnoreRect());

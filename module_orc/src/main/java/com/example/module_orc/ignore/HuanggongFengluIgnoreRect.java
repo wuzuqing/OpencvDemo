@@ -1,27 +1,27 @@
 package com.example.module_orc.ignore;
 
-import com.example.module_orc.OrcConfig;
-import com.example.module_orc.OrcModel;
-
-import org.opencv.core.Rect;
-
 import java.util.ArrayList;
 import java.util.List;
+import com.example.module_orc.OrcConfig;
+import com.example.module_orc.OrcModel;
+import org.opencv.core.Rect;
 
 /**
  * 作者：士元
  * 时间：2019/9/16 18:07
  * 邮箱：wuzuqing@linghit.com
- * 说明：登录
+ * 说明：俸禄
  */
-public class DengluIgnoreRect implements IIgnoreRect {
-    public static final Rect loginGame = new Rect(134, 366, 93, 20);
-    public static final Rect loginGame1 = new Rect(135, 366, 91, 21);
-
+public class HuanggongFengluIgnoreRect implements IIgnoreRect {
     @Override
     public List<OrcModel> ignoreRect(List<Rect> rects) {
+        Rect rect1 = new Rect(220, 595, 132, 27);
         List<OrcModel> result = new ArrayList<>();
-        result.add(OrcConfig.append(loginGame));
+        for (Rect r : rects) {
+            if (rect1.equals(r)) {
+                result.add(OrcConfig.append(r));
+            }
+        }
         return result;
     }
 }

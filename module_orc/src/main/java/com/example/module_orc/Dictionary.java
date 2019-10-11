@@ -48,7 +48,7 @@ public class Dictionary {
 
     private static final String TAG = "Dictionary";
     public static String getSignTitle(String sign){
-        Log.d(TAG, "getSignTitle: "+sign);
+       Log.e(TAG, "getSignTitle: "+sign);
         return signDict.get(sign);
     }
     public static void putSign(String sign,String name){
