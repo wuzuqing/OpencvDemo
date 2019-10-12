@@ -1,4 +1,4 @@
-package com.example.administrator.opencvdemo;
+package com.example.administrator.opencvdemo.old;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -17,6 +17,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.example.administrator.opencvdemo.R;
 
 /**
  * 作者：士元

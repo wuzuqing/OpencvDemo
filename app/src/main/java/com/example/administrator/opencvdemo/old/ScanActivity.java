@@ -1,15 +1,16 @@
-package com.example.administrator.opencvdemo;
+package com.example.administrator.opencvdemo.old;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.administrator.opencvdemo.MainActivity;
+import com.example.administrator.opencvdemo.R;
 import com.example.administrator.opencvdemo.carame.CameraPreview;
 import com.example.administrator.opencvdemo.carame.OnCallBack;
 import com.example.module_orc.IDiscernCallback;
@@ -87,6 +88,6 @@ public class ScanActivity extends AppCompatActivity {
     }
 
     public void toMain(View view) {
-        startActivity(new Intent(this, MainActivity1.class));
+        startActivity(new Intent(this, MainActivity.class));
     }
 }

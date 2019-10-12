@@ -1,5 +1,6 @@
 package com.example.administrator.opencvdemo;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.administrator.opencvdemo.floatservice.RequestPermissionsActivity;
 import com.example.module_orc.IDiscernCallback;
 import com.example.module_orc.OpenCVHelper;
 import com.example.module_orc.OrcConfig;
@@ -30,11 +32,11 @@ import java.util.List;
 
 import static com.example.module_orc.WorkMode.ONLY_BITMAP;
 
-public class MainActivity1 extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     private ImageView img, ivCrop;
     private Button btn;
-    private int[] resIds = {R.mipmap.chufu, R.mipmap.chuligongwu, R.mipmap.zisi, R.mipmap.zican, R.mipmap.hongyanzhiji, R.mipmap.wzq1};
+    private int[] resIds = { R.mipmap.chufu, R.mipmap.chuligongwu, R.mipmap.zisi, R.mipmap.zican, R.mipmap.hongyanzhiji, R.mipmap.wzq1};
     private String[] resNames = {"main", "clgw", "wdzs", "jyzc", "hyzj", "sfz"};
     //    private int[] resIds = {R.mipmap.wzq1,R.mipmap.wzq, R.mipmap.wxb, R.mipmap.yl, R.mipmap.wzq1};
 
@@ -75,6 +77,13 @@ public class MainActivity1 extends AppCompatActivity {
                 });
             }
         });
+        findViewById(R.id.showFloatView).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getSelf(), RequestPermissionsActivity.class));
+                finish();
+            }
+        });
         File imagePath = OrcHelper.getInstance().rootDir;
         Log.d(TAG, "onCreate: ");
         File[] files = imagePath.listFiles();
@@ -88,14 +97,10 @@ public class MainActivity1 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Bitmap bitmap = null;
-//                 BitmapFactory.Options options = new BitmapFactory.Options();
-//                 options.inSampleSize = OrcConfig.topColorXishu;
                 if (fileList.isEmpty()) {
                     bitmap = BitmapFactory.decodeResource(getResources(), resIds[currentIndex % resIds.length]);
-//                     bitmap = BitmapFactory.decodeResource(getResources(), resIds[currentIndex % resIds.length], options);
                 } else {
                     bitmap = BitmapFactory.decodeFile(fileList.get(currentIndex % fileList.size()).getAbsolutePath());
-//                     bitmap = BitmapFactory.decodeFile(listFiles[currentIndex % listFiles.length].getAbsolutePath(), options);
                 }
                 if (bitmap == null) {
                     return;
@@ -117,7 +122,7 @@ public class MainActivity1 extends AppCompatActivity {
                                 //                                Log.d(TAG, "executeCallAsync: " + result.toString());
                                 try {
                                     orcModel = result.get(0);
-                                    Toast.makeText(MainActivity1.this, "" + orcModel.getResult(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(MainActivity.this, "" + orcModel.getResult(), Toast.LENGTH_SHORT).show();
                                     img.setImageBitmap(orcModel.getBitmap());
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -126,7 +131,6 @@ public class MainActivity1 extends AppCompatActivity {
                         });
                     }
                 });
-
             }
         });
         img.setOnClickListener(new View.OnClickListener() {
@@ -145,7 +149,7 @@ public class MainActivity1 extends AppCompatActivity {
                     currentIndex = 0;
                 }
                 if (!fileList.isEmpty()) {
-                    Glide.with(MainActivity1.this).load(fileList.get(currentIndex % fileList.size())).into(img);
+                    Glide.with(MainActivity.this).load(fileList.get(currentIndex % fileList.size())).into(img);
                     return;
                 }
                 img.setImageResource(resIds[currentIndex % resIds.length]);
@@ -156,12 +160,12 @@ public class MainActivity1 extends AppCompatActivity {
             public void onClick(View v) {
                 currentIndex++;
                 if (!fileList.isEmpty()) {
-                    Glide.with(MainActivity1.this).load(fileList.get(currentIndex % fileList.size())).into(img);
+                    Glide.with(MainActivity.this).load(fileList.get(currentIndex % fileList.size())).into(img);
                     return;
                 }
 
                 img.setImageResource(resIds[currentIndex % resIds.length]);
-                //                startActivity(new Intent(MainActivity1.this,ScanActivity.class));
+                //                startActivity(new Intent(MainActivity.this,ScanActivity.class));
             }
         });
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -171,7 +175,7 @@ public class MainActivity1 extends AppCompatActivity {
             bitmap = BitmapFactory.decodeResource(getResources(), resIds[currentIndex % resIds.length], options);
             img.setImageBitmap(bitmap);
         } else {
-            Glide.with(MainActivity1.this).load(fileList.get(currentIndex % fileList.size())).into(img);
+            Glide.with(MainActivity.this).load(fileList.get(currentIndex % fileList.size())).into(img);
         }
 
         vTestAdapter = new TestAdapter();

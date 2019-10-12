@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ScanActivity">
+    tools:context=".old.ScanActivity">
 
     <com.example.administrator.opencvdemo.carame.CameraPreview
         android:id="@+id/surfaceView"
@@ -12,7 +12,7 @@
         android:layout_height="match_parent" />
 
 
-    <com.example.administrator.opencvdemo.MarkView1
+    <com.example.administrator.opencvdemo.old.MarkView1
         android:id="@+id/markView"
         android:layout_width="match_parent"
         android:layout_height="250dp" />

@@ -1,4 +1,4 @@
-package com.example.administrator.opencvdemo;
+package com.example.administrator.opencvdemo.old;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.example.administrator.opencvdemo.R;
 import com.example.module_orc.OpenCVHelper;
 
 import org.opencv.android.Utils;

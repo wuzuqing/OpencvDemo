@@ -67,7 +67,7 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
         return mDatas==null?0:mDatas.size();
     }
 
-     static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder{
         private ImageView vView;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

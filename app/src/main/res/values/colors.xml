@@ -3,4 +3,12 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <color name="grey_line">#c7c7c7</color>
+
+    <!-- 忙碌红 -->
+    <color name="red_busy">#e35850</color>
+
+    <!-- 在线绿色 -->
+    <color name="green_online">#5fb41b</color>
 </resources>
