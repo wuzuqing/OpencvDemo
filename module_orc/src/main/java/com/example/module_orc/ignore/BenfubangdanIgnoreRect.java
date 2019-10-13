@@ -1,5 +1,6 @@
 package com.example.module_orc.ignore;
 
+import com.example.module_orc.OrcConfig;
 import com.example.module_orc.OrcModel;
 
 import org.opencv.core.Rect;
@@ -14,9 +15,24 @@ import java.util.List;
  * 说明：本服榜单
  */
 public class BenfubangdanIgnoreRect implements IIgnoreRect {
+    public static Rect moBai = new Rect(274, 524, 38, 13);
+    public static Rect guanKa = new Rect(126, 115, 50, 13);
+    public static Rect qinMi = new Rect(222, 115, 50, 13);
     @Override
     public List<OrcModel> ignoreRect(List<Rect> rects) {
         List<OrcModel> result = new ArrayList<>();
+        //{274, 524, 38x13}
+        //{222, 115, 50x13}
+        // {126, 115, 50x13}
+        Rect mb = new Rect();
+        for (Rect rect : rects) {
+            if (rect.width == moBai.width && rect.height == moBai.height && rect.x ==moBai.x) {
+                mb = rect;
+            }
+        }
+        result.add(OrcConfig.append(mb));
+        result.add(OrcConfig.append(guanKa));
+        result.add(OrcConfig.append(qinMi));
         return result;
     }
 }

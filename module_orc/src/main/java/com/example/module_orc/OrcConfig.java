@@ -54,6 +54,7 @@ public class OrcConfig {
     public static int baseIgnoreX = 1;
     public static int topColorXishu = 1;
     public static int method = TM_CCORR_NORMED;
+    public static String pageName;
 
     private static int topColorX = 102;
     private static int topColorWidth = 826;

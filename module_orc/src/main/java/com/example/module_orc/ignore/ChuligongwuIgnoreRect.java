@@ -8,7 +8,6 @@ import org.opencv.core.Rect;
 
 import java.util.ArrayList;
 import java.util.List;
-import android.util.Log;
 
 /**
  * 作者：士元
@@ -17,10 +16,9 @@ import android.util.Log;
  * 说明：处理公务
  */
 public class ChuligongwuIgnoreRect implements IIgnoreRect {
-    private static final String TAG = "ChuligongwuIgnoreRect";
-    Point zhengwuNum = new Point(250, 216);
-    Point getZhengji = new Point(26, 586);
-    Point getOther = new Point(26, 530);
+  public  static   Point zhengwuNum = new Point(250, 216);
+    public  static    Point getZhengji = new Point(26, 586);
+    public  static    Point getOther = new Point(26, 530);
 
     @Override
     public List<OrcModel> ignoreRect(List<Rect> rects) {

@@ -11,12 +11,13 @@ import android.text.TextUtils;
 import android.util.ArrayMap;
 import android.util.Log;
 
+import com.example.administrator.opencvdemo.BaseApplication;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-import com.example.administrator.opencvdemo.BaseApplication;
 
 /**
  * @author 吴祖清
@@ -36,6 +37,7 @@ public class LaunchApp {
     public static final String QQ_PACKAGE_NAME = "com.tencent.mobileqq";
     public static final String WPYX_PACKAGE_NAME = "com.psytap.wpyx";
     public static final String JPZMG_PACKAGE_NAME = "com.anzhuojwgly.ckhd";
+    public static final String SELF_APP = "com.itant.autoclick";
 
     public static String APP_PACKAGE_NAME = JPZMG_PACKAGE_NAME;
 

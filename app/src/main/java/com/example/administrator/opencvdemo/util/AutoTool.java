@@ -1,12 +1,16 @@
 package com.example.administrator.opencvdemo.util;
 
 
+import android.util.Log;
+
+import com.example.administrator.opencvdemo.BaseApplication;
+
+import org.opencv.core.Rect;
+
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.OutputStream;
 import java.util.Locale;
-import com.example.administrator.opencvdemo.BaseApplication;
-import org.opencv.core.Rect;
 
 /**
  * 自动化工具类
@@ -147,17 +151,20 @@ public class AutoTool {
     }
 
     public static String clickFloat(Rect rect) {
-        return clickFloat(rect.width*1f/360,rect.height*1f/640);
+        return clickFloat((rect.x+rect.width/2)*1f/360,(rect.y + rect.height/2)*1f/640);
     }
 
     public static String clickFloat(float x, float y) {
         return String.format(Locale.getDefault(), "input tap %d %d", getXRatio(x), getYRatio(y));
     }
 
+    private static final String TAG = "AutoTool";
     public static int getXRatio(float ratio) {
+        Log.d(TAG, "getXRatio: "+ratio + " "+BaseApplication.getScreenWidth());
         return (int) (BaseApplication.getScreenWidth() * ratio);
     }
     public static int getYRatio(float ratio) {
+        Log.d(TAG, "getYRatio: "+ratio + " "+BaseApplication.getScreenHeight());
         return (int) (BaseApplication.getScreenHeight() * ratio);
     }
 }

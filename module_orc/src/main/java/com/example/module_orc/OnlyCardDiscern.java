@@ -30,7 +30,7 @@ public class OnlyCardDiscern implements Runnable {
     private long start;
     private IDiscernCallback callback;
     protected Size mSize = new Size(360, 640);
-
+    public static final boolean DEBUG = false;
     public OnlyCardDiscern(Bitmap bitmap1, String langName, IDiscernCallback callback) {
         this.bitmap1 = bitmap1;
         this.langName = langName;
@@ -90,7 +90,9 @@ public class OnlyCardDiscern implements Runnable {
                 continue;
             }
             rects.add(rect);
-            Imgproc.rectangle(src, rect, new Scalar(0, 255, 0), 1, 8, 0);
+            if (DEBUG) {
+                Imgproc.rectangle(src, rect, new Scalar(0, 255, 0), 1, 8, 0);
+            }
         }
         String pageName = "1";
         Bitmap bitmap = null;
@@ -117,49 +119,63 @@ public class OnlyCardDiscern implements Runnable {
             e.printStackTrace();
         }
         IIgnoreRect ignoreRect = IgnoreRectHelper.getInstance().getIgnoreRect(pageName);
-        if (ignoreRect == null) {
-            Mat resize = new Mat();
-            Imgproc.resize(threshold, resize, OrcConfig.compressScreenSize);
-            Mat crop = new Mat(resize, OrcConfig.titleMidRect);
-            String sign = OrcConfig.getSign(crop);
-            pageName = Dictionary.getSignTitle(sign);
-            ignoreRect = IgnoreRectHelper.getInstance().getIgnoreRect(pageName);
-        }
+//        if (ignoreRect == null) {
+//            Mat resize = new Mat();
+//            Imgproc.resize(threshold, resize, OrcConfig.compressScreenSize);
+//            Mat crop = new Mat(resize, OrcConfig.titleMidRect);
+//            String sign = OrcConfig.getSign(crop);
+//            pageName = Dictionary.getSignTitle(sign);
+//            ignoreRect = IgnoreRectHelper.getInstance().getIgnoreRect(pageName);
+//        }
         if (ignoreRect == null) {
             pageName = GetPageByOther.getPage(rects);
             ignoreRect = IgnoreRectHelper.getInstance().getIgnoreRect(pageName);
         }
-        Log.e(TAG, "run: pageName:" + pageName + " ignoreRect:" + ignoreRect);
+//        Log.e(TAG, "run: pageName:" + pageName + " ignoreRect:" + ignoreRect);
         Mat result = src;
+        OrcConfig.pageName = pageName;
         List<OrcModel> orcModels = new ArrayList<>();
         if (ignoreRect != null) {
             orcModels = ignoreRect.ignoreRect(rects);
-            Imgcodecs.imwrite(OrcHelper.getInstance().getTargetFile("/some/threshold.jpg").getAbsolutePath(), threshold);
-            for (OrcModel model : orcModels) {
-                dst = new Mat(threshold, model.getRect());
-                Imgproc.rectangle(src, model.getRect(), new Scalar(0, 0, 255), 1, 8, 0);
-//                OpencvUtil.drawContours(dst,50,255);
-                Imgcodecs.imwrite(OrcHelper.getInstance().getTargetFile("/some/" + model.getRect().toString() + ".jpg").getAbsolutePath(), dst);
-                bitmap = Bitmap.createBitmap(dst.cols(), dst.rows(), Bitmap.Config.ARGB_8888);
-                Utils.matToBitmap(dst, bitmap);
-                model.setBitmap(bitmap);
-                String value = OrcHelper.getInstance().orcText(bitmap, "small");
-                model.setResult(value);
+            if (DEBUG) {
+                Imgcodecs.imwrite(OrcHelper.getInstance().getTargetFile("/some/threshold.jpg").getAbsolutePath(), threshold);
             }
-            Log.e(TAG, "run: pageName:" + pageName + " result:" + orcModels.toString());
+            for (OrcModel model : orcModels) {
+                try {
+                    dst = new Mat(threshold, model.getRect());
+                    if (DEBUG) {
+                        Imgproc.rectangle(src, model.getRect(), new Scalar(0, 0, 255), 1, 8, 0);
+                    }
+//                OpencvUtil.drawContours(dst,50,255);
+                    Imgcodecs.imwrite(OrcHelper.getInstance().getTargetFile("/some/" + model.getRect().toString() + ".jpg").getAbsolutePath(), dst);
+                    bitmap = Bitmap.createBitmap(dst.cols(), dst.rows(), Bitmap.Config.ARGB_8888);
+                    Utils.matToBitmap(dst, bitmap);
+                    model.setBitmap(bitmap);
+                    String value = OrcHelper.getInstance().orcText(bitmap, "small");
+                    Rect modelRect = model.getRect().clone();
+                    modelRect.x *=3;
+                    modelRect.y *=3;
+                    modelRect.width *=3;
+                    modelRect.height *=3;
+                    model.setRect(modelRect);
+                    model.setResult(value);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
         }
-        int newW = 0, newH = 0;
         if (callback != null) {
-
-            OrcModel orcModel = new OrcModel();
-            bitmap = Bitmap.createBitmap(result.cols(), result.rows(), Bitmap.Config.RGB_565);
-            Utils.matToBitmap(result, bitmap);
-            orcModel.setBitmap(bitmap);
-            orcModel.setResult(pageName);
-            orcModels.add(0, orcModel);
+//            OrcModel orcModel = new OrcModel();
+//            if (DEBUG) {
+//                bitmap = Bitmap.createBitmap(result.cols(), result.rows(), Bitmap.Config.RGB_565);
+//                Utils.matToBitmap(result, bitmap);
+//                orcModel.setBitmap(bitmap);
+//            }
+//            orcModel.setResult(pageName);
+//            orcModels.add(0, orcModel);
             callback.call(orcModels);
         }
-        Log.e(TAG, "discern: usedTime" + (System.currentTimeMillis() - start) + " newW:" + newW + " newH:" + newH);
+        Log.i("LogUtils", "discern: usedTime" + (System.currentTimeMillis() - start) +" pageName:"+pageName + " \nvalue:" +orcModels.toString());
     }
 
     private String parseName(String pageName) {
@@ -250,5 +266,4 @@ public class OnlyCardDiscern implements Runnable {
         return false;
     }
 
-    private static final String TAG = "OnlyCardDiscern";
 }

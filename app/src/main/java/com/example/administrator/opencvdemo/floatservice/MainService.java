@@ -1,6 +1,5 @@
 package com.example.administrator.opencvdemo.floatservice;
 
-import java.util.List;
 import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
@@ -16,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
+
 import com.example.administrator.opencvdemo.BaseApplication;
 import com.example.administrator.opencvdemo.R;
 import com.example.administrator.opencvdemo.util.AutoTool;
@@ -25,6 +25,10 @@ import com.example.administrator.opencvdemo.util.ScreenCapture;
 import com.example.module_orc.OpenCVHelper;
 import com.example.module_orc.OrcHelper;
 import com.example.module_orc.OrcModel;
+
+import java.util.List;
+
+import static com.example.administrator.opencvdemo.util.LaunchApp.SELF_APP;
 
 public class MainService extends Service {
 
@@ -189,7 +193,8 @@ public class MainService extends Service {
         toucherLayout.findViewById(R.id.tvLaunch).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LaunchApp.launchapp(getApplication());
+                LaunchApp.launchapp(getApplication(),SELF_APP);
+
                 // String packageName = SPUtils.getString("packageName");
                 // if (TextUtils.isEmpty(packageName)) {
                 //     packageName = LaunchApp.JPZMG_PACKAGE_NAME;
@@ -200,6 +205,7 @@ public class MainService extends Service {
         toucherLayout.findViewById(R.id.tvUpgrade).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                AutoTool.execShellCmd("input swipe 300 100 100 100");
                 // TaskUtil.upgrade();
                 //                AlarmService.set(MainService.this,60);
                 //                stopSelf();

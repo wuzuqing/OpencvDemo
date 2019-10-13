@@ -48,6 +48,7 @@ public class OrcHelper {
         boolean isMoble = Build.BRAND.toUpperCase().contains("Oppo".toUpperCase());
         File directory = Environment.getExternalStoragePublicDirectory(isMoble ? Environment.DIRECTORY_DCIM : Environment.DIRECTORY_MOVIES);
         rootDir = new File(directory, isMoble ? "/Screenshots" : "/image");
+
     }
 
     public File getTargetFile(String target) {
@@ -79,6 +80,8 @@ public class OrcHelper {
         OrcConfig.initFirst();
         DisplayMetrics metrics = mContext.getResources().getDisplayMetrics();
         OrcConfig.resetScreenSize(metrics.widthPixels, metrics.heightPixels);
+        copyLanguagePackageToSDCard("zwp");
+        copyLanguagePackageToSDCard("small");
     }
 
     private String copyLanguagePackageToSDCard(String langName) {
@@ -92,7 +95,7 @@ public class OrcHelper {
         File file = new File(filePath);
         if (file.exists()) {
             return file.getAbsolutePath();
-            //            file.delete();
+//                        file.delete();
         }
         InputStream inputStream = null;
         try {
@@ -120,7 +123,7 @@ public class OrcHelper {
      * @param bitmap 要识别的bitmap
      */
     public String orcText(Bitmap bitmap, String langName) {
-        copyLanguagePackageToSDCard(langName);
+//        copyLanguagePackageToSDCard(langName);
         String result;
         TessBaseAPI baseApi = apis.get(langName);
         if (baseApi == null) {

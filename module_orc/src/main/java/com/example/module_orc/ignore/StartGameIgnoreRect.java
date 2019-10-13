@@ -20,7 +20,6 @@ public class StartGameIgnoreRect implements IIgnoreRect {
     @Override
     public List<OrcModel> ignoreRect(List<Rect> rects) {
         List<OrcModel> result = new ArrayList<>();
-        //  {250, 446, 41x14}  {106, 525, 147x32}
         result.add(OrcConfig.append(startGame));
         result.add(OrcConfig.append(huanQu));
         return result;

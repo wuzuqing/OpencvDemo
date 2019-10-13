@@ -17,6 +17,7 @@ public class PaihangbangIgnoreRect implements IIgnoreRect {
     @Override
     public List<OrcModel> ignoreRect(List<Rect> rects) {
         List<OrcModel> result = new ArrayList<>();
+
         return result;
     }
 }

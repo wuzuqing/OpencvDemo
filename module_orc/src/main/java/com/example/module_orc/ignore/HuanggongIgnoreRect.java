@@ -15,7 +15,7 @@ import java.util.List;
  * 说明：皇宫
  */
 public class HuanggongIgnoreRect implements IIgnoreRect {
-    public static final Rect bottom = new Rect(220, 599, 90, 16);
+    public static final Rect bottom = new Rect(220, 595, 132, 27);
     @Override
     public List<OrcModel> ignoreRect(List<Rect> rects) {
         List<OrcModel> result = new ArrayList<>();
