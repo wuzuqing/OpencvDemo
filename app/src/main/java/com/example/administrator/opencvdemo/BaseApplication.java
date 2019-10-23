@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.util.DisplayMetrics;
 
+import com.example.administrator.opencvdemo.notroot.ServiceHelper;
 import com.example.administrator.opencvdemo.util.SPUtils;
 import com.example.module_orc.OrcHelper;
 
@@ -35,6 +36,7 @@ public class BaseApplication extends Application {
         mContext = this;
         SPUtils.init(this);
         OrcHelper.getInstance().init(this);
+        ServiceHelper.getInstance().init(this);
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         screenWidth = metrics.widthPixels;
         screenHeight = metrics.heightPixels;

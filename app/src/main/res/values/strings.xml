@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">OpencvDemo</string>
+    <string name="app_name">辅助服务</string>
+
+
+    <string name="accessibility_service_description">辅助服务描述</string>
+    <string name="accessibility_service_label">辅助服务</string>
+
 </resources>
