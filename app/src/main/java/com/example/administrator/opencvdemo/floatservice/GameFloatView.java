@@ -1,6 +1,5 @@
 package com.example.administrator.opencvdemo.floatservice;
 
-import java.util.List;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -9,16 +8,22 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import com.example.administrator.opencvdemo.BitmapPreviewActivity;
+
 import com.example.administrator.opencvdemo.R;
+import com.example.administrator.opencvdemo.activity.AssetsPointSettingActivity;
+import com.example.administrator.opencvdemo.activity.DialogActivity;
+import com.example.administrator.opencvdemo.notroot.EventHelper;
+import com.example.administrator.opencvdemo.notroot.WPZMGService3;
 import com.example.administrator.opencvdemo.util.AutoTool;
 import com.example.administrator.opencvdemo.util.HandlerUtil;
 import com.example.administrator.opencvdemo.util.LaunchApp;
 import com.example.administrator.opencvdemo.util.ScreenCapture;
+import com.example.administrator.opencvdemo.util.Util;
+import com.example.administrator.opencvdemo.v2.TaskState;
 import com.example.module_orc.OrcHelper;
 import com.example.module_orc.OrcModel;
 
-import static com.example.administrator.opencvdemo.util.LaunchApp.SELF_APP;
+import java.util.List;
 
 /**
  * 作者：士元
@@ -47,6 +52,7 @@ public class GameFloatView extends BaseFloatView {
     }
 
     private static final String TAG = "GameFloatView";
+
     @Override
     protected void bindView() {
         Log.d(TAG, "bindView: ");
@@ -67,20 +73,20 @@ public class GameFloatView extends BaseFloatView {
         findViewById(R.id.tvSetting).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Intent intent = new Intent(MainService.this, DialogActivity.class);
-                // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                // startActivity(intent);
-                // llPanel.setVisibility(View.GONE);
-                // tvShowOrHide.setText("显示");
+                Intent intent = new Intent(getContext(), DialogActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getContext().startActivity(intent);
+                llPanel.setVisibility(View.GONE);
+                tvShowOrHide.setText("显示");
             }
         });
         findViewById(R.id.tvStartSome).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // xiaoHao(true);
-                // ((TextView) v).setText(Util.isWPZMGServiceRunning ? "取消挂机" : "开始挂机");
-                // llPanel.setVisibility(View.GONE);
-                // tvShowOrHide.setText("显示");
+                xiaoHao(true);
+                ((TextView) v).setText(Util.isWPZMGServiceRunning ? "取消挂机" : "开始挂机");
+                llPanel.setVisibility(View.GONE);
+                tvShowOrHide.setText("显示");
             }
         });
         findViewById(R.id.tvOneTask).setOnClickListener(new View.OnClickListener() {
@@ -100,15 +106,7 @@ public class GameFloatView extends BaseFloatView {
         findViewById(R.id.tvStartOne).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //                Util.isWPZMGServiceRunning = !Util.isWPZMGServiceRunning;
-                //                Intent intent = new Intent(MainService.this, WPZMGService.class);
-                //                if (!Util.isWPZMGServiceRunning) {
-                //                    intent.putExtra("stop", true);
-                //                    Util.setResLastTime(0);
-                //                }
-                //                llPanel.setVisibility(View.GONE);
-                //                tvShowOrHide.setText("显示");
-                //                startService(intent);
+
                 HandlerUtil.async(new Runnable() {
                     @Override
                     public void run() {
@@ -116,16 +114,10 @@ public class GameFloatView extends BaseFloatView {
                         ScreenCapture.startCaptureSync();
                         long end = System.currentTimeMillis();
                         List<OrcModel> result = OrcHelper.getInstance().executeCallSync(ScreenCapture.get().getCurrentBitmap());
-                        if (result.size()>=2){
-                            AutoTool.execShellCmd(AutoTool.clickFloat(result.get(1).getRect()));
+                        if (result.size() >= 1) {
+                            AutoTool.execShellCmd(result.get(0).getRect());
                         }
-                        Log.d(TAG, "used:"+(end-start)+" call: " + result.toString());
-                        post(new Runnable() {
-                            @Override
-                            public void run() {
-                                BitmapPreviewActivity.show(getContext());
-                            }
-                        });
+                        Log.d(TAG, "used:" + (end - start) + " call: " + result.toString());
                     }
                 });
             }
@@ -133,23 +125,24 @@ public class GameFloatView extends BaseFloatView {
         findViewById(R.id.tvLaunch).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LaunchApp.launchapp(getContext(),SELF_APP);
+                LaunchApp.launchapp(getContext());
 
             }
         });
         findViewById(R.id.tvUpgrade).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AutoTool.execShellCmd("input swipe 300 100 100 100");
+//                AutoTool.execShellCmd("input swipe 300 100 100 100");
+                EventHelper.click(300,400);
 
             }
         });
         findViewById(R.id.tvTestSetting).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Intent intent = new Intent(MainService.this, AssetsPointSettingActivity.class);
-                // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                // startActivity(intent);
+                Intent intent = new Intent(getContext(), AssetsPointSettingActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getContext().startActivity(intent);
             }
         });
 
@@ -162,15 +155,21 @@ public class GameFloatView extends BaseFloatView {
         findViewById(R.id.tvTest).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //                xiaoHao(false);
-                HandlerUtil.async(new Runnable() {
-                    @Override
-                    public void run() {
 
-                    }
-                });
             }
         });
+    }
+
+    private void xiaoHao(boolean some) {
+        Util.isWPZMGServiceRunning = !Util.isWPZMGServiceRunning;
+        Intent intent2 = new Intent(getContext(), WPZMGService3.class);
+        if (!Util.isWPZMGServiceRunning) {
+            Util.setResLastTime(0);
+            TaskState.isWorking = false;
+            getContext().stopService(intent2);
+        } else {
+            getContext().startService(intent2);
+        }
     }
 
     public void hidePanel() {

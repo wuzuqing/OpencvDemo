@@ -18,12 +18,12 @@ public interface Constant {
     int TASK_REN_WU_JIANG_LU = 5;//任务奖励
     int TASK_GUAN_KA = 6;//关卡
     int TASK_SHU_YUAN = 7;//书院
-//    int TASK_YAN_HUI = 8;//宴会
+    //    int TASK_YAN_HUI = 8;//宴会
     int TASK_CHEGN_JIU = 9;//成就
     int TASK_REGISTER = 10;//注册
     int TIME_LIMIT_REWARD = 11;//限时奖励
     int EMAIL = 12;//邮件
-//    int XUN_FANG = 13;//寻访
+    //    int XUN_FANG = 13;//寻访
     int SUI_JI_ZHAO_HUAN = 14;//随机召唤
     int LIAN_MENG_GAO_JIAN = 15;//联盟高建
     int GUAN_YAN = 16;//官宴
@@ -178,6 +178,8 @@ public interface Constant {
     String CHENG_JIU_GET_5 = "CHENG_JIU_GET_5";
 
     String CURRENT_USER_INFO  = "CURRENT_USER_INFO";
+    String CURRENT_TASK_STEP  = "CURRENT_TASK_STEP";
+    String CURRENT_PAGE  = "CURRENT_PAGE";
     String REGISTER_CLICK  = "REGISTER_CLICK";
     String REALY_NAME_OK = "REALY_NAME_OK";
     String REGISTER_OK = "REGISTER_OK";
@@ -246,12 +248,12 @@ public interface Constant {
 
 
     int RESET_TASK = 200;
-     int TASK_ERROR = 100;
-     int TASK_TOAST = 500;
-     int TASK_STOP = 2500;
-     int TASK_TOAST_COUNT_DOWN = 1500;
-     int SCREEN_OFF = 999;
-     int SHOW_ORC_PAGE = 300;
+    int TASK_ERROR = 100;
+    int TASK_TOAST = 500;
+    int TASK_STOP = 2500;
+    int TASK_TOAST_COUNT_DOWN = 1500;
+    int SCREEN_OFF = 999;
+    int SHOW_ORC_PAGE = 300;
 //     int SCREEN_ON = 992;
 
 

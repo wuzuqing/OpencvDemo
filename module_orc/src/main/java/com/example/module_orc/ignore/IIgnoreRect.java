@@ -18,5 +18,5 @@ public interface IIgnoreRect {
      * 排除无效区域
      */
 //    boolean ignoreRect(Rect rect);
-    List<OrcModel> ignoreRect(List<Rect> rects );
+    List<OrcModel> ignoreRect(List<Rect> rects);
 }

@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -136,9 +135,7 @@ public abstract class BaseFloatView extends FrameLayout {
             case MotionEvent.ACTION_UP:
                 break;
         }
-        Log.d(TAG, "onTouchEvent: "+event.getAction());
         return super.onTouchEvent(event);
     }
 
-    private static final String TAG = "BaseFloatView";
 }

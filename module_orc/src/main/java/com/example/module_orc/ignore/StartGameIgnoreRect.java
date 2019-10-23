@@ -15,8 +15,8 @@ import java.util.List;
  * 说明：进入游戏
  */
 public class StartGameIgnoreRect implements IIgnoreRect {
-    public static final Rect  startGame = new Rect(106, 525, 147, 32);
-    public static final Rect  huanQu = new Rect(250, 446, 41, 14);
+    public static final Rect startGame = new Rect(106, 525, 147, 32);
+    public static final Rect huanQu = new Rect(250, 446, 41, 14);
     @Override
     public List<OrcModel> ignoreRect(List<Rect> rects) {
         List<OrcModel> result = new ArrayList<>();

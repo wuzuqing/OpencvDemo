@@ -1,8 +1,6 @@
 package com.example.administrator.opencvdemo.notroot;
 
-import java.util.List;
 import android.accessibilityservice.AccessibilityService;
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -14,7 +12,9 @@ import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
-@SuppressLint("Registered") public class TaskAccessibilityService extends AccessibilityService {
+import java.util.List;
+
+public class TaskAccessibilityService extends AccessibilityService {
 
 
     /**
@@ -188,6 +188,9 @@ import android.view.accessibility.AccessibilityNodeInfo;
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         EventHelper.setCurrentEvent(event);
+        if (event.getPackageName().toString().equals("com.tencent.mm")){
+            EventHelper.click(this,200,300);
+        }
     }
 
     @Override

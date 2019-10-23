@@ -11,4 +11,17 @@
 
     <!-- 在线绿色 -->
     <color name="green_online">#5fb41b</color>
+
+    <!-- 橙 -->
+    <color name="orange">#f19149</color>
+    <!-- 褐 -->
+    <color name="brown">#996c33</color>
+
+    <!-- 黑绿 -->
+    <color name="green">#007130</color>
+    <!-- 黑色 -->
+    <color name="black">#000000</color>
+
+    <!-- 白色 -->
+    <color name="white">#ffffff</color>
 </resources>

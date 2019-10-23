@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
-import android.text.TextUtils;
 import android.util.ArrayMap;
 import android.util.Log;
 
@@ -40,7 +39,9 @@ public class LaunchApp {
     public static final String SELF_APP = "com.itant.autoclick";
 
     public static String APP_PACKAGE_NAME = JPZMG_PACKAGE_NAME;
-
+    public static void launchApp(){
+        launchapp(BaseApplication.getAppContext(), LaunchApp.JPZMG_PACKAGE_NAME);    //启动游戏
+    }
     //跳转页面的方法
     public static void launchapp(Context context) {
         launchapp(context, APP_PACKAGE_NAME);
@@ -48,12 +49,7 @@ public class LaunchApp {
 
     //跳转页面的方法
     public static void launchapp(Context context, String packageName) {
-        String packageName1 = SPUtils.getString("packageName");
-        if (TextUtils.isEmpty(packageName1)) {
-            packageName1 = packageName;
-        }
-        APP_PACKAGE_NAME = packageName1;
-        Intent intent = context.getPackageManager().getLaunchIntentForPackage(packageName1);
+        Intent intent = context.getPackageManager().getLaunchIntentForPackage(packageName);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
         // LoadingActivity.launch(context, packageName1, 0);

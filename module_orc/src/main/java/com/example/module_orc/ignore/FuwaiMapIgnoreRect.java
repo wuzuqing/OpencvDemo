@@ -15,9 +15,9 @@ import java.util.List;
  * 说明：府外
  */
 public class FuwaiMapIgnoreRect implements IIgnoreRect {
-    public static  Rect huangGongIndex = new Rect(134, 366, 93, 20);
-    public static  Rect shuYuan = new Rect(134, 366, 93, 20);
-    public static  Rect guoJia = new Rect(134, 366, 93, 20);
+    public static Rect huangGongIndex = new Rect(134, 366, 93, 20);
+    public static Rect shuYuan = new Rect(134, 366, 93, 20);
+    public static Rect guoJia = new Rect(134, 366, 93, 20);
 
     @Override
     public List<OrcModel> ignoreRect(List<Rect> rects) {

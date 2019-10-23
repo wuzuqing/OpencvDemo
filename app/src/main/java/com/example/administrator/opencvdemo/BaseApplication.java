@@ -5,10 +5,16 @@ import android.content.Context;
 import android.util.DisplayMetrics;
 
 import com.example.administrator.opencvdemo.notroot.ServiceHelper;
+import com.example.administrator.opencvdemo.util.ChengJiuArray;
+import com.example.administrator.opencvdemo.util.CmdData;
+import com.example.administrator.opencvdemo.util.LogUtils;
 import com.example.administrator.opencvdemo.util.SPUtils;
+import com.example.administrator.opencvdemo.util.Util;
+import com.example.administrator.opencvdemo.youtu.StaticVal;
 import com.example.module_orc.OrcHelper;
 
 public class BaseApplication extends Application {
+    public static int densityDpi = 480;
     private static boolean isShowPanel;
     public static boolean isShowPanel() {
         return isShowPanel;
@@ -38,7 +44,18 @@ public class BaseApplication extends Application {
         OrcHelper.getInstance().init(this);
         ServiceHelper.getInstance().init(this);
         DisplayMetrics metrics = getResources().getDisplayMetrics();
+
         screenWidth = metrics.widthPixels;
         screenHeight = metrics.heightPixels;
+        LogUtils.logd("densityDpi:"+  metrics.densityDpi );
+        Util.init();
+        CmdData.init();
+        StaticVal.init();
+        ChengJiuArray.init();
+    }
+
+
+    public static float getRatioY(float value) {
+        return getScreenHeight()*value;
     }
 }

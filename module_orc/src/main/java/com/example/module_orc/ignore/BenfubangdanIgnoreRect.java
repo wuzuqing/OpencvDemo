@@ -16,8 +16,9 @@ import java.util.List;
  */
 public class BenfubangdanIgnoreRect implements IIgnoreRect {
     public static Rect moBai = new Rect(274, 524, 38, 13);
-    public static Rect guanKa = new Rect(126, 115, 50, 13);
-    public static Rect qinMi = new Rect(222, 115, 50, 13);
+    public static Rect moBaiMax = new Rect(274*3, 524*3, 38*3, 13*3);
+    public static Rect guanKa = new Rect(126, 118, 50, 13);
+    public static Rect qinMi = new Rect(222, 118, 50, 13);
     @Override
     public List<OrcModel> ignoreRect(List<Rect> rects) {
         List<OrcModel> result = new ArrayList<>();

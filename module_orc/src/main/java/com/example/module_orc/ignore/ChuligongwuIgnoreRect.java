@@ -16,9 +16,9 @@ import java.util.List;
  * 说明：处理公务
  */
 public class ChuligongwuIgnoreRect implements IIgnoreRect {
-  public  static   Point zhengwuNum = new Point(250, 216);
-    public  static    Point getZhengji = new Point(26, 586);
-    public  static    Point getOther = new Point(26, 530);
+  public  static Point zhengwuNum = new Point(250, 216);
+    public  static Point getZhengji = new Point(26, 586);
+    public  static Point getOther = new Point(26, 530);
 
     @Override
     public List<OrcModel> ignoreRect(List<Rect> rects) {

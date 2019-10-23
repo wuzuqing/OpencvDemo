@@ -4,8 +4,9 @@ import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.GestureDescription;
 import android.annotation.TargetApi;
 import android.graphics.Path;
-import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
+
+import com.example.administrator.opencvdemo.util.LogUtils;
 
 /**
  * 作者：士元
@@ -54,6 +55,16 @@ public class EventHelper {
     }
 
     /**
+     * 点击
+     *
+     * @param x x坐标
+     * @param y y坐标
+     */
+    public static void click(int x, int y) {
+        click(mService, x, y);
+    }
+
+    /**
      * 滑动
      *
      * @param service 辅助服务
@@ -94,11 +105,12 @@ public class EventHelper {
     }
 
     public static void log(String msg) {
-        Log.d(TAG, msg);
+        LogUtils.logd( msg);
     }
 
     public static void setCurrentEvent(AccessibilityEvent event) {
         currentPackageName = event.getPackageName().toString();
+        LogUtils.logd("setCurrentEvent:"+currentPackageName);
     }
 
     private static TaskAccessibilityService mService;
@@ -115,9 +127,9 @@ public class EventHelper {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                long start = System.currentTimeMillis()+1000;
-                log("testClick:"+isServiceRunning);
-                while (isServiceRunning && System.currentTimeMillis()<start) {
+                long start = System.currentTimeMillis() + 1000;
+                log("testClick:" + isServiceRunning);
+                while (isServiceRunning && System.currentTimeMillis() < start) {
                     click(mService, 600, 600);
                     sleep(20);
                 }
@@ -131,6 +143,17 @@ public class EventHelper {
             Thread.sleep(time);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void keyBack() {
+        if (mService!=null){
+            mService.performBackClick();
+        }
+    }
+    public static void keyBack(int key) {
+        if (mService!=null){
+//            mService.per(key);
         }
     }
 }

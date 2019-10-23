@@ -20,7 +20,6 @@ import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
-import com.example.administrator.opencvdemo.BaseApplication;
 import com.example.administrator.opencvdemo.floatservice.RequestPermissionsActivity;
 import com.example.module_orc.IDiscernCallback;
 import com.example.module_orc.OrcHelper;
@@ -161,7 +160,8 @@ public class ScreenCapture {
                 ImageReader.newInstance(
                     mScreenWidth,
                     mScreenHeight,
-                    SPUtils.getInt("PixelFormat",PixelFormat.RGBA_8888),
+                        PixelFormat.RGBA_8888,
+//                    SPUtils.getInt("PixelFormat",PixelFormat.RGBA_8888),
                     2);
         } catch (Exception e) {
             e.printStackTrace();

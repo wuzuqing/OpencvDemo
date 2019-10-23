@@ -15,7 +15,7 @@ import java.util.List;
  * 说明：道具
  */
 public class DaojuIgnoreRect implements IIgnoreRect {
-  public static  final   Rect daojuClose = new Rect(298, 184, 59, 37);
+  public static  final Rect daojuClose = new Rect(298, 184, 59, 37);
     @Override
     public List<OrcModel> ignoreRect(List<Rect> rects) {
         List<OrcModel> result = new ArrayList<>();
