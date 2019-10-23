@@ -170,6 +170,9 @@ public class OrcHelper {
     }
 
     public List<OrcModel> executeCallSync(final Bitmap bitmap) {
+        if (bitmap==null){
+            return new ArrayList<>();
+        }
         final List<OrcModel> result = new ArrayList<>();
         OnlyCardDiscern discern = new OnlyCardDiscern(bitmap, "zwp", "", new IDiscernCallback() {
             @Override

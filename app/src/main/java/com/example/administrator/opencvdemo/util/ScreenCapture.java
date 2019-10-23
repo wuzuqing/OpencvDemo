@@ -20,6 +20,7 @@ import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import com.example.administrator.opencvdemo.BaseApplication;
 import com.example.administrator.opencvdemo.floatservice.RequestPermissionsActivity;
 import com.example.module_orc.IDiscernCallback;
 import com.example.module_orc.OrcHelper;
@@ -118,7 +119,11 @@ public class ScreenCapture {
      * 同步
      */
     public static void startCaptureSync() {
-        get()._startCapture(false, 200);
+        try {
+            get()._startCapture(false, 50);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -152,7 +157,12 @@ public class ScreenCapture {
 
     private void createImageReader() {
         try {
-            mImageReader = ImageReader.newInstance(mScreenWidth, mScreenHeight, PixelFormat.RGBA_8888, 2);
+            mImageReader =
+                ImageReader.newInstance(
+                    mScreenWidth,
+                    mScreenHeight,
+                    SPUtils.getInt("PixelFormat",PixelFormat.RGBA_8888),
+                    2);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -183,25 +193,30 @@ public class ScreenCapture {
     }
 
     private void _startCapture(boolean isAsyn, long time) {
-        if (mImageReader == null) {
-            createImageReader();
-        }
-        Image image = mImageReader.acquireLatestImage();
-        startTime = System.currentTimeMillis();
-        if (image == null) {
-            startScreenShot(isAsyn);
-        } else {
-            if (isAsyn) {
-                SaveTask mSaveTask = new SaveTask();
-                mSaveTask.execute(image);
+        try {
+            if (mImageReader == null) {
+                createImageReader();
+            }
+            Image image = mImageReader.acquireLatestImage();
+            startTime = System.currentTimeMillis();
+            if (image == null) {
+                startScreenShot(isAsyn);
             } else {
-                try {
-                    Thread.sleep(time);
-                    mCurrentBitmap =   getBitmap(image);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                if (isAsyn) {
+                    SaveTask mSaveTask = new SaveTask();
+                    mSaveTask.execute(image);
+                } else {
+                    try {
+                        Thread.sleep(time);
+                        mCurrentBitmap = getBitmap(image);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
+        }catch (Exception e){
+            e.printStackTrace();
+            SPUtils.setInt("PixelFormat",PixelFormat.RGBX_8888);
         }
     }
 
@@ -239,6 +254,7 @@ public class ScreenCapture {
     }
 
     private Bitmap mCurrentBitmap;
+
     public class SaveTask extends AsyncTask<Image, Void, Bitmap> {
 
         @Override
@@ -305,7 +321,6 @@ public class ScreenCapture {
         mVirtualDisplay = null;
     }
 
-
     private static Bitmap getBitmap(Image image) {
         int width = image.getWidth();
         int height = image.getHeight();
@@ -319,8 +334,19 @@ public class ScreenCapture {
         Bitmap bitmap = Bitmap.createBitmap(width + rowPadding / pixelStride, height, Bitmap.Config.ARGB_8888);
         bitmap.copyPixelsFromBuffer(buffer);
         bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height);
+        // savePicture(bitmap);
         image.close();
         return bitmap;
+    }
+
+    private static void savePicture(Bitmap bitmap) {
+        try {
+            FileOutputStream stream = new FileOutputStream(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC) + "/aa.jpg");
+            bitmap.compress( Bitmap.CompressFormat.JPEG,80,stream);
+            stream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static byte[] getBitmapByte(Bitmap bitmap) {

@@ -88,9 +88,11 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: ");
         File[] files = imagePath.listFiles();
         fileList = new ArrayList<>();
-        for (File file : files) {
-            if (file.isFile() && ( file.getName().endsWith(".jpg") ||  file.getName().endsWith(".png"))) {
-                fileList.add(file);
+        if (files!=null){
+            for (File file : files) {
+                if (file.isFile() && ( file.getName().endsWith(".jpg") ||  file.getName().endsWith(".png"))) {
+                    fileList.add(file);
+                }
             }
         }
         btn.setOnClickListener(new View.OnClickListener() {
