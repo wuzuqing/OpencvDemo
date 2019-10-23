@@ -62,6 +62,7 @@
             android:name=".floatservice.MainService"
             />
 
+        <activity android:name=".BitmapPreviewActivity" />
 
         <service
             android:name=".notroot.TaskAccessibilityService"

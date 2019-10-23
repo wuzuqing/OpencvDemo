@@ -2,12 +2,14 @@ package com.example.administrator.opencvdemo.floatservice;
 
 import java.util.List;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import com.example.administrator.opencvdemo.BitmapPreviewActivity;
 import com.example.administrator.opencvdemo.R;
 import com.example.administrator.opencvdemo.util.AutoTool;
 import com.example.administrator.opencvdemo.util.HandlerUtil;
@@ -118,6 +120,12 @@ public class GameFloatView extends BaseFloatView {
                             AutoTool.execShellCmd(AutoTool.clickFloat(result.get(1).getRect()));
                         }
                         Log.d(TAG, "used:"+(end-start)+" call: " + result.toString());
+                        post(new Runnable() {
+                            @Override
+                            public void run() {
+                                BitmapPreviewActivity.show(getContext());
+                            }
+                        });
                     }
                 });
             }
