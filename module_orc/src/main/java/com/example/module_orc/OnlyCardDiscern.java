@@ -30,7 +30,7 @@ public class OnlyCardDiscern implements Runnable {
     private long start;
     private IDiscernCallback callback;
     protected Size mSize = new Size(360, 640);
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
     public OnlyCardDiscern(Bitmap bitmap1, String langName, IDiscernCallback callback) {
         this.bitmap1 = bitmap1;
         this.langName = langName;
@@ -67,6 +67,7 @@ public class OnlyCardDiscern implements Runnable {
         //二值化
         Imgproc.threshold(dst, dst, OrcConfig.thresh, 255, OrcConfig.threshType);
         threshold = dst.clone();
+     Mat   threshold1 = dst.clone();
         //      //膨胀
         Mat erodeElement = Imgproc.getStructuringElement(Imgproc.MARKER_CROSS, new Size(OrcConfig.width, 1));
         Imgproc.erode(dst, dst, erodeElement);
@@ -91,7 +92,7 @@ public class OnlyCardDiscern implements Runnable {
             }
             rects.add(rect);
             if (DEBUG) {
-                Imgproc.rectangle(src, rect, new Scalar(0, 255, 0), 1, 8, 0);
+                Imgproc.rectangle(threshold1, rect, new Scalar(0, 255, 0), 1, 8, 0);
             }
         }
         String pageName = "1";
@@ -132,7 +133,7 @@ public class OnlyCardDiscern implements Runnable {
             ignoreRect = IgnoreRectHelper.getInstance().getIgnoreRect(pageName);
         }
 //        Log.e(TAG, "run: pageName:" + pageName + " ignoreRect:" + ignoreRect);
-        Mat result = src;
+        Mat result = threshold1;
         OrcConfig.pageName = pageName;
         List<OrcModel> orcModels = new ArrayList<>();
         if (ignoreRect != null) {
@@ -165,14 +166,14 @@ public class OnlyCardDiscern implements Runnable {
             }
         }
         if (callback != null) {
-//            OrcModel orcModel = new OrcModel();
-//            if (DEBUG) {
-//                bitmap = Bitmap.createBitmap(result.cols(), result.rows(), Bitmap.Config.RGB_565);
-//                Utils.matToBitmap(result, bitmap);
-//                orcModel.setBitmap(bitmap);
-//            }
-//            orcModel.setResult(pageName);
-//            orcModels.add(0, orcModel);
+            OrcModel orcModel = new OrcModel();
+            if (DEBUG) {
+                bitmap = Bitmap.createBitmap(result.cols(), result.rows(), Bitmap.Config.RGB_565);
+                Utils.matToBitmap(result, bitmap);
+                orcModel.setBitmap(bitmap);
+            }
+            orcModel.setResult(pageName);
+            orcModels.add(0, orcModel);
             callback.call(orcModels);
         }
         Log.i("LogUtils", "discern: usedTime" + (System.currentTimeMillis() - start) +" pageName:"+pageName + " \nvalue:" +orcModels.toString());

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.administrator.opencvdemo.BitmapPreviewActivity;
 import com.example.administrator.opencvdemo.R;
 import com.example.administrator.opencvdemo.activity.AssetsPointSettingActivity;
 import com.example.administrator.opencvdemo.activity.DialogActivity;
@@ -117,6 +118,7 @@ public class GameFloatView extends BaseFloatView {
                         if (result.size() >= 1) {
                             AutoTool.execShellCmd(result.get(0).getRect());
                         }
+                        BitmapPreviewActivity.show(getContext());
                         Log.d(TAG, "used:" + (end - start) + " call: " + result.toString());
                     }
                 });

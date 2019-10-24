@@ -1,5 +1,7 @@
 package com.example.module_orc;
 
+import android.util.Log;
+
 import org.opencv.core.Rect;
 
 import java.util.List;
@@ -18,11 +20,12 @@ class GetPageByOther {
     //  {298, 184, 59x37}
 
         Rect mainPage1 = new Rect(158, 58, 32, 20);
+        Rect startGame1 = new Rect(121, 16, 119, 38);
         Rect mainPage2 = new Rect(102, 592, 78, 44);
         String page = "";
         int flag = 0;
         for (Rect rect : rects) {
-//            Log.e(TAG, "ignoreRect: " + rect.toString());
+            Log.e(TAG, "ignoreRect: " + rect.toString());
             if (flag == 1) {
                 // 出府
                 if (rect.width == 98 && rect.height == 150) {
@@ -30,25 +33,31 @@ class GetPageByOther {
                     break;
                 }
             }
-            if (startGame.equals(rect)) {
+            if (equals(startGame,rect)) {
                 return "进入游戏";
-            } else if (gameNoice.equals(rect)) {
+            } else if (equals(gameNoice,rect)) {
                 return "游戏公告";
-            } else if (loginGame.equals(rect) || loginGame1.equals(rect)) {
+            } else if (equals(loginGame,rect) || equals(loginGame1,rect)) {
                 return "登录";
-            } else if (mainPage1.equals(rect)) {
+            } else if (equals(mainPage1,rect)) {
                 flag = 1;
                 page = "府外";
-            } else if (mainPage2.equals(rect)) {
+            } else if (equals(mainPage2,rect)) {
                 return getMainPage(rects);
-            } else if (bottom.equals(rect)) {
+            } else if (equals(bottom,rect)) {
                 return "皇宫";
-            }else if (daojuClose.equals(rect)){
+            }else if (equals(daojuClose,rect)){
                 return "道具使用";
+            }else if (equals(startGame1,rect)){
+                return "本服榜单";
             }
 
         }
         return page;
+    }
+
+    private static boolean equals(Rect startGame, Rect rect) {
+        return startGame.x == rect.x && startGame.width == rect.width ;
     }
 
     private static String getMainPage(List<Rect> rects) {
