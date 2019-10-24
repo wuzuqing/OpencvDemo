@@ -50,9 +50,9 @@ public class MobaiTaskElement extends AbsTaskElement {
             doBenfuBangDan = false;
             step = 1;
             EventHelper.swipeHor(BaseApplication.getScreenWidth() - 50, 50,400);
-            Thread.sleep(600);
+            Thread.sleep(1000);
             EventHelper.swipeHor(300, 600,400);
-            Thread.sleep(600);
+            Thread.sleep(1000);
             AutoTool.execShellCmd(paiHang);
             Thread.sleep(800);
             return false;

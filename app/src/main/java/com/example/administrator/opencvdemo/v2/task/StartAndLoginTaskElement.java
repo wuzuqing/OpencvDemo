@@ -46,7 +46,9 @@ public class StartAndLoginTaskElement extends AbsTaskElement {
             pageData = Util.getBitmapAndPageData();
             if (checkPage("登录")  ) {
                 break;
-            }else if (check(8)){
+            }else if (checkPage("府内") || checkPage("府外")){
+                return false;
+            } else if (check(8)){
 
                 return true;
             }

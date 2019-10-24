@@ -44,18 +44,20 @@ public class FengluTaskElement extends AbsTaskElement {
             Thread.sleep(200);
             return false;
         }
-        if (Util.checkColor(TaskUtil.bitmap, getFengLu)) {
-            AutoTool.execShellCmd(huangGongClose);
-            Thread.sleep(800);
-            AutoTool.execShellCmd(huangGongClose);
-            Thread.sleep(1200);
-            AutoTool.execShellCmdChuFu();
-            Thread.sleep(800);
-          return true;
-        } else {
-            AutoTool.execShellCmd(getFengLu);
-            Thread.sleep(800);
-        }
-        return false;
+        AutoTool.execShellCmd(getFengLu);
+        Thread.sleep(200);
+        AutoTool.execShellCmd(huangGongClose);
+        Thread.sleep(200);
+        AutoTool.execShellCmd(huangGongClose);
+        // Thread.sleep(200);
+        // AutoTool.execShellCmdChuFu();
+        Thread.sleep(2400);
+        // if (Util.checkColor(TaskUtil.bitmap, getFengLu)) {
+        //
+        //   return true;
+        // } else {
+        //
+        // }
+        return true;
     }
 }

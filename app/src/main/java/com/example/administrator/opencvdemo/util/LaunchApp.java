@@ -167,4 +167,8 @@ public class LaunchApp {
 
         return cn.getClassName();
     }
+
+    public static void killApp() {
+
+    }
 }
