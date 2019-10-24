@@ -18,21 +18,6 @@ public class JoinGameTaskElement extends AbsTaskElement {
     @Override
     protected boolean doTask() throws Exception {
         // 检查是否有更新
-//                    while (hasGengXin) {               //检查进入游戏的环境
-//                        if (TaskUtil.isDestory) return;
-//                        LogUtils.logd("hasGengXin:" + hasGengXin);
-//                        TaskUtil.sleep(2200);
-//                        Util.getCapBitmapNew();
-//                        if (Util.checkColor(genXin)) {
-//                            AutoTool.execShellCmd(dialogClose2);  //维护公告
-//                            Thread.sleep(TaskUtil.isNewApi ? 1200 : 600);
-//                            break;
-//                        } else if (Util.checkColor(startGame)) {
-//                            break;
-//                        }
-//                        if (TaskUtil.check(TaskUtil.failCount, 12)) break;
-//
-//                    }
 
         Log.d(TAG, "doTask: start");
         while (TaskState.isWorking) {

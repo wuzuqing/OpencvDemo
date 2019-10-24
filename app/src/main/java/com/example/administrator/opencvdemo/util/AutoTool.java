@@ -1,6 +1,5 @@
 package com.example.administrator.opencvdemo.util;
 
-
 import android.os.Build;
 
 import com.example.administrator.opencvdemo.BaseApplication;
@@ -23,8 +22,6 @@ public class AutoTool {
 
     /**
      * 判断当前手机是否有ROOT权限
-     *
-     * @return
      */
     public static boolean isRoot() {
         boolean bool = false;
@@ -43,8 +40,6 @@ public class AutoTool {
 
     /**
      * 执行shell命令
-     *
-     * @param cmd
      */
     public static void execShellCmd(String cmd) {
         try {
@@ -65,7 +60,6 @@ public class AutoTool {
         }
     }
 
-
     public static void keyEvent(int code) {
         if (isNewApi) {
             EventHelper.keyBack();
@@ -80,16 +74,14 @@ public class AutoTool {
         return Build.VERSION.SDK_INT >= 24;
     }
 
-
     private static boolean usedFloatRatio = false;
 
     public static void execShellCmd(PointModel model) {
         if (usedFloatRatio) {
             //            execShellCmd(CmdData.click(model.getFloatX(), model.getFloatY()));
         } else {
-            execShellCmd(CmdData.clickInt(model.getX(), model.getY()));
+            execShellCmdXy(model.getX(),model.getY());
         }
-
     }
 
     public static void execShellCmd(Rect model) {
@@ -101,16 +93,16 @@ public class AutoTool {
             //            execShellCmd(CmdData.click(model.getFloatX(), model.getFloatY()));
         } else {
             if (isNewApi) {
-                EventHelper.click(x, y);
+                EventHelper.click(getXRatio(x / 1080f), getYRatio(y / 1920f));
             } else {
                 execShellCmd(CmdData.clickInt(x, y));
             }
         }
-
     }
 
     public static void execShellCmdClose() {
-        execShellCmd(CmdData.screenClose);
+        PointModel pointModel = CmdData.get(Constant.SCREEN_CLOSE);
+        execShellCmdXy(pointModel.getX(), pointModel.getY());
     }
 
     private static PointModel chuFUPointModel;
@@ -122,13 +114,12 @@ public class AutoTool {
         execShellCmd(chuFUPointModel);
     }
 
-
     public static void execShellCmd(int length, int key) throws InterruptedException {
         for (int i = 0; i < length; i++) {
             Thread.sleep(200);
-            if (isNewApi){
+            if (isNewApi) {
                 EventHelper.keyBack();
-            }else{
+            } else {
                 AutoTool.execShellCmd("input keyevent " + key); //
             }
         }
@@ -142,7 +133,6 @@ public class AutoTool {
         return String.format(Locale.getDefault(), "input tap %d %d", getXRatio(x), getYRatio(y));
     }
 
-
     public static int getXRatio(float ratio) {
         return (int) (BaseApplication.getScreenWidth() * ratio);
     }
@@ -153,10 +143,6 @@ public class AutoTool {
 
     /**
      * 字符串拼接
-     *
-     * @param format
-     * @param args
-     * @return
      */
     private static String formatCmd(String format, Object... args) {
         return String.format(Locale.CHINA, format, args);

@@ -183,7 +183,12 @@ public class Util implements Constant {
     private static List<PointModel> getPointModels(String... keys) {
         List<PointModel> data = new ArrayList<>();
         for (String key : keys) {
-            data.add(CmdData.get(key));
+            PointModel pointModel = CmdData.get(key);
+            if (pointModel==null){
+                data.add(new PointModel("11","22"));
+            }else{
+                data.add(pointModel);
+            }
         }
         return data;
     }

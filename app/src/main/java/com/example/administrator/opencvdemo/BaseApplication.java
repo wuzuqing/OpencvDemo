@@ -48,8 +48,8 @@ public class BaseApplication extends Application {
         screenWidth = metrics.widthPixels;
         screenHeight = metrics.heightPixels;
         LogUtils.logd("densityDpi:"+  metrics.densityDpi );
-        Util.init();
         CmdData.init();
+        Util.init();
         StaticVal.init();
         ChengJiuArray.init();
     }

@@ -48,7 +48,7 @@ public class CmdData implements Constant {
         String string = "";
         if (TextUtils.isEmpty(string)) {
             if (BaseApplication.getScreenWidth() == 1080) {
-                if (BaseApplication.densityDpi==480){
+                if (BaseApplication.densityDpi==420){
                     if (TextUtils.isEmpty(string)) {
                         LogUtils.logd("getJsonFromMusic:" + string);
                         string = JsonUtils.getJsonFromMusic("x_1080x1920.json");
@@ -60,7 +60,7 @@ public class CmdData implements Constant {
                     string = JsonUtils.getJson("x_1080x1920_480.json", BaseApplication.getAppContext());
                     LogUtils.logd("x_1080x1920_480");
                 }
-
+                string = JsonUtils.getJson("x_1080x1920_480.json", BaseApplication.getAppContext());
                 if (TextUtils.isEmpty(string)) {
                     string = SPUtils.getString(COORDINATE_KEY);
                 }

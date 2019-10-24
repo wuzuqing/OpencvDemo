@@ -6,6 +6,7 @@ import android.util.Log;
 import com.example.administrator.opencvdemo.BaseApplication;
 import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.TaskModel;
+import com.example.administrator.opencvdemo.notroot.EventHelper;
 import com.example.administrator.opencvdemo.util.AutoTool;
 import com.example.administrator.opencvdemo.util.CmdData;
 import com.example.administrator.opencvdemo.util.Util;
@@ -48,9 +49,9 @@ public class MobaiTaskElement extends AbsTaskElement {
         } else if (checkPage("府外") && step==0) {
             doBenfuBangDan = false;
             step = 1;
-            AutoTool.execShellCmd(CmdData.swipe(BaseApplication.getScreenWidth() - 50, 50));
+            EventHelper.swipeHor(BaseApplication.getScreenWidth() - 50, 50,400);
             Thread.sleep(600);
-            AutoTool.execShellCmd(CmdData.swipe(300, 600));
+            EventHelper.swipeHor(300, 600,400);
             Thread.sleep(600);
             AutoTool.execShellCmd(paiHang);
             Thread.sleep(800);

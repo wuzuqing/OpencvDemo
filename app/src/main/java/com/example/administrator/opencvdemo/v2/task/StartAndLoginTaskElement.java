@@ -3,6 +3,7 @@ package com.example.administrator.opencvdemo.v2.task;
 
 import com.example.administrator.opencvdemo.model.TaskModel;
 import com.example.administrator.opencvdemo.model.UserInfo;
+import com.example.administrator.opencvdemo.notroot.EventHelper;
 import com.example.administrator.opencvdemo.util.AutoTool;
 import com.example.administrator.opencvdemo.util.CmdData;
 import com.example.administrator.opencvdemo.util.LaunchApp;
@@ -54,15 +55,8 @@ public class StartAndLoginTaskElement extends AbsTaskElement {
         if (TaskState.needContinue) return false;
         //输入账号
         UserInfo userInfo = TaskState.get().getUserInfo();
-        int length = 11;
-        Thread.sleep(200);
-        // 删除账号
-        AutoTool.execShellCmd(length + 1, 112);
-        Thread.sleep(500);
-        //输入账号
-        AutoTool.execShellCmd(CmdData.inputTextUserInfoName + userInfo.getName()); //输入账号
-
-        Thread.sleep(1000);
+        EventHelper.inputUserInfo(userInfo.getName());
+        Thread.sleep(800);
         AutoTool.execShellCmd(pageData.get(0).getRect()); //点击登录
         TaskUtil.sleep(1000);
 

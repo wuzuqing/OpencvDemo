@@ -59,7 +59,7 @@ public class JyzcTaskElement extends AbsTaskElement {
             if (TextUtils.equals("经营", orcModel.getResult())) {
                 Rect rect = orcModel.getRect();
                 AutoTool.execShellCmdXy(rect.x ,rect.y);
-                Thread.sleep(200);
+                Thread.sleep(40);
                 count++;
             }
         }
