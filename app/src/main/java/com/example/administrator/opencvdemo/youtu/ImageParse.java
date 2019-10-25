@@ -18,6 +18,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import android.graphics.Bitmap;
 
 /**
  * @author 吴祖清
@@ -47,9 +48,16 @@ public class ImageParse {
     public static void getSyncData(Call call) {
         LogUtils.logd("start");
         Util.getCapBitmapNew();
+        Bitmap bitmap = TaskUtil.bitmap;
+        if (bitmap==null){
+            bitmap = ScreenCapture.get().getCurrentBitmap();
+        }
+        getSyncData(bitmap,call);
+    }
+    public static void getSyncData(Bitmap bitmap,Call call) {
         JSONObject respose = null;
         try {
-            respose = StaticVal.getYoutu().GeneralOcr(ScreenCapture.getBitmapByte(TaskUtil.bitmap));
+            respose = StaticVal.getYoutu().GeneralOcr(ScreenCapture.getBitmapByte(bitmap));
             Result res = StaticVal.getGson().fromJson(respose.toString(), Result.class);
             if (call != null) {
                 LogUtils.logd("end" + res.getItems());

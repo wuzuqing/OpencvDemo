@@ -30,7 +30,7 @@ public class OnlyCardDiscern implements Runnable {
     private long start;
     private IDiscernCallback callback;
     protected Size mSize = new Size(360, 640);
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
     public OnlyCardDiscern(Bitmap bitmap1, String langName, IDiscernCallback callback) {
         this.bitmap1 = bitmap1;
         this.langName = langName;
@@ -55,7 +55,6 @@ public class OnlyCardDiscern implements Runnable {
         start = System.currentTimeMillis();
         Mat src = new Mat();
         Mat dst = new Mat();
-//        bitmap1 = OrcConfig.changeToColor(bitmap1);
         Mat threshold;
         Utils.bitmapToMat(bitmap1, src);
         //归一化
@@ -67,7 +66,7 @@ public class OnlyCardDiscern implements Runnable {
         //二值化
         Imgproc.threshold(dst, dst, OrcConfig.thresh, 255, OrcConfig.threshType);
         threshold = dst.clone();
-     Mat   threshold1 = dst.clone();
+       Mat   threshold1 = dst.clone();
         //      //膨胀
         Mat erodeElement = Imgproc.getStructuringElement(Imgproc.MARKER_CROSS, new Size(OrcConfig.width, 1));
         Imgproc.erode(dst, dst, erodeElement);
@@ -147,7 +146,6 @@ public class OnlyCardDiscern implements Runnable {
                     if (DEBUG) {
                         Imgproc.rectangle(src, model.getRect(), new Scalar(0, 0, 255), 1, 8, 0);
                     }
-//                OpencvUtil.drawContours(dst,50,255);
                     Imgcodecs.imwrite(OrcHelper.getInstance().getTargetFile("/some/" + model.getRect().toString() + ".jpg").getAbsolutePath(), dst);
                     bitmap = Bitmap.createBitmap(dst.cols(), dst.rows(), Bitmap.Config.ARGB_8888);
                     Utils.matToBitmap(dst, bitmap);
@@ -166,14 +164,14 @@ public class OnlyCardDiscern implements Runnable {
             }
         }
         if (callback != null) {
-            OrcModel orcModel = new OrcModel();
-            if (DEBUG) {
-                bitmap = Bitmap.createBitmap(result.cols(), result.rows(), Bitmap.Config.RGB_565);
-                Utils.matToBitmap(result, bitmap);
-                orcModel.setBitmap(bitmap);
-            }
-            orcModel.setResult(pageName);
-            orcModels.add(0, orcModel);
+            // OrcModel orcModel = new OrcModel();
+            // if (DEBUG) {
+            //     bitmap = Bitmap.createBitmap(result.cols(), result.rows(), Bitmap.Config.RGB_565);
+            //     Utils.matToBitmap(result, bitmap);
+            //     orcModel.setBitmap(bitmap);
+            // }
+            // orcModel.setResult(pageName);
+            // orcModels.add(0, orcModel);
             callback.call(orcModels);
         }
         Log.i("LogUtils", "discern: usedTime" + (System.currentTimeMillis() - start) +" pageName:"+pageName + " \nvalue:" +orcModels.toString());

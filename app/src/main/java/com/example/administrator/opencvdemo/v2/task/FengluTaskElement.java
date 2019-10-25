@@ -45,13 +45,13 @@ public class FengluTaskElement extends AbsTaskElement {
             return false;
         }
         AutoTool.execShellCmd(getFengLu);
-        Thread.sleep(200);
+        Thread.sleep(600);
         AutoTool.execShellCmd(huangGongClose);
         Thread.sleep(200);
         AutoTool.execShellCmd(huangGongClose);
         // Thread.sleep(200);
         // AutoTool.execShellCmdChuFu();
-        Thread.sleep(2400);
+        Thread.sleep(1200);
         // if (Util.checkColor(TaskUtil.bitmap, getFengLu)) {
         //
         //   return true;

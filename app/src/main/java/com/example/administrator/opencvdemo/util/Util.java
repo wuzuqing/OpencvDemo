@@ -450,6 +450,7 @@ public class Util implements Constant {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            TaskUtil.bitmap = ScreenCapture.get().getCurrentBitmap();
             return ScreenCapture.get().getCurrentBitmap();
         }
         try {
