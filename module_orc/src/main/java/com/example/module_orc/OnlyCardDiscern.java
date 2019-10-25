@@ -30,7 +30,7 @@ public class OnlyCardDiscern implements Runnable {
     private long start;
     private IDiscernCallback callback;
     protected Size mSize = new Size(360, 640);
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
     public OnlyCardDiscern(Bitmap bitmap1, String langName, IDiscernCallback callback) {
         this.bitmap1 = bitmap1;
         this.langName = langName;
