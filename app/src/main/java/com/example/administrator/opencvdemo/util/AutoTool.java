@@ -93,7 +93,7 @@ public class AutoTool {
             //            execShellCmd(CmdData.click(model.getFloatX(), model.getFloatY()));
         } else {
             if (isNewApi) {
-                EventHelper.click(getXRatio(x / 1080f), getYRatio(y / 1920f));
+                EventHelper.click(x, y);
             } else {
                 execShellCmd(CmdData.clickInt(x, y));
             }

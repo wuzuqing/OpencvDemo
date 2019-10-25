@@ -62,7 +62,7 @@ public class JyzcTaskElement extends AbsTaskElement {
                 resetStep();
                 return true;
             }
-            Thread.sleep(200);
+            Thread.sleep(300);
             return false;
         }
         if (isFristInitPoint) {
@@ -115,7 +115,7 @@ public class JyzcTaskElement extends AbsTaskElement {
             for (PointModel model : coordinateList) {
                 if (Util.checkColor(model)){
                     EventHelper.click(model.getX(), model.getY());
-                    Thread.sleep(240);
+                    Thread.sleep(160);
                     count++;
                 }
             }
@@ -124,12 +124,12 @@ public class JyzcTaskElement extends AbsTaskElement {
                 if (TextUtils.equals("经营", orcModel.getResult())) {
                     Rect rect = orcModel.getRect();
                     AutoTool.execShellCmdXy(rect.x, rect.y);
-                    Thread.sleep(120);
+                    Thread.sleep(160);
                     count++;
                 }
             }
         }
-        Thread.sleep(600);
+        Thread.sleep(400);
         isEnd = count == 0;
         LogUtils.logd(" count" + count);
         return false;
