@@ -29,14 +29,14 @@ public class EventHelper {
         Path path2 = new Path();
         path2.moveTo(x, y);
         log("getClickSd: " + x + "," + y);
-        return new GestureDescription.StrokeDescription(path2, 0, 20);
+        return new GestureDescription.StrokeDescription(path2, 0, 40);
     }
 
     private static GestureDescription.StrokeDescription getSwipeSd(int startX, int startY, int endX, int endY) {
         Path path2 = new Path();
         path2.moveTo(startX, startY);
         path2.lineTo(endX, endY);
-        return new GestureDescription.StrokeDescription(path2, 0, 400);
+        return new GestureDescription.StrokeDescription(path2, 0, 550);
     }
 
     private static GestureDescription getGd(GestureDescription.StrokeDescription sd) {

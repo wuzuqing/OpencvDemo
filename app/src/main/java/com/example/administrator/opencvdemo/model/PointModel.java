@@ -69,4 +69,13 @@ public class PointModel {
         this.y = y;
     }
 
+    public void reset(PointModel model) {
+        if (model!=null && model!=this){
+            this.x = model.x;
+            this.y = model.y;
+            this.key = model.key;
+            this.name = model.name;
+            this.normalColor = model.normalColor;
+        }
+    }
 }

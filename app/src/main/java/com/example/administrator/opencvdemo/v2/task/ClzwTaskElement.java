@@ -1,9 +1,11 @@
 package com.example.administrator.opencvdemo.v2.task;
 
 import com.example.administrator.opencvdemo.model.TaskModel;
+import com.example.administrator.opencvdemo.util.ACache;
 import com.example.administrator.opencvdemo.util.AutoTool;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.AbsTaskElement;
+import com.example.administrator.opencvdemo.v2.FuNeiHelper;
 import com.example.module_orc.OrcModel;
 
 
@@ -14,15 +16,20 @@ public class ClzwTaskElement extends AbsTaskElement {
 
     @Override
     protected boolean doTask() throws Exception {
-//        if (checkTime( KEY_WORK_ZW, ACache.TIME_HOUR * 2)) {
-//            return  true;
-//        }
+        if (checkTime( KEY_WORK_ZW, ACache.TIME_HOUR * 2)) {
+            return  true;
+        }
         pageData = Util.getBitmapAndPageData();
 
         if (checkExp(netPoint, "当前网络异常")) return false;//检查网络环境
 
         if (checkPage("府内")) {
-            AutoTool.execShellCmd(pageData.get(1).getRect());
+            FuNeiHelper.init();
+            if (FuNeiHelper.zhengWu!=null && Util.checkColor(FuNeiHelper.zhengWu)){
+                AutoTool.execShellCmd(FuNeiHelper.zhengWu);
+            }else{
+                AutoTool.execShellCmd(pageData.get(1).getRect());
+            }
             Thread.sleep(1000);
             return false;
         } else if (checkPage("道具使用")) {

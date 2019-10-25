@@ -9,22 +9,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.administrator.opencvdemo.BitmapPreviewActivity;
 import com.example.administrator.opencvdemo.R;
 import com.example.administrator.opencvdemo.activity.AssetsPointSettingActivity;
 import com.example.administrator.opencvdemo.activity.DialogActivity;
-import com.example.administrator.opencvdemo.notroot.EventHelper;
 import com.example.administrator.opencvdemo.notroot.WPZMGService3;
-import com.example.administrator.opencvdemo.util.AutoTool;
-import com.example.administrator.opencvdemo.util.HandlerUtil;
 import com.example.administrator.opencvdemo.util.LaunchApp;
-import com.example.administrator.opencvdemo.util.ScreenCapture;
+import com.example.administrator.opencvdemo.util.Test;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.TaskState;
-import com.example.module_orc.OrcHelper;
-import com.example.module_orc.OrcModel;
-
-import java.util.List;
 
 /**
  * 作者：士元
@@ -108,20 +100,20 @@ public class GameFloatView extends BaseFloatView {
             @Override
             public void onClick(View v) {
 
-                HandlerUtil.async(new Runnable() {
-                    @Override
-                    public void run() {
-                        long start = System.currentTimeMillis();
-                        ScreenCapture.startCaptureSync();
-                        long end = System.currentTimeMillis();
-                        List<OrcModel> result = OrcHelper.getInstance().executeCallSync(ScreenCapture.get().getCurrentBitmap());
-                        if (result.size() >= 1) {
-                            AutoTool.execShellCmd(result.get(0).getRect());
-                        }
-                        BitmapPreviewActivity.show(getContext());
-                        Log.d(TAG, "used:" + (end - start) + " call: " + result.toString());
-                    }
-                });
+//                HandlerUtil.async(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        long start = System.currentTimeMillis();
+//                        ScreenCapture.startCaptureSync();
+//                        long end = System.currentTimeMillis();
+//                        List<OrcModel> result = OrcHelper.getInstance().executeCallSync(ScreenCapture.get().getCurrentBitmap());
+//                        if (result.size() >= 1) {
+//                            AutoTool.execShellCmd(result.get(0).getRect());
+//                        }
+//                        BitmapPreviewActivity.show(getContext());
+//                        Log.d(TAG, "used:" + (end - start) + " call: " + result.toString());
+//                    }
+//                });
             }
         });
         findViewById(R.id.tvLaunch).setOnClickListener(new View.OnClickListener() {
@@ -135,7 +127,10 @@ public class GameFloatView extends BaseFloatView {
             @Override
             public void onClick(View v) {
 //                AutoTool.execShellCmd("input swipe 300 100 100 100");
-                EventHelper.click(300,400);
+//                EventHelper.click(300,400);
+                llPanel.setVisibility(View.GONE);
+                tvShowOrHide.setText("显示");
+                Test.testWork();
 
             }
         });

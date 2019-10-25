@@ -20,15 +20,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.opencvdemo.floatservice.RequestPermissionsActivity;
-import com.example.administrator.opencvdemo.model.PointModel;
-import com.example.administrator.opencvdemo.model.Result;
 import com.example.administrator.opencvdemo.notroot.ServiceHelper;
-import com.example.administrator.opencvdemo.util.HandlerUtil;
-import com.example.administrator.opencvdemo.util.LogUtils;
-import com.example.administrator.opencvdemo.util.SPUtils;
-import com.example.administrator.opencvdemo.util.ScreenCapture;
-import com.example.administrator.opencvdemo.util.Util;
-import com.example.administrator.opencvdemo.youtu.ImageParse;
+import com.example.administrator.opencvdemo.util.Test;
 import com.example.module_orc.IDiscernCallback;
 import com.example.module_orc.OpenCVHelper;
 import com.example.module_orc.OrcConfig;
@@ -124,37 +117,7 @@ public class MainActivity extends AppCompatActivity {
                 if (!TextUtils.isEmpty(string)) {
                     OrcConfig.method = Integer.valueOf(string);
                 }
-                final Bitmap finalBitmap = bitmap;
-                HandlerUtil.async(new Runnable() {
-                    @Override
-                    public void run() {
-                        ImageParse.getSyncData(finalBitmap,new ImageParse.Call() {
-                            @Override
-                            public void call(List<Result.ItemsBean> result) {
-                                if (result == null || result.size() == 0) return;
-                                try {
-                                    List<PointModel> jyzcModel = new ArrayList<>();
-                                    int index = 0;
-                                    for (Result.ItemsBean itemsBean : result) {
-                                        LogUtils.logd("JyzcTaskElement:"+itemsBean.getItemstring());
-                                        if (TextUtils.equals(itemsBean.getItemstring(),"经营")){
-                                            PointModel model = new PointModel(String.valueOf(index), "经营");
-                                            model.setX(itemsBean.getItemcoord().getX()+itemsBean.getItemcoord().getWidth()/2);
-                                            model.setY(itemsBean.getItemcoord().getY()+itemsBean.getItemcoord().getHeight()/2);
-                                            model.setNormalColor(Util.getColor(ScreenCapture.get().getCurrentBitmap(),model.getX(),model.getY()));
-                                            jyzcModel.add(model);
-                                            index++;
-                                        }
-                                    }
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                                SPUtils.setBoolean("jpzc_init",false);
-                            }
-                        });
-                    }
-                });
-
+                Test.test(bitmap);
                 OrcHelper.getInstance().executeCallAsync(ONLY_BITMAP, bitmap, langName, pageName, new IDiscernCallback() {
                     @Override
                     public void call(final List<OrcModel> result) {

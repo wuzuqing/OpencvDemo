@@ -313,6 +313,9 @@ public class Util implements Constant {
         int pixel = bitmap.getPixel(x, y);
         return getColorHtml(pixel);
     }
+    public static String getColor(PointModel model) {
+       return getColor(ScreenCapture.get().getCurrentBitmap(),model.getX(),model.getY());
+    }
 
     public static boolean checkColor(Bitmap bitmap, PointModel pointModel) {
         if (bitmap == null || pointModel == null) {
@@ -638,12 +641,12 @@ public class Util implements Constant {
 
     public static boolean checkTime(UserInfo userInfo, String type, int saveTime) {
         LogUtils.logd("checkTime:" + userInfo.getName() + " type:" + type + "  saveTime:" + saveTime);
-        return false;
-//        if (TextUtils.isEmpty(Util.getFileString(String.format("%s%s", userInfo.getName(), type)))) {
-//            Util.saveLastRefreshTime(userInfo.getName(), type, "1", saveTime);
-//            return false;
-//        }
-//        return true;
+//        return false;
+        if (TextUtils.isEmpty(Util.getFileString(String.format("%s%s", userInfo.getName(), type)))) {
+            Util.saveLastRefreshTime(userInfo.getName(), type, "1", saveTime);
+            return false;
+        }
+        return true;
     }
 
     public static boolean checkTime(UserInfo userInfo, String type, int saveTime, boolean isFengLu) {

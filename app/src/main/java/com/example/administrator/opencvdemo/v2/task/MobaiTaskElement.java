@@ -11,6 +11,7 @@ import com.example.administrator.opencvdemo.util.AutoTool;
 import com.example.administrator.opencvdemo.util.CmdData;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.AbsTaskElement;
+import com.example.administrator.opencvdemo.v2.FuNeiHelper;
 import com.example.module_orc.ignore.BenfubangdanIgnoreRect;
 
 import org.opencv.core.Rect;
@@ -43,16 +44,19 @@ public class MobaiTaskElement extends AbsTaskElement {
         if (checkExp(netPoint, "当前网络异常")) return false;//检查网络环境
 
         if (checkPage("府内")) {
+            FuNeiHelper.init();
             AutoTool.execShellCmdChuFu();
             Thread.sleep(1800);
             return false;
         } else if (checkPage("府外") && step==0) {
             doBenfuBangDan = false;
             step = 1;
-            EventHelper.swipeHor(BaseApplication.getScreenWidth() - 50, 50,400);
-            Thread.sleep(1000);
-            EventHelper.swipeHor(300, 600,400);
-            Thread.sleep(1000);
+            EventHelper.swipeHor(BaseApplication.getScreenWidth() - 50, 100,600);
+            Thread.sleep(800);
+            EventHelper.swipeHor(BaseApplication.getScreenWidth() - 50, 100,600);
+            Thread.sleep(800);
+            EventHelper.swipeHor(240, 800,600);
+            Thread.sleep(1600);
             AutoTool.execShellCmd(paiHang);
             Thread.sleep(800);
             return false;

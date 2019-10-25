@@ -1,7 +1,5 @@
 package com.example.administrator.opencvdemo.v2.task;
 
-import java.util.ArrayList;
-import java.util.List;
 import android.text.TextUtils;
 
 import com.example.administrator.opencvdemo.model.PointModel;
@@ -16,12 +14,16 @@ import com.example.administrator.opencvdemo.util.SPUtils;
 import com.example.administrator.opencvdemo.util.ScreenCapture;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.AbsTaskElement;
+import com.example.administrator.opencvdemo.v2.FuNeiHelper;
 import com.example.administrator.opencvdemo.youtu.ImageParse;
 import com.example.module_orc.OrcModel;
-
 import com.example.module_orc.util.GsonUtils;
 import com.google.gson.reflect.TypeToken;
+
 import org.opencv.core.Rect;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class JyzcTaskElement extends AbsTaskElement {
     private boolean needClickZhengshou = true;
@@ -49,7 +51,12 @@ public class JyzcTaskElement extends AbsTaskElement {
         if (checkExp(netPoint, "当前网络异常")) return false;//检查网络环境
 
         if (checkPage("府内")) {
-            AutoTool.execShellCmd(pageData.get(0).getRect());
+            FuNeiHelper.init();
+            if (FuNeiHelper.huaAn!=null && Util.checkColor(FuNeiHelper.huaAn)){
+                AutoTool.execShellCmd(FuNeiHelper.huaAn);
+            }else{
+                AutoTool.execShellCmd(pageData.get(0).getRect());
+            }
             isEnd = false;
             Thread.sleep(1000);
             return false;
@@ -115,7 +122,7 @@ public class JyzcTaskElement extends AbsTaskElement {
             for (PointModel model : coordinateList) {
                 if (Util.checkColor(model)){
                     EventHelper.click(model.getX(), model.getY());
-                    Thread.sleep(160);
+                    Thread.sleep(200);
                     count++;
                 }
             }
@@ -124,7 +131,7 @@ public class JyzcTaskElement extends AbsTaskElement {
                 if (TextUtils.equals("经营", orcModel.getResult())) {
                     Rect rect = orcModel.getRect();
                     AutoTool.execShellCmdXy(rect.x, rect.y);
-                    Thread.sleep(160);
+                    Thread.sleep(200);
                     count++;
                 }
             }

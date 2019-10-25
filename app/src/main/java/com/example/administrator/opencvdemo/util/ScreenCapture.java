@@ -334,7 +334,7 @@ public class ScreenCapture {
         Bitmap bitmap = Bitmap.createBitmap(width + rowPadding / pixelStride, height, Bitmap.Config.ARGB_8888);
         bitmap.copyPixelsFromBuffer(buffer);
         bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height);
-         savePicture(bitmap);
+//         savePicture(bitmap);
         image.close();
         return bitmap;
     }
