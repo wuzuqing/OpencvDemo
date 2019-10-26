@@ -73,37 +73,7 @@ public class JyzcTaskElement extends AbsTaskElement {
             return false;
         }
         if (isFristInitPoint) {
-            ImageParse.getSyncData(ScreenCapture.get().getCurrentBitmap(),new ImageParse.Call() {
-                @Override
-                public void call(List<Result.ItemsBean> result) {
-                    if (result == null || result.size() == 0) {
-                        return;
-                    }
-                    try {
-                        List<PointModel> jyzcModel = new ArrayList<>();
-                        int index = 0;
-                        for (Result.ItemsBean itemsBean : result) {
-                            LogUtils.logd("JyzcTaskElement:" + itemsBean.getItemstring());
-                            if (TextUtils.equals(itemsBean.getItemstring(), "经营")) {
-                                PointModel model = new PointModel(String.valueOf(index), "经营");
-                                model.setX(itemsBean.getItemcoord().getX() + itemsBean.getItemcoord().getWidth() / 2);
-                                model.setY(itemsBean.getItemcoord().getY() + itemsBean.getItemcoord().getHeight() / 2);
-                                model.setNormalColor(Util.getColor(ScreenCapture.get().getCurrentBitmap(), model.getX(), model.getY()));
-                                jyzcModel.add(model);
-                                index++;
-                            }
-                        }
-                        SPUtils.setString("jyzcModel", GsonUtils.toJson(jyzcModel));
-                        coordinateList = jyzcModel;
-                        LogUtils.logd("jyzcModel:" + jyzcModel.toString());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    SPUtils.setBoolean("jpzc_init", false);
-                    isFristInitPoint = false;
-                }
-            });
+            initPage();
         }
         if (needClickZhengshou) {
             AutoTool.execShellCmd(CmdData.get(ZHENG_SHOU));
@@ -140,5 +110,27 @@ public class JyzcTaskElement extends AbsTaskElement {
         isEnd = count == 0;
         LogUtils.logd(" count" + count);
         return false;
+    }
+
+    @Override
+    protected void callBack(List<Result.ItemsBean> result) {
+        List<PointModel> jyzcModel = new ArrayList<>();
+        int index = 0;
+        for (Result.ItemsBean itemsBean : result) {
+            LogUtils.logd("JyzcTaskElement:" + itemsBean.getItemstring());
+            if (TextUtils.equals(itemsBean.getItemstring(), "经营")) {
+                PointModel model = new PointModel(String.valueOf(index), "经营");
+                model.setX(itemsBean.getItemcoord().getX() + itemsBean.getItemcoord().getWidth() / 2);
+                model.setY(itemsBean.getItemcoord().getY() + itemsBean.getItemcoord().getHeight() / 2);
+                model.setNormalColor(Util.getColor(ScreenCapture.get().getCurrentBitmap(), model.getX(), model.getY()));
+                jyzcModel.add(model);
+                index++;
+            }
+        }
+        SPUtils.setString("jyzcModel", GsonUtils.toJson(jyzcModel));
+        coordinateList = jyzcModel;
+        LogUtils.logd("jyzcModel:" + jyzcModel.toString());
+        SPUtils.setBoolean("jpzc_init", false);
+        isFristInitPoint = false;
     }
 }

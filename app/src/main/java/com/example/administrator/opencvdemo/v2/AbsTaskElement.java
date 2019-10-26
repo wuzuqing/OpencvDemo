@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.example.administrator.opencvdemo.BaseApplication;
 import com.example.administrator.opencvdemo.model.PointModel;
+import com.example.administrator.opencvdemo.model.Result;
 import com.example.administrator.opencvdemo.model.TaskModel;
 import com.example.administrator.opencvdemo.notroot.EventHelper;
 import com.example.administrator.opencvdemo.util.AutoTool;
@@ -12,11 +13,16 @@ import com.example.administrator.opencvdemo.util.CmdData;
 import com.example.administrator.opencvdemo.util.Constant;
 import com.example.administrator.opencvdemo.util.LogUtils;
 import com.example.administrator.opencvdemo.util.NetWorkUtils;
+import com.example.administrator.opencvdemo.util.SPUtils;
+import com.example.administrator.opencvdemo.util.ScreenCapture;
 import com.example.administrator.opencvdemo.util.TaskUtil;
 import com.example.administrator.opencvdemo.util.Util;
+import com.example.administrator.opencvdemo.youtu.ImageParse;
 import com.example.module_orc.OrcConfig;
 import com.example.module_orc.OrcModel;
+import com.example.module_orc.util.GsonUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbsTaskElement implements TaskElement, Constant {
@@ -127,5 +133,25 @@ public abstract class AbsTaskElement implements TaskElement, Constant {
         if (getTaskModel() != null) {
             LogUtils.logd("当前任务：" + getTaskModel().getName());
         }
+    }
+
+    public void initPage(){
+        ImageParse.getSyncData(ScreenCapture.get().getCurrentBitmap(),new ImageParse.Call() {
+            @Override
+            public void call(List<Result.ItemsBean> result) {
+                if (result == null || result.size() == 0) {
+                    return;
+                }
+                try {
+                   callBack(result);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    protected void callBack(List<Result.ItemsBean> result) {
+
     }
 }
