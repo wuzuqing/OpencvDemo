@@ -21,6 +21,7 @@ import android.util.Log;
 import com.example.administrator.opencvdemo.BaseApplication;
 import com.example.administrator.opencvdemo.floatservice.MainService;
 import com.example.administrator.opencvdemo.model.PointModel;
+import com.example.administrator.opencvdemo.model.Result;
 import com.example.administrator.opencvdemo.model.TaskModel;
 import com.example.administrator.opencvdemo.model.UserInfo;
 import com.example.administrator.opencvdemo.notroot.WPZMGService2;
@@ -184,9 +185,9 @@ public class Util implements Constant {
         List<PointModel> data = new ArrayList<>();
         for (String key : keys) {
             PointModel pointModel = CmdData.get(key);
-            if (pointModel==null){
-                data.add(new PointModel("11","22"));
-            }else{
+            if (pointModel == null) {
+                data.add(new PointModel("11", "22"));
+            } else {
                 data.add(pointModel);
             }
         }
@@ -313,8 +314,9 @@ public class Util implements Constant {
         int pixel = bitmap.getPixel(x, y);
         return getColorHtml(pixel);
     }
+
     public static String getColor(PointModel model) {
-       return getColor(ScreenCapture.get().getCurrentBitmap(),model.getX(),model.getY());
+        return getColor(ScreenCapture.get().getCurrentBitmap(), model.getX(), model.getY());
     }
 
     public static boolean checkColor(Bitmap bitmap, PointModel pointModel) {
@@ -333,6 +335,14 @@ public class Util implements Constant {
         String color = getColor(TaskUtil.bitmap, pointModel.getX(), pointModel.getY());
         LogUtils.logd("color:" + color + " pointModel:" + pointModel.toString());
         return color.equals(pointModel.getNormalColor()) || likeColor(color, pointModel.getNormalColor());
+    }
+
+    public static boolean checkColorAndClick(PointModel pointModel) {
+        boolean isTrue = checkColor(pointModel);
+        if (isTrue) {
+            AutoTool.execShellCmd(pointModel);
+        }
+        return isTrue;
     }
 
     public static boolean checkColor(PointModel pointModel, int offset, int xiangXi) {
@@ -481,6 +491,17 @@ public class Util implements Constant {
             shuYanModel.add(CmdData.get(ACADEMY_GET_3));
             shuYanModel.add(CmdData.get(ACADEMY_GET_4));
         }
+        return shuYanModel;
+    }
+
+    public static List<PointModel> getShuYanModel() {
+        List<PointModel> shuYanModel = new ArrayList<>();
+        shuYanModel.add(CmdData.get(SHUYUAN_GET_1));
+        shuYanModel.add(CmdData.get(SHUYUAN_GET_2));
+        shuYanModel.add(CmdData.get(SHUYUAN_GET_3));
+        shuYanModel.add(CmdData.get(SHUYUAN_GET_4));
+        shuYanModel.add(CmdData.get(SHUYUAN_GET_5));
+        shuYanModel.add(CmdData.get(SHUYUAN_GET_6));
         return shuYanModel;
     }
 
@@ -785,5 +806,22 @@ public class Util implements Constant {
 
     public static List<OrcModel> getBitmapAndPageData() {
         return OrcHelper.getInstance().executeCallSync(Util.getCapBitmapNew());
+    }
+
+    public static void setNewCoord(PointModel model, Result.ItemsBean.ItemcoordBean coord) {
+        if (model == null || model.isReset()) {
+            LogUtils.logd("model is null");
+            return;
+        }
+        int oldX = model.getX();
+        int oldY = model.getY();
+        String oldColor = model.getNormalColor();
+        model.setX(coord.getX() + coord.getWidth() / 2);
+        model.setY(coord.getY() + coord.getHeight() / 2);
+        model.setNormalColor(Util.getColor(model));
+        LogUtils.logd(model.getName() + "oldX:" + oldX + " newX:" + model.getX());
+        LogUtils.logd("oldY:" + oldY + " newY:" + model.getY());
+        LogUtils.logd("oldColor:" + oldColor + " newColor:" + model.getNormalColor());
+        model.setReset(true);
     }
 }

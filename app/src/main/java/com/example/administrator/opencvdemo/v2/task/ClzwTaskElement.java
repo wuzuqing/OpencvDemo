@@ -1,8 +1,13 @@
 package com.example.administrator.opencvdemo.v2.task;
 
+import com.example.administrator.opencvdemo.config.CheckName;
+import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.TaskModel;
 import com.example.administrator.opencvdemo.util.ACache;
 import com.example.administrator.opencvdemo.util.AutoTool;
+import com.example.administrator.opencvdemo.util.CmdData;
+import com.example.administrator.opencvdemo.util.Constant;
+import com.example.administrator.opencvdemo.util.SPUtils;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.AbsTaskElement;
 import com.example.administrator.opencvdemo.v2.FuNeiHelper;
@@ -10,6 +15,7 @@ import com.example.module_orc.OrcModel;
 
 
 public class ClzwTaskElement extends AbsTaskElement {
+    public static PointModel beiJing  =CmdData.get(Constant.ZHENG_JI_BG);
     public ClzwTaskElement(TaskModel taskModel) {
         super(taskModel);
     }
@@ -19,14 +25,20 @@ public class ClzwTaskElement extends AbsTaskElement {
         if (checkTime( KEY_WORK_ZW, ACache.TIME_HOUR * 2)) {
             return  true;
         }
-        pageData = Util.getBitmapAndPageData();
+        Util.getCapBitmapNew();
+        if (Util.checkColor(beiJing)){
+            clickClose();
+            Thread.sleep(800);
+            return true;
+        }
+        pageData = Util.getPageData();
 
         if (checkExp(netPoint, "当前网络异常")) return false;//检查网络环境
 
         if (checkPage("府内")) {
             FuNeiHelper.init();
-            if (FuNeiHelper.zhengWu!=null && Util.checkColor(FuNeiHelper.zhengWu)){
-                AutoTool.execShellCmd(FuNeiHelper.zhengWu);
+            if (FuNeiHelper.shiYe!=null && Util.checkColor(FuNeiHelper.shiYe)){
+                AutoTool.execShellCmd(FuNeiHelper.shiYe);
             }else{
                 AutoTool.execShellCmd(pageData.get(1).getRect());
             }
@@ -50,6 +62,13 @@ public class ClzwTaskElement extends AbsTaskElement {
                 Thread.sleep(700);
                 return false;
             }
+        }
+
+        boolean hasResetBg = SPUtils.getBoolean(CheckName.ZHEGN_WU_BEI_JING, false);
+        if (!hasResetBg){
+            String color = Util.getColor(beiJing);
+            beiJing.setNormalColor(color);
+            needSaveCoord = true;
         }
 
         clickClose();

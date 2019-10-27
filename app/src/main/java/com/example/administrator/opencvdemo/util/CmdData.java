@@ -27,14 +27,12 @@ import java.util.TreeMap;
 public class CmdData implements Constant {
 
 
-    public static int textX = 0, textY = 0;
     public static String screenClose = "";
     public static File saveFilePath = new File(Environment.getExternalStorageDirectory(), "/cap/1.jpg");
     public static String screenCap = "screencap -p /sdcard/cap/1.jpg";
     private static int startPointX = 400;  //300 - 400
     private static int startPointY = 400;  //300 - 400
     public static String swipeToLeft = "input swipe 100 400 3000 400";
-    public static String swipeToRight = "input swipe 100 400 -3000 400";
     public static String inputTextUserInfoName = "input text ";
     public static Map<String, PointModel> coordinateMap = new TreeMap<>();
     public static List<PointModel> coordinateList = new ArrayList<>();
@@ -45,7 +43,7 @@ public class CmdData implements Constant {
 
     public static void initCoordinate() {
 
-        String string = "";
+        String string = SPUtils.getString(COORDINATE_KEY);
         if (TextUtils.isEmpty(string)) {
             if (BaseApplication.getScreenWidth() == 1080) {
                 if (BaseApplication.densityDpi==420){

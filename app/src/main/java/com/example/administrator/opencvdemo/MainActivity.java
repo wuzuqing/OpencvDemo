@@ -20,8 +20,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.opencvdemo.floatservice.RequestPermissionsActivity;
-import com.example.administrator.opencvdemo.notroot.ServiceHelper;
-import com.example.administrator.opencvdemo.util.Test;
 import com.example.module_orc.IDiscernCallback;
 import com.example.module_orc.OpenCVHelper;
 import com.example.module_orc.OrcConfig;
@@ -82,10 +80,9 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.showFloatView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!ServiceHelper.getInstance().goAccess()){
-                    startActivity(new Intent(getSelf(), RequestPermissionsActivity.class));
-                    finish();
-                }
+
+                startActivity(new Intent(getSelf(), RequestPermissionsActivity.class));
+                finish();
             }
         });
         File imagePath = OrcHelper.getInstance().rootDir;
@@ -117,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                 if (!TextUtils.isEmpty(string)) {
                     OrcConfig.method = Integer.valueOf(string);
                 }
-                Test.test(bitmap);
+//                Test.test(bitmap);
                 OrcHelper.getInstance().executeCallAsync(ONLY_BITMAP, bitmap, langName, pageName, new IDiscernCallback() {
                     @Override
                     public void call(final List<OrcModel> result) {

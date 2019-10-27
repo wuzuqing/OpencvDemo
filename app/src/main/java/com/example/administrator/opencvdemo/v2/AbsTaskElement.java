@@ -11,18 +11,16 @@ import com.example.administrator.opencvdemo.notroot.EventHelper;
 import com.example.administrator.opencvdemo.util.AutoTool;
 import com.example.administrator.opencvdemo.util.CmdData;
 import com.example.administrator.opencvdemo.util.Constant;
+import com.example.administrator.opencvdemo.util.JsonUtils;
 import com.example.administrator.opencvdemo.util.LogUtils;
 import com.example.administrator.opencvdemo.util.NetWorkUtils;
 import com.example.administrator.opencvdemo.util.SPUtils;
 import com.example.administrator.opencvdemo.util.ScreenCapture;
-import com.example.administrator.opencvdemo.util.TaskUtil;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.youtu.ImageParse;
 import com.example.module_orc.OrcConfig;
 import com.example.module_orc.OrcModel;
-import com.example.module_orc.util.GsonUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbsTaskElement implements TaskElement, Constant {
@@ -40,6 +38,8 @@ public abstract class AbsTaskElement implements TaskElement, Constant {
     protected TaskModel mTaskModel;
     protected List<OrcModel> pageData = null;
     protected PointModel netPoint = CmdData.get(Constant.NET_CLOSE);
+
+    protected boolean needSaveCoord;
 
     @Override
     public void bindHandler(Handler handler) {
@@ -72,8 +72,17 @@ public abstract class AbsTaskElement implements TaskElement, Constant {
                 e.printStackTrace();
             }
         }
+        if (needSaveCoord){
+            String jsonList = JsonUtils.toJson(CmdData.coordinateList);
+            SPUtils.setString(COORDINATE_KEY,jsonList);
+            needSaveCoord = false;
+        }
         if (TaskState.isWorking) {
-            if (taskHandler != null) {
+            if (mTaskModel.isOnlyOne()){
+                TaskState.isWorking = false;
+                return;
+            }
+            if (  taskHandler != null) {
                 TaskState.get().saveNextTask();
                 taskHandler.sendEmptyMessage(0);
             }
@@ -135,6 +144,16 @@ public abstract class AbsTaskElement implements TaskElement, Constant {
         }
     }
 
+    protected void swipeToRight() throws InterruptedException {
+        EventHelper.swipeHor(BaseApplication.getScreenWidth() - 50, 100,600);
+        Thread.sleep(800);
+        EventHelper.swipeHor(BaseApplication.getScreenWidth() - 50, 100,600);
+        Thread.sleep(800);
+        EventHelper.swipeHor(240, 800,600);
+        Thread.sleep(1600);
+        FuWaiHelper.paiHangBangInit();
+    }
+
     public void initPage(){
         ImageParse.getSyncData(ScreenCapture.get().getCurrentBitmap(),new ImageParse.Call() {
             @Override
@@ -153,5 +172,24 @@ public abstract class AbsTaskElement implements TaskElement, Constant {
 
     protected void callBack(List<Result.ItemsBean> result) {
 
+    }
+
+    public boolean equals(String text,String text1){
+        return TextUtils.equals(text,text1);
+    }
+
+    protected void setNewCoord(PointModel model,Result.ItemsBean.ItemcoordBean coord){
+        if (model==null){
+            return ;
+        }
+        int oldX = model.getX();
+        int oldY = model.getY();
+        String oldColor = model.getNormalColor();
+        model.setX(coord.getX()+coord.getWidth()/2);
+        model.setY(coord.getY()+coord.getHeight()/2);
+        model.setNormalColor(Util.getColor(model));
+        LogUtils.logd("oldX:"+oldX +" newX:"+model.getX());
+        LogUtils.logd("oldY:"+oldY +" newY:"+model.getY());
+        LogUtils.logd("oldColor:"+oldColor +" newColor:"+model.getNormalColor());
     }
 }

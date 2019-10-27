@@ -3,15 +3,15 @@ package com.example.administrator.opencvdemo.v2.task;
 import android.os.Handler;
 import android.util.Log;
 
-import com.example.administrator.opencvdemo.BaseApplication;
 import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.TaskModel;
-import com.example.administrator.opencvdemo.notroot.EventHelper;
+import com.example.administrator.opencvdemo.util.ACache;
 import com.example.administrator.opencvdemo.util.AutoTool;
 import com.example.administrator.opencvdemo.util.CmdData;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.AbsTaskElement;
 import com.example.administrator.opencvdemo.v2.FuNeiHelper;
+import com.example.administrator.opencvdemo.v2.FuWaiHelper;
 import com.example.module_orc.ignore.BenfubangdanIgnoreRect;
 
 import org.opencv.core.Rect;
@@ -39,6 +39,9 @@ public class MobaiTaskElement extends AbsTaskElement {
 
     @Override
     protected boolean doTask() throws Exception {
+        if (checkTime( KEY_WORK_MB, ACache.TIME_DAY)) {
+            return  true;
+        }
         pageData = Util.getBitmapAndPageData();
 
         if (checkExp(netPoint, "当前网络异常")) return false;//检查网络环境
@@ -51,13 +54,10 @@ public class MobaiTaskElement extends AbsTaskElement {
         } else if (checkPage("府外") && step==0) {
             doBenfuBangDan = false;
             step = 1;
-            EventHelper.swipeHor(BaseApplication.getScreenWidth() - 50, 100,600);
-            Thread.sleep(800);
-            EventHelper.swipeHor(BaseApplication.getScreenWidth() - 50, 100,600);
-            Thread.sleep(800);
-            EventHelper.swipeHor(240, 800,600);
-            Thread.sleep(1600);
-            AutoTool.execShellCmd(paiHang);
+            swipeToRight();
+            if (!Util.checkColorAndClick(FuWaiHelper.paiHangBang)){
+                AutoTool.execShellCmd(paiHang);
+            }
             Thread.sleep(800);
             return false;
         } else if (checkPage("排行榜") && step == 1) {

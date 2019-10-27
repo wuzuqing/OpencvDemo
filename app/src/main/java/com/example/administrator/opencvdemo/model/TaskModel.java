@@ -23,12 +23,25 @@ public class TaskModel {
     private int type;
     private Map<String,PointModel> mapData;
     private int count;
+    private boolean isOnlyOne;
+
+    public boolean isOnlyOne() {
+        return isOnlyOne;
+    }
+
+    public void setOnlyOne(boolean onlyOne) {
+        isOnlyOne = onlyOne;
+    }
 
     public TaskModel() {
     }
 
     public TaskModel(String name) {
         this.name = name;
+    }
+    public TaskModel(String name,boolean isOnlyOne) {
+        this.name = name;
+        this.isOnlyOne = isOnlyOne;
     }
 
     public int getCount() {

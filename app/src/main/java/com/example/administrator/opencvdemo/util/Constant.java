@@ -245,7 +245,23 @@ public interface Constant {
     String YA_MEN_CHOOSE_SKIP = "YA_MEN_CHOOSE_SKIP";
     String YA_MEN_END = "YA_MEN_END";
 
+    /**
+     * 底部按钮
+     */
+    String BOTTOM_MK = "BOTTOM_MK";
+    String BOTTOM_DJ = "BOTTOM_DJ";
+    String BOTTOM_RW = "BOTTOM_RW";
+    String BOTTOM_CJ = "BOTTOM_CJ";
+    String BOTTOM_SC = "BOTTOM_SC";
+    String BOTTOM_FL = "BOTTOM_FL";
+    String GUO_JIA = "GUO_JIA";
 
+    String SHUYUAN_GET_1 = "SHUYUAN_GET_1";//书院背景
+    String SHUYUAN_GET_2 = "SHUYUAN_GET_2";//书院背景
+    String SHUYUAN_GET_3 = "SHUYUAN_GET_3";//书院背景
+    String SHUYUAN_GET_4 = "SHUYUAN_GET_4";//书院背景
+    String SHUYUAN_GET_5 = "SHUYUAN_GET_5";//书院背景
+    String SHUYUAN_GET_6 = "SHUYUAN_GET_6";//书院背景
 
     int RESET_TASK = 200;
     int TASK_ERROR = 100;

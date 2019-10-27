@@ -944,5 +944,47 @@
   "normalColor": "#152743",
   "x": 887,
   "y": 1739
-}
+},
+  {
+    "key": "BOTTOM_MK",
+    "name": "门客",
+    "normalColor": "#E17E25",
+    "x": 40,
+    "y": 1830
+  },
+  {
+    "key": "BOTTOM_DJ",
+    "name": "道具",
+    "normalColor": "#E17E25",
+    "x": 40,
+    "y": 1830
+  },
+  {
+    "key": "BOTTOM_RW",
+    "name": "任务",
+    "normalColor": "#E17E25",
+    "x": 40,
+    "y": 1830
+  },
+  {
+    "key": "BOTTOM_CJ",
+    "name": "成就",
+    "normalColor": "#E17E25",
+    "x": 40,
+    "y": 1830
+  },
+  {
+    "key": "BOTTOM_SC",
+    "name": "商城",
+    "normalColor": "#E17E25",
+    "x": 40,
+    "y": 1830
+  },
+  {
+    "key": "BOTTOM_FL",
+    "name": "福利",
+    "normalColor": "#E17E25",
+    "x": 40,
+    "y": 1830
+  }
 ]

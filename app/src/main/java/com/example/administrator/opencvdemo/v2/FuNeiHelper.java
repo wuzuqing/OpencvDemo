@@ -1,11 +1,11 @@
 package com.example.administrator.opencvdemo.v2;
 
-import android.text.TextUtils;
-
+import com.example.administrator.opencvdemo.config.CheckName;
 import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.Result;
 import com.example.administrator.opencvdemo.util.CmdData;
 import com.example.administrator.opencvdemo.util.Constant;
+import com.example.administrator.opencvdemo.util.JsonUtils;
 import com.example.administrator.opencvdemo.util.SPUtils;
 import com.example.administrator.opencvdemo.util.ScreenCapture;
 import com.example.administrator.opencvdemo.util.Util;
@@ -13,29 +13,29 @@ import com.example.administrator.opencvdemo.youtu.ImageParse;
 
 import java.util.List;
 
+import static com.example.administrator.opencvdemo.util.Constant.COORDINATE_KEY;
+
 public class FuNeiHelper {
-    private static final String KEY_POSITION = "funei_init";
-    public static PointModel huaAn;
-    public static PointModel zhengWu;
-    public static PointModel Hongyzj;
-    //    public static PointModel huaAn=CmdData.get(Constant.HUA_AN);
-//    public static PointModel zhengWu  =CmdData.get(Constant.SHI_YE);
-//    public static PointModel Hongyzj=CmdData.get(Constant.SHI_YE);
+    public static PointModel huaAn = CmdData.get(Constant.HUA_AN);
+    public static PointModel shiYe = CmdData.get(Constant.SHI_YE);
+    public static PointModel Hongyzj= CmdData.get(Constant.SHI_JI_ZHAO_HUAN);
+    public static PointModel bottomMeiKe= CmdData.get(Constant.BOTTOM_MK);
+    public static PointModel bottomDaoju= CmdData.get(Constant.BOTTOM_DJ);
+    public static PointModel bottomRenwu= CmdData.get(Constant.BOTTOM_RW);
+    public static PointModel bottomChengJi= CmdData.get(Constant.BOTTOM_CJ);
+    public static PointModel bottomShangCheng= CmdData.get(Constant.BOTTOM_SC);
+    public static PointModel bottomFuli= CmdData.get(Constant.BOTTOM_FL);
     public static boolean isIniting;
 
-    static {
-        boolean isInit = SPUtils.getBoolean(KEY_POSITION, false);
-        if (isInit) {
-            huaAn = CmdData.get(Constant.HUA_AN);
-            zhengWu = CmdData.get(Constant.SHI_YE);
-        }
+    protected static void setNewCoord(PointModel model, Result.ItemsBean.ItemcoordBean coord) {
+        Util.setNewCoord(model,coord);
     }
 
     public static void init() {
         if (isIniting) {
             return;
         }
-        boolean isInit = SPUtils.getBoolean(KEY_POSITION, false);
+        boolean isInit = SPUtils.getBoolean(CheckName. FU_NEI, false);
         if (isInit) {
             return;
         }
@@ -46,34 +46,59 @@ public class FuNeiHelper {
                 if (result == null || result.size() == 0) return;
                 try {
                     for (Result.ItemsBean itemsBean : result) {
-                        if (TextUtils.equals("华", itemsBean.getItemstring())) {
-                            huaAn = new PointModel("huaan", "华安");
-                            huaAn.setX(itemsBean.getItemcoord().getX() + itemsBean.getItemcoord().getWidth() / 2);
-                            huaAn.setY(itemsBean.getItemcoord().getY() + itemsBean.getItemcoord().getHeight() / 2);
-                            huaAn.setNormalColor(Util.getColor(huaAn));
-                        } else if (TextUtils.equals("师新", itemsBean.getItemstring())) {
-                            zhengWu = new PointModel("zhengWu", "师爷");
-                            zhengWu.setX(itemsBean.getItemcoord().getX() + itemsBean.getItemcoord().getWidth() );
-                            zhengWu.setY(itemsBean.getItemcoord().getY() + itemsBean.getItemcoord().getHeight() / 2);
-                            zhengWu.setNormalColor(Util.getColor(zhengWu));
-                        } else if (TextUtils.equals("颜", itemsBean.getItemstring())) {
-                            Hongyzj = new PointModel("hongyan", "红颜");
-                            Hongyzj.setX(itemsBean.getItemcoord().getX() + itemsBean.getItemcoord().getWidth()/2);
-                            Hongyzj.setY(itemsBean.getItemcoord().getY() + itemsBean.getItemcoord().getHeight() / 2);
-                            Hongyzj.setNormalColor(Util.getColor(Hongyzj));
+                        switch (itemsBean.getItemstring()) {
+                            case "出府":
+                                PointModel chuFu = CmdData.get("CHU_FU");
+                                setNewCoord(chuFu, itemsBean.getItemcoord());
+                                break;
+                            case "华":
+                                setNewCoord(huaAn, itemsBean.getItemcoord());
+                                break;
+                            case "师新":
+                            case "师":
+                                setNewCoord(shiYe, itemsBean.getItemcoord());
+                                break;
+                            case "颜":
+                                setNewCoord(Hongyzj, itemsBean.getItemcoord());
+                                break;
+                            case "门客":
+                                setNewCoord(bottomMeiKe, itemsBean.getItemcoord());
+                                break;
+                            case "道具":
+                                setNewCoord(bottomDaoju, itemsBean.getItemcoord());
+                                break;
+                            case "任务":
+                                setNewCoord(bottomRenwu, itemsBean.getItemcoord());
+                                break;
+                            case "成就":
+                                setNewCoord(bottomChengJi, itemsBean.getItemcoord());
+                                break;
+                            case "商城":
+                                setNewCoord(bottomShangCheng, itemsBean.getItemcoord());
+                                break;
+                            case "福利":
+                                setNewCoord(bottomFuli, itemsBean.getItemcoord());
+                                break;
                         }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                SPUtils.setBoolean(KEY_POSITION, true);
+                save();
+                SPUtils.setBoolean(CheckName.FU_NEI, true);
                 isIniting = false;
             }
         });
     }
 
-    public static void save(){
-        CmdData.get(Constant.HUA_AN) .reset(huaAn);
-        CmdData.get(Constant.SHI_YE) .reset(zhengWu);
+    public static void save() {
+        String jsonList = JsonUtils.toJson(CmdData.coordinateList);
+        SPUtils.setString(COORDINATE_KEY, jsonList);
+    }
+
+    public static void resetInit() {
+        isIniting = false;
+        SPUtils.getBoolean(CheckName.FU_NEI, false);
+        init();
     }
 }

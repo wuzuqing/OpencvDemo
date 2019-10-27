@@ -1,19 +1,25 @@
 package com.example.administrator.opencvdemo.v2.task;
 
 
+import com.example.administrator.opencvdemo.config.CheckName;
+import com.example.administrator.opencvdemo.model.PointModel;
+import com.example.administrator.opencvdemo.model.Result;
 import com.example.administrator.opencvdemo.model.TaskModel;
 import com.example.administrator.opencvdemo.model.UserInfo;
 import com.example.administrator.opencvdemo.notroot.EventHelper;
 import com.example.administrator.opencvdemo.util.AutoTool;
 import com.example.administrator.opencvdemo.util.CmdData;
 import com.example.administrator.opencvdemo.util.LaunchApp;
+import com.example.administrator.opencvdemo.util.SPUtils;
 import com.example.administrator.opencvdemo.util.TaskUtil;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.AbsTaskElement;
 import com.example.administrator.opencvdemo.v2.TaskState;
 
-public class StartAndLoginTaskElement extends AbsTaskElement {
+import java.util.List;
 
+public class StartAndLoginTaskElement extends AbsTaskElement {
+    PointModel pointModel = CmdData.get(LOGIN_GAME);
     public StartAndLoginTaskElement(TaskModel taskModel) {
         super(taskModel);
     }
@@ -55,15 +61,38 @@ public class StartAndLoginTaskElement extends AbsTaskElement {
             Thread.sleep(600);
         }
         if (TaskState.needContinue) return false;
+        boolean isInit = SPUtils.getBoolean(CheckName.LOGIN_BTN_VERSION, false);
+        if (!isInit){
+            SPUtils.getBoolean(CheckName.LOGIN_BTN_VERSION, true);
+            initPage();
+        }
         //输入账号
         UserInfo userInfo = TaskState.get().getUserInfo();
         EventHelper.inputUserInfo(userInfo.getName());
         Thread.sleep(800);
-        AutoTool.execShellCmd(pageData.get(0).getRect()); //点击登录
+
+        if (Util.checkColor(pointModel)){
+            AutoTool.execShellCmd(pointModel);
+        }else{
+            AutoTool.execShellCmd(pageData.get(0).getRect()); //点击登录
+        }
         TaskUtil.sleep(1000);
 
         return true;
     }
 
+    @Override
+    protected void callBack(List<Result.ItemsBean> result) {
+        for (Result.ItemsBean itemsBean : result) {
+            if (equals(CheckName.LOGIN_BTN_NAME,itemsBean.getItemstring())){
+                // 重新设置坐标信息
+                setNewCoord(pointModel,itemsBean.getItemcoord());
+                SPUtils.setBoolean(CheckName.LOGIN_BTN_VERSION,true);
+                needSaveCoord = true;
+                return;
+            }
+        }
+//        SPUtils.setBoolean(CheckName.LOGIN_BTN_VERSION,false);
+    }
 
 }

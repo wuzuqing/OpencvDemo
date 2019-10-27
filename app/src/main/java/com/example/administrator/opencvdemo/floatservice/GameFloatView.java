@@ -2,6 +2,7 @@ package com.example.administrator.opencvdemo.floatservice;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -12,11 +13,14 @@ import android.widget.TextView;
 import com.example.administrator.opencvdemo.R;
 import com.example.administrator.opencvdemo.activity.AssetsPointSettingActivity;
 import com.example.administrator.opencvdemo.activity.DialogActivity;
+import com.example.administrator.opencvdemo.model.TaskModel;
+import com.example.administrator.opencvdemo.notroot.ServiceHelper;
 import com.example.administrator.opencvdemo.notroot.WPZMGService3;
 import com.example.administrator.opencvdemo.util.LaunchApp;
 import com.example.administrator.opencvdemo.util.Test;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.TaskState;
+import com.example.administrator.opencvdemo.v2.task.ShuyuanTaskElement;
 
 /**
  * 作者：士元
@@ -69,51 +73,29 @@ public class GameFloatView extends BaseFloatView {
                 Intent intent = new Intent(getContext(), DialogActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getContext().startActivity(intent);
-                llPanel.setVisibility(View.GONE);
-                tvShowOrHide.setText("显示");
+                hidePanel1();
             }
         });
         findViewById(R.id.tvStartSome).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                xiaoHao(true);
-                ((TextView) v).setText(Util.isWPZMGServiceRunning ? "取消挂机" : "开始挂机");
-                llPanel.setVisibility(View.GONE);
-                tvShowOrHide.setText("显示");
+                if (!ServiceHelper.getInstance().goAccess()){
+                    xiaoHao(true);
+                    ((TextView) v).setText(Util.isWPZMGServiceRunning ? "取消挂机" : "开始挂机");
+                    hidePanel1();
+                }
             }
         });
         findViewById(R.id.tvOneTask).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // if (!TaskUtil.isDestory) {
-                //     TaskUtil.isDestory = true;
-                //     return;
-                // }
-                // Intent intent = new Intent(MainService.this, WPZMGService2.class);
-                // intent.putExtra("oneTask", true);
-                // startService(intent);
-                // llPanel.setVisibility(View.GONE);
-                // tvShowOrHide.setText("显示");
             }
         });
         findViewById(R.id.tvStartOne).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-//                HandlerUtil.async(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        long start = System.currentTimeMillis();
-//                        ScreenCapture.startCaptureSync();
-//                        long end = System.currentTimeMillis();
-//                        List<OrcModel> result = OrcHelper.getInstance().executeCallSync(ScreenCapture.get().getCurrentBitmap());
-//                        if (result.size() >= 1) {
-//                            AutoTool.execShellCmd(result.get(0).getRect());
-//                        }
-//                        BitmapPreviewActivity.show(getContext());
-//                        Log.d(TAG, "used:" + (end - start) + " call: " + result.toString());
-//                    }
-//                });
+
             }
         });
         findViewById(R.id.tvLaunch).setOnClickListener(new View.OnClickListener() {
@@ -126,10 +108,7 @@ public class GameFloatView extends BaseFloatView {
         findViewById(R.id.tvUpgrade).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                AutoTool.execShellCmd("input swipe 300 100 100 100");
-//                EventHelper.click(300,400);
-                llPanel.setVisibility(View.GONE);
-                tvShowOrHide.setText("显示");
+                hidePanel1();
                 Test.testWork();
 
             }
@@ -152,9 +131,19 @@ public class GameFloatView extends BaseFloatView {
         findViewById(R.id.tvTest).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                // 主号
+                if (!ServiceHelper.getInstance().goAccess()){
+                    hidePanel1();
+                    TaskState.isWorking = true;
+                    AsyncTask.THREAD_POOL_EXECUTOR.execute(new ShuyuanTaskElement(new TaskModel("书院",true)));
+                }
             }
         });
+    }
+
+    private void hidePanel1() {
+        llPanel.setVisibility(View.GONE);
+        tvShowOrHide.setText("显示");
     }
 
     private void xiaoHao(boolean some) {
@@ -170,7 +159,6 @@ public class GameFloatView extends BaseFloatView {
     }
 
     public void hidePanel() {
-        llPanel.setVisibility(View.GONE);
-        tvShowOrHide.setText("显示");
+        hidePanel1();
     }
 }

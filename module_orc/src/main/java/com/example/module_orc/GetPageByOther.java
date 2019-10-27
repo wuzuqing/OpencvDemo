@@ -26,7 +26,7 @@ class GetPageByOther {
         String page = "";
         int flag = 0;
         for (Rect rect : rects) {
-            Log.e(TAG, "ignoreRect: " + rect.toString());
+//            Log.e(TAG, "ignoreRect: " + rect.toString());
             if (flag == 1) {
                 // 出府
                 if (fuNei(rect)) {

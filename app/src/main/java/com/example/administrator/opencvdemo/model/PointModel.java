@@ -16,6 +16,16 @@ public class PointModel {
     private int x;
     private int y;
     private String normalColor;
+    private boolean isReset;
+
+    public boolean isReset() {
+        return isReset;
+    }
+
+    public void setReset(boolean reset) {
+        isReset = reset;
+    }
+
     @Override
     public String toString() {
         return "PointModel{" + "key='" + key + '\'' + ", name='" + name + '\'' + ", x=" + x + ", y=" + y + ", normalColor='" +

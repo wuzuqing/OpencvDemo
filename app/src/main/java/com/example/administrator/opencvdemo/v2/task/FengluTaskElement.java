@@ -8,6 +8,7 @@ import com.example.administrator.opencvdemo.util.AutoTool;
 import com.example.administrator.opencvdemo.util.CmdData;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.AbsTaskElement;
+import com.example.administrator.opencvdemo.v2.FuWaiHelper;
 
 public class FengluTaskElement extends AbsTaskElement {
     public FengluTaskElement(TaskModel taskModel) {
@@ -30,7 +31,10 @@ public class FengluTaskElement extends AbsTaskElement {
             Thread.sleep(1800);
             return false;
         }else if (checkPage("府外")) {
-            AutoTool.execShellCmd(pageData.get(0).getRect());
+            FuWaiHelper.init();
+            if (!Util.checkColorAndClick(FuWaiHelper.huangGong)){
+                AutoTool.execShellCmd(pageData.get(0).getRect());
+            }
             Thread.sleep(800);
             AutoTool.execShellCmd(wang);
             Thread.sleep(800);

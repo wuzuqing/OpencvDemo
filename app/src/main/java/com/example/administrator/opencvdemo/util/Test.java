@@ -4,9 +4,9 @@ import android.graphics.Bitmap;
 import android.text.TextUtils;
 
 import com.example.administrator.opencvdemo.BaseApplication;
-import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.Result;
 import com.example.administrator.opencvdemo.notroot.EventHelper;
+import com.example.administrator.opencvdemo.v2.FuWaiHelper;
 import com.example.administrator.opencvdemo.youtu.ImageParse;
 
 import java.util.List;
@@ -42,19 +42,16 @@ public class Test {
         HandlerUtil.async(new Runnable() {
             @Override
             public void run() {
+                EventHelper.swipeHor(BaseApplication.getScreenWidth() - 50, 100,600);
                 try {
-                    PointModel paiHang = CmdData.get(Constant. PAI_HANG_BANG);
-                    AutoTool.execShellCmdChuFu();
-                    Thread.sleep(800);
-                    EventHelper.swipeHor(BaseApplication.getScreenWidth() - 50, 100,600);
                     Thread.sleep(800);
                     EventHelper.swipeHor(BaseApplication.getScreenWidth() - 50, 100,600);
                     Thread.sleep(800);
                     EventHelper.swipeHor(240, 800,600);
-                    Thread.sleep(1600);
-                    AutoTool.execShellCmd(paiHang);
-
-                }catch (Exception e){
+                    Thread.sleep(3200);
+                    Util.getCapBitmapNew();
+                    FuWaiHelper.resetInit();
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }

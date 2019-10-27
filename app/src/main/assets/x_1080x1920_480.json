@@ -1004,5 +1004,96 @@
     "normalColor": "#E17E25",
     "x": 1023,
     "y": 15
+  },
+  {
+    "key": "BOTTOM_MK",
+    "name": "门客",
+    "normalColor": "#E17E25",
+    "x": 40,
+    "y": 1830
+  },
+  {
+    "key": "BOTTOM_DJ",
+    "name": "道具",
+    "normalColor": "#E17E25",
+    "x": 40,
+    "y": 1830
+  },
+  {
+    "key": "BOTTOM_RW",
+    "name": "任务",
+    "normalColor": "#E17E25",
+    "x": 40,
+    "y": 1830
+  },
+  {
+    "key": "BOTTOM_CJ",
+    "name": "成就",
+    "normalColor": "#E17E25",
+    "x": 40,
+    "y": 1830
+  },
+  {
+    "key": "BOTTOM_SC",
+    "name": "商城",
+    "normalColor": "#E17E25",
+    "x": 40,
+    "y": 1830
+  },
+  {
+    "key": "BOTTOM_FL",
+    "name": "福利",
+    "normalColor": "#E17E25",
+    "x": 40,
+    "y": 1830
+  },
+  {
+    "key": "GUO_JIA",
+    "name": "国家",
+    "normalColor": "#E17E25",
+    "x": 40,
+    "y": 1830
+  },
+  {
+    "key": "SHUYUAN_GET_1",
+    "name": "书院1",
+    "normalColor": "#E17E25",
+    "x": 40,
+    "y": 1830
+  },
+  {
+    "key": "SHUYUAN_GET_2",
+    "name": "书院2",
+    "normalColor": "#E17E25",
+    "x": 40,
+    "y": 1830
+  },
+  {
+    "key": "SHUYUAN_GET_3",
+    "name": "书院3",
+    "normalColor": "#E17E25",
+    "x": 40,
+    "y": 1830
+  },
+  {
+    "key": "SHUYUAN_GET_4",
+    "name": "书院4",
+    "normalColor": "#E17E25",
+    "x": 40,
+    "y": 1830
+  },
+  {
+    "key": "SHUYUAN_GET_5",
+    "name": "书院5",
+    "normalColor": "#E17E25",
+    "x": 40,
+    "y": 1830
+  },
+  {
+    "key": "SHUYUAN_GET_6",
+    "name": "书院6",
+    "normalColor": "#E17E25",
+    "x": 40,
+    "y": 1830
   }
 ]
