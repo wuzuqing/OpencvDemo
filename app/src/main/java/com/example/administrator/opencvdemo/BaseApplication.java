@@ -7,7 +7,6 @@ import android.util.DisplayMetrics;
 import com.example.administrator.opencvdemo.notroot.ServiceHelper;
 import com.example.administrator.opencvdemo.util.ChengJiuArray;
 import com.example.administrator.opencvdemo.util.CmdData;
-import com.example.administrator.opencvdemo.util.LogUtils;
 import com.example.administrator.opencvdemo.util.SPUtils;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.youtu.StaticVal;
@@ -16,10 +15,13 @@ import com.example.module_orc.OrcHelper;
 public class BaseApplication extends Application {
     public static int densityDpi = 480;
     private static boolean isShowPanel;
+
     public static boolean isShowPanel() {
         return isShowPanel;
     }
+
     private static Context mContext;
+
     public static void setIsShowPanel(boolean isShowPanel) {
         BaseApplication.isShowPanel = isShowPanel;
     }
@@ -31,11 +33,14 @@ public class BaseApplication extends Application {
     public static int getScreenWidth() {
         return screenWidth;
     }
+
     public static int getScreenHeight() {
         return screenHeight;
     }
 
-    private static int screenWidth,screenHeight;
+    private static int screenWidth, screenHeight;
+    private static final int DEFAULT_HEIGHT = 1920;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -47,7 +52,11 @@ public class BaseApplication extends Application {
 
         screenWidth = metrics.widthPixels;
         screenHeight = metrics.heightPixels;
-        LogUtils.logd("densityDpi:"+  metrics.densityDpi );
+//        LogUtils.logd("densityDpi:" + metrics.densityDpi + " screenHeight:" + screenHeight);
+//        if (screenHeight > DEFAULT_HEIGHT) {
+//            OrcConfig.offsetHeight = (screenHeight - DEFAULT_HEIGHT) / 2;
+//            AutoTool.setOffsetY( OrcConfig.offsetHeight );
+//        }
         CmdData.init();
         Util.init();
         StaticVal.init();
@@ -56,6 +65,6 @@ public class BaseApplication extends Application {
 
 
     public static float getRatioY(float value) {
-        return getScreenHeight()*value;
+        return getScreenHeight() * value;
     }
 }

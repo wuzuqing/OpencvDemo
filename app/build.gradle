@@ -7,7 +7,7 @@ android {
         minSdkVersion 17
         targetSdkVersion 28
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
@@ -29,6 +29,18 @@ android {
             path "CMakeLists.txt"
         }
     }
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            //def date = new Date().format("yyyyMMdd" , TimeZone.getTimeZone("Asia/Shanghai"))
+            def date = new Date().format("yyyyMMdd" , TimeZone.getTimeZone("GMT+08"))
+            if(variant.buildType.name.equals('debug')){
+                outputFileName = "小官${date}_${versionName}.apk"
+            }
+            if(variant.buildType.name.equals('release')){
+                outputFileName = "小官${date}_${versionName}.apk"
+            }
+        }
+    }
 }
 
 dependencies {
@@ -40,7 +52,9 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation project(':module_orc')
     implementation 'co.infinum:goldeneye:1.1.2'
-    implementation 'com.github.bumptech.glide:glide:3.6.1'
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
     implementation 'com.android.support:recyclerview-v7:28.0.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+
+    implementation 'com.xiaosu:permission:1.0.0'
 }

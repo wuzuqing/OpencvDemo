@@ -2,7 +2,6 @@ package com.example.module_orc;
 
 import android.util.Log;
 
-import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 
 import java.util.List;
@@ -23,10 +22,11 @@ class GetPageByOther {
         Rect mainPage1 = new Rect(158, 58, 32, 20);
         Rect startGame1 = new Rect(121, 16, 119, 38);
         Rect mainPage2 = new Rect(102, 592, 78, 44);
+        Rect fengLu = new Rect(145, 11, 69, 31);
         String page = "";
         int flag = 0;
         for (Rect rect : rects) {
-//            Log.e(TAG, "ignoreRect: " + rect.toString());
+            Log.e(TAG, "ignoreRect: " + rect.toString());
             if (flag == 1) {
                 // 出府
                 if (fuNei(rect)) {
@@ -51,6 +51,8 @@ class GetPageByOther {
                 return "道具使用";
             } else if (equals(startGame1, rect)) {
                 return "本服榜单";
+            }else if (equals(fengLu,rect)){
+                return "皇宫俸禄";
             }
         }
         return page;
@@ -76,7 +78,7 @@ class GetPageByOther {
     }
 
     private static boolean fuNei(Rect rect) {
-        //       普通                                         //华为mate8
-        return (rect.width == 98 && rect.height == 150)||(rect.y == 315 && rect.width == 27);
+        //       普通                                                                                   //华为mate8
+        return (rect.width == 98 && rect.height == 150)|| (rect.width == 90 && rect.height == 158)||(rect.y == 315 && rect.width == 27);
     }
 }

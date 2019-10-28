@@ -16,7 +16,9 @@ import com.example.administrator.opencvdemo.activity.DialogActivity;
 import com.example.administrator.opencvdemo.model.TaskModel;
 import com.example.administrator.opencvdemo.notroot.ServiceHelper;
 import com.example.administrator.opencvdemo.notroot.WPZMGService3;
+import com.example.administrator.opencvdemo.util.HandlerUtil;
 import com.example.administrator.opencvdemo.util.LaunchApp;
+import com.example.administrator.opencvdemo.util.ScreenCapture;
 import com.example.administrator.opencvdemo.util.Test;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.TaskState;
@@ -94,8 +96,15 @@ public class GameFloatView extends BaseFloatView {
         findViewById(R.id.tvStartOne).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
+                hidePanel1();
+                HandlerUtil.async(new Runnable() {
+                    @Override
+                    public void run() {
+                        Util.getCapBitmapNew();
+                        Test.test(ScreenCapture.get().getCurrentBitmap());
+                    }
+                });
+                Test.testWork();
             }
         });
         findViewById(R.id.tvLaunch).setOnClickListener(new View.OnClickListener() {

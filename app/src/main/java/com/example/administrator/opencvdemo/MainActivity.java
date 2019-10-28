@@ -1,5 +1,6 @@
 package com.example.administrator.opencvdemo;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,11 +21,14 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.opencvdemo.floatservice.RequestPermissionsActivity;
+import com.example.administrator.opencvdemo.util.ToastUitl;
 import com.example.module_orc.IDiscernCallback;
 import com.example.module_orc.OpenCVHelper;
 import com.example.module_orc.OrcConfig;
 import com.example.module_orc.OrcHelper;
 import com.example.module_orc.OrcModel;
+import com.xiaosu.lib.permission.OnRequestPermissionsCallBack;
+import com.xiaosu.lib.permission.PermissionCompat;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -36,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageView img, ivCrop;
     private Button btn;
-    private int[] resIds = { R.mipmap.chufu, R.mipmap.chuligongwu, R.mipmap.zisi, R.mipmap.zican, R.mipmap.hongyanzhiji, R.mipmap.wzq1};
+    private int[] resIds = {R.mipmap.chufu, R.mipmap.chuligongwu, R.mipmap.zisi, R.mipmap.zican, R.mipmap.hongyanzhiji, R.mipmap.wzq1};
     private String[] resNames = {"main", "clgw", "wdzs", "jyzc", "hyzj", "sfz"};
     //    private int[] resIds = {R.mipmap.wzq1,R.mipmap.wzq, R.mipmap.wxb, R.mipmap.yl, R.mipmap.wzq1};
 
@@ -89,9 +93,9 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: ");
         File[] files = imagePath.listFiles();
         fileList = new ArrayList<>();
-        if (files!=null){
+        if (files != null) {
             for (File file : files) {
-                if (file.isFile() && ( file.getName().endsWith(".jpg") ||  file.getName().endsWith(".png"))) {
+                if (file.isFile() && (file.getName().endsWith(".jpg") || file.getName().endsWith(".png"))) {
                     fileList.add(file);
                 }
             }
@@ -200,9 +204,42 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         OpenCVHelper.init(this);
+//        reqPermission();
     }
 
     private FragmentActivity getSelf() {
         return this;
     }
+
+    private boolean permissionSuccess;
+
+    private void reqPermission() {
+        if (permissionSuccess) {
+            return;
+        }
+        PermissionCompat.create(this)
+                .permissions(Manifest.permission.READ_PHONE_STATE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
+                .explain("程序需要此权限，拒绝可能会导致您无法接收订单消息", "我们需要储存权限，拒绝可能会导致应用无法正常运行")
+                .retry(true)
+                .callBack(new OnRequestPermissionsCallBack() {
+                    @Override
+                    public void onGrant() {
+                        // todo 权限授权成功回调
+                        permissionSuccess = true;
+                    }
+
+                    @Override
+                    public void onDenied(String permission, boolean retry) {
+                        // todo 权限授权失败回调
+                        permissionSuccess = false;
+                        ToastUitl.showShort("权限授权失败,无法正常使用小官");
+//                        finish();
+                    }
+                })
+                .build()
+                .request();
+    }
+
 }

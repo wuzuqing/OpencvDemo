@@ -19,9 +19,7 @@ import org.opencv.imgproc.Imgproc;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class OnlyCardDiscern implements Runnable {
     private Bitmap bitmap1;
@@ -30,7 +28,7 @@ public class OnlyCardDiscern implements Runnable {
     private long start;
     private IDiscernCallback callback;
     protected Size mSize = new Size(360, 640);
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
     public OnlyCardDiscern(Bitmap bitmap1, String langName, IDiscernCallback callback) {
         this.bitmap1 = bitmap1;
         this.langName = langName;
@@ -49,13 +47,24 @@ public class OnlyCardDiscern implements Runnable {
         this.langName = langName;
         this.callback = callback;
     }
-
+    private static final String TAG = "OnlyCardDiscern";
     @Override
     public void run() {
         start = System.currentTimeMillis();
         Mat src = new Mat();
         Mat dst = new Mat();
         Mat threshold;
+        // 初始化
+        if (OrcConfig.offsetHeight==-1){
+            OrcConfig.offsetHeight = (bitmap1.getHeight() - 1920) / 2;
+            if (  OrcConfig.offsetHeight <0){
+                OrcConfig.offsetHeight = 0;
+            }
+        }
+        if (bitmap1.getHeight()>1920) {
+            Log.d(TAG, "run: " + bitmap1.getHeight() + " offsetHeight:" + OrcConfig.offsetHeight);
+            bitmap1 = Bitmap.createBitmap(bitmap1,0, OrcConfig.offsetHeight,1080,1920);
+        }
         Utils.bitmapToMat(bitmap1, src);
         //归一化
         if (bitmap1.getWidth() > mSize.width) {
@@ -196,63 +205,6 @@ public class OnlyCardDiscern implements Runnable {
                 return "本服榜单";
         }
         return pageName;
-    }
-
-    private List<Rect> megerRect(List<MatOfPoint> contoursList) {
-        List<Rect> list = new ArrayList<>();
-        Set<Integer> ingoraSet = new HashSet<>();
-        Rect currentPoint = null;
-        Rect temp;
-        int nextIndex = 0;
-        int maxSize = contoursList.size();
-        int left = 0, right = 0, top = 0, bottom = 0;
-        for (int i = 0; i < maxSize; i++) {
-            // 如果已经被合并,则跳过
-            currentPoint = Imgproc.boundingRect(contoursList.get(i));
-            if (ingoraSet.contains(i) || currentPoint.x == 0 || currentPoint.y == 0 || currentPoint.height < 8) {
-                continue;
-            }
-            //如果是最后一个则结束
-            if (i == maxSize - 1) {
-                list.add(currentPoint);
-                break;
-            }
-            nextIndex = i;
-            left = currentPoint.x;
-            top = currentPoint.y;
-            right = left + currentPoint.width;
-            bottom = top + currentPoint.height;
-            while (true) {
-                nextIndex++;
-                if (nextIndex == maxSize) {
-                    break;
-                }
-                temp = Imgproc.boundingRect(contoursList.get(nextIndex));
-                if (bottom < temp.y) {
-                    break;
-                } else if (checkInCurrentPoint(left, top, right, bottom, temp)) {
-                    // 两个矩形部分重叠
-                    left = Math.min(left, temp.x);
-                    // top = Math.min(top, temp.y);
-                    right = Math.max(right, temp.x + temp.width);
-                    // bottom = Math.max(bottom, temp.y + temp.height);
-                    ingoraSet.add(nextIndex);
-                } else {
-                    break;
-                }
-            }
-            list.add(currentPoint);
-        }
-        return list;
-    }
-
-    private boolean checkInCurrentPoint(int r1L, int r1T, int r1R, int r1B, Rect rect) {
-        int r2L = rect.x, r2T = rect.y, r2R = r2L + rect.width, r2B = r2T + rect.height;
-        return !(r1L > r2R || r1T > r2B || r2L > r1R || r2T > r1B);
-    }
-
-    protected OrcModel createOrdModel(Rect rect, Bitmap bitmap) {
-        return new OrcModel(rect, OrcHelper.getInstance().orcText(bitmap, langName), bitmap);
     }
 
     private boolean ignoreRect(Rect rect) {

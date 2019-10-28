@@ -364,6 +364,9 @@ public class ScreenCapture {
     public Bitmap getCurrentBitmap() {
         return mCurrentBitmap;
     }
+    public void setCurrentBitmap(Bitmap bitmap){
+        this.mCurrentBitmap = bitmap;
+    }
 
     public static void getPage() {
         OrcHelper.getInstance().executeCallAsync(WorkMode.ONLY_BITMAP, get().mCurrentBitmap, "zwp", "1", new IDiscernCallback() {

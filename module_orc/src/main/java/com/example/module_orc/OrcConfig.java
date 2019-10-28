@@ -55,6 +55,7 @@ public class OrcConfig {
     public static int topColorXishu = 1;
     public static int method = TM_CCORR_NORMED;
     public static String pageName;
+    public static int offsetHeight = -1;
 
     private static int topColorX = 102;
     private static int topColorWidth = 826;

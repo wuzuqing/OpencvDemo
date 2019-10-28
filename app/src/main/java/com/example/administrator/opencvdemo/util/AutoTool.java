@@ -5,6 +5,7 @@ import android.os.Build;
 import com.example.administrator.opencvdemo.BaseApplication;
 import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.notroot.EventHelper;
+import com.example.module_orc.OrcConfig;
 
 import org.opencv.core.Rect;
 
@@ -93,7 +94,7 @@ public class AutoTool {
             //            execShellCmd(CmdData.click(model.getFloatX(), model.getFloatY()));
         } else {
             if (isNewApi) {
-                EventHelper.click(x, y);
+                EventHelper.click(x, y+OrcConfig.offsetHeight);
             } else {
                 execShellCmd(CmdData.clickInt(x, y));
             }
