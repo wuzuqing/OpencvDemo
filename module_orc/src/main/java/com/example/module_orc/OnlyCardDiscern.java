@@ -28,7 +28,7 @@ public class OnlyCardDiscern implements Runnable {
     private long start;
     private IDiscernCallback callback;
     protected Size mSize = new Size(360, 640);
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
     public OnlyCardDiscern(Bitmap bitmap1, String langName, IDiscernCallback callback) {
         this.bitmap1 = bitmap1;
         this.langName = langName;
@@ -47,7 +47,7 @@ public class OnlyCardDiscern implements Runnable {
         this.langName = langName;
         this.callback = callback;
     }
-    private static final String TAG = "OnlyCardDiscern";
+    private static final String TAG = "LogUtils";
     @Override
     public void run() {
         start = System.currentTimeMillis();
@@ -55,11 +55,10 @@ public class OnlyCardDiscern implements Runnable {
         Mat dst = new Mat();
         Mat threshold;
         // 初始化
-        if (OrcConfig.offsetHeight==-1){
-            OrcConfig.offsetHeight = (bitmap1.getHeight() - 1920) / 2;
-            if (  OrcConfig.offsetHeight <0){
-                OrcConfig.offsetHeight = 0;
-            }
+
+        OrcConfig.offsetHeight = (bitmap1.getHeight() - 1920) / 2;
+        if (  OrcConfig.offsetHeight <0){
+            OrcConfig.offsetHeight = 0;
         }
         if (bitmap1.getHeight()>1920) {
             Log.d(TAG, "run: " + bitmap1.getHeight() + " offsetHeight:" + OrcConfig.offsetHeight);
@@ -163,10 +162,12 @@ public class OnlyCardDiscern implements Runnable {
                     Rect modelRect = model.getRect().clone();
                     modelRect.x *=3;
                     modelRect.y *=3;
+                    modelRect.y += OrcConfig.offsetHeight;
                     modelRect.width *=3;
                     modelRect.height *=3;
                     model.setRect(modelRect);
                     model.setResult(value);
+
                 }catch (Exception e){
                     e.printStackTrace();
                 }

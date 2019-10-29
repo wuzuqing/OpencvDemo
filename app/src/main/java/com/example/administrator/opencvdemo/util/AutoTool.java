@@ -94,7 +94,7 @@ public class AutoTool {
             //            execShellCmd(CmdData.click(model.getFloatX(), model.getFloatY()));
         } else {
             if (isNewApi) {
-                EventHelper.click(x, y+OrcConfig.offsetHeight);
+                EventHelper.click(x, y);
             } else {
                 execShellCmd(CmdData.clickInt(x, y));
             }
