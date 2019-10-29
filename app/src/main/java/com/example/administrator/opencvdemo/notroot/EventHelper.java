@@ -36,7 +36,7 @@ public class EventHelper {
         Path path2 = new Path();
         path2.moveTo(startX, startY);
         path2.lineTo(endX, endY);
-        return new GestureDescription.StrokeDescription(path2, 0, 550);
+        return new GestureDescription.StrokeDescription(path2, 10, 400);
     }
 
     private static GestureDescription getGd(GestureDescription.StrokeDescription sd) {

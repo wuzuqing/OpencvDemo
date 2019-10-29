@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         OpenCVHelper.init(this);
-//        reqPermission();
+        reqPermission();
     }
 
     private FragmentActivity getSelf() {

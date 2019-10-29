@@ -145,12 +145,9 @@ public abstract class AbsTaskElement implements TaskElement, Constant {
     }
 
     protected void swipeToRight() throws InterruptedException {
-        EventHelper.swipeHor(BaseApplication.getScreenWidth() - 50, 100,600);
+        EventHelper.swipeHor(800, 100,600);
         Thread.sleep(800);
-        EventHelper.swipeHor(BaseApplication.getScreenWidth() - 50, 100,600);
-        Thread.sleep(800);
-        EventHelper.swipeHor(240, 800,600);
-        Thread.sleep(1600);
+        Thread.sleep(2400);
         FuWaiHelper.paiHangBangInit();
     }
 

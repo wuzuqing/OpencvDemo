@@ -3,7 +3,6 @@ package com.example.administrator.opencvdemo.v2.task;
 import com.example.administrator.opencvdemo.config.CheckName;
 import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.TaskModel;
-import com.example.administrator.opencvdemo.util.ACache;
 import com.example.administrator.opencvdemo.util.AutoTool;
 import com.example.administrator.opencvdemo.util.CmdData;
 import com.example.administrator.opencvdemo.util.Constant;
@@ -22,9 +21,9 @@ public class ClzwTaskElement extends AbsTaskElement {
 
     @Override
     protected boolean doTask() throws Exception {
-        if (checkTime( KEY_WORK_ZW, ACache.TIME_HOUR * 2)) {
-            return  true;
-        }
+//        if (checkTime( KEY_WORK_ZW, ACache.TIME_HOUR * 2)) {
+//            return  true;
+//        }
         Util.getCapBitmapNew();
         if (Util.checkColor(beiJing)){
             clickClose();

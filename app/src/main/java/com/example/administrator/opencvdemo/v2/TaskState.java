@@ -74,7 +74,7 @@ public class TaskState implements Constant {
     }
 
     public void resetStep() {
-        currentTaskIndex = 0;
+        currentTaskIndex = -1;
         SPUtils.setInt(CURRENT_TASK_STEP, currentTaskIndex);
     }
 

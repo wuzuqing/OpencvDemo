@@ -2,6 +2,7 @@ package com.example.administrator.opencvdemo.floatservice;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,7 +19,6 @@ import com.example.administrator.opencvdemo.notroot.ServiceHelper;
 import com.example.administrator.opencvdemo.notroot.WPZMGService3;
 import com.example.administrator.opencvdemo.util.HandlerUtil;
 import com.example.administrator.opencvdemo.util.LaunchApp;
-import com.example.administrator.opencvdemo.util.ScreenCapture;
 import com.example.administrator.opencvdemo.util.Test;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.TaskState;
@@ -100,8 +100,9 @@ public class GameFloatView extends BaseFloatView {
                 HandlerUtil.async(new Runnable() {
                     @Override
                     public void run() {
-                        Util.getCapBitmapNew();
-                        Test.test(ScreenCapture.get().getCurrentBitmap());
+                        Bitmap bitmap = Util.getCapBitmapNew();
+
+                        Test.test(bitmap);
                     }
                 });
                 Test.testWork();

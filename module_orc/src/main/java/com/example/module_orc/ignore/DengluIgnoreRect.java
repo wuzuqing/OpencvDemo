@@ -21,7 +21,11 @@ public class DengluIgnoreRect implements IIgnoreRect {
     @Override
     public List<OrcModel> ignoreRect(List<Rect> rects) {
         List<OrcModel> result = new ArrayList<>();
-        result.add(OrcConfig.append(loginGame));
+        for (Rect rect : rects) {
+            if (rect.y>200){
+                result.add(OrcConfig.append(rect));
+            }
+        }
         return result;
     }
 }

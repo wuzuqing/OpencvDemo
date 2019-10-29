@@ -84,6 +84,13 @@ public class AutoTool {
             execShellCmdXy(model.getX(),model.getY());
         }
     }
+    public static void execShellCmdNotOffset(PointModel model) {
+        if (usedFloatRatio) {
+            //            execShellCmd(CmdData.click(model.getFloatX(), model.getFloatY()));
+        } else {
+            execShellCmdXy(model.getX(),model.getY()+OrcConfig.offsetHeight);
+        }
+    }
 
     public static void execShellCmd(Rect model) {
         execShellCmdXy(model.x + model.width / 2, model.y + model.height / 2);
@@ -151,6 +158,19 @@ public class AutoTool {
 
     public static void init() {
         isNewApi = isNewApi();
+    }
+
+    public static void killApp() {
+        try {
+            AutoTool.keyEvent(4);
+            Thread.sleep(800);
+            AutoTool.execShellCmdXy(899, 1117 + OrcConfig.offsetHeight);
+            Thread.sleep(1200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        //
     }
 }
 

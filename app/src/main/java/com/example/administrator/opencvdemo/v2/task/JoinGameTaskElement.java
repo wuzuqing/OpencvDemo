@@ -28,7 +28,7 @@ public class JoinGameTaskElement extends AbsTaskElement {
     @Override
     protected boolean doTask() throws Exception {
         // 检查是否有更新
-
+        PointModel pointModel = CmdData.get(LOGIN_GAME);
         while (TaskState.isWorking) {
             Util.getCapBitmapNew();
             if (Util.checkColor(startPoint)){
@@ -46,7 +46,16 @@ public class JoinGameTaskElement extends AbsTaskElement {
                 AutoTool.execShellCmd(pageData.get(0).getRect());  //进入游戏
                 Thread.sleep(1200);
                 break;
-            } else if (check(8)) {
+            }else if (Util.checkColor(pointModel)){
+                AutoTool.execShellCmd(pointModel);  //进入游戏
+                Thread.sleep(1200);
+            }else  if (checkPage("登录")) {
+                AutoTool.execShellCmd(pageData.get(0).getRect()); //点击登录
+                Thread.sleep(1200);
+                break;
+            }
+            else if (check(8)) {
+                AutoTool.killApp();
                 resetStep();
                 return true;
             }
@@ -67,7 +76,7 @@ public class JoinGameTaskElement extends AbsTaskElement {
                     SPUtils.getBoolean(CheckName.GAME_NOTICE_BTN_VERSION, true);
                     initPage();
                 }
-                AutoTool.execShellCmdXy(pageData.get(1).getRect().x,pageData.get(1).getRect().y);  //关闭通告对话框
+                AutoTool.execShellCmdXy(pageData.get(0).getRect().x,pageData.get(0).getRect().y);  //关闭通告对话框
                 break;
             } else if (check(8)) {
                 resetStep();

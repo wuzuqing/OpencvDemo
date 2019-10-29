@@ -434,6 +434,14 @@
                 android:layout_height="wrap_content"
                 android:text="衙门"
                 />
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:id="@+id/cb_PixelFormat"
+                android:textSize="9sp"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:text="PixelFormat"
+                />
 
         </LinearLayout>
         <View

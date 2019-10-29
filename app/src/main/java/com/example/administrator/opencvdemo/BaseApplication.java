@@ -2,11 +2,15 @@ package com.example.administrator.opencvdemo;
 
 import android.app.Application;
 import android.content.Context;
+import android.graphics.Point;
 import android.util.DisplayMetrics;
+import android.view.Display;
+import android.view.WindowManager;
 
 import com.example.administrator.opencvdemo.notroot.ServiceHelper;
 import com.example.administrator.opencvdemo.util.ChengJiuArray;
 import com.example.administrator.opencvdemo.util.CmdData;
+import com.example.administrator.opencvdemo.util.LogUtils;
 import com.example.administrator.opencvdemo.util.SPUtils;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.youtu.StaticVal;
@@ -40,7 +44,6 @@ public class BaseApplication extends Application {
 
     private static int screenWidth, screenHeight;
     private static final int DEFAULT_HEIGHT = 1920;
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -51,18 +54,34 @@ public class BaseApplication extends Application {
         DisplayMetrics metrics = getResources().getDisplayMetrics();
 
         screenWidth = metrics.widthPixels;
-        screenHeight = metrics.heightPixels;
-//        LogUtils.logd("densityDpi:" + metrics.densityDpi + " screenHeight:" + screenHeight);
-//        if (screenHeight > DEFAULT_HEIGHT) {
-//            OrcConfig.offsetHeight = (screenHeight - DEFAULT_HEIGHT) / 2;
-//            AutoTool.setOffsetY( OrcConfig.offsetHeight );
-//        }
+        screenHeight = getScreenHeight3(this);
+
+        LogUtils.logd("densityDpi:" + metrics.densityDpi + " screenHeight:" + screenHeight);
         CmdData.init();
         Util.init();
         StaticVal.init();
         ChengJiuArray.init();
     }
 
+    /**
+     * 包含虚拟导航栏高度
+     * @param context
+     * @return
+     */
+    public static int getScreenWidth3(Context context) {
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display defaultDisplay = windowManager.getDefaultDisplay();
+        Point outPoint = new Point();
+        defaultDisplay.getRealSize(outPoint);
+        return outPoint.x;
+    }
+    public static int getScreenHeight3(Context context) {
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display defaultDisplay = windowManager.getDefaultDisplay();
+        Point outPoint = new Point();
+        defaultDisplay.getRealSize(outPoint);
+        return outPoint.y;
+    }
 
     public static float getRatioY(float value) {
         return getScreenHeight() * value;

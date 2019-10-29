@@ -3,7 +3,6 @@ package com.example.administrator.opencvdemo.util;
 import android.graphics.Bitmap;
 
 import com.example.administrator.opencvdemo.BaseApplication;
-import com.example.administrator.opencvdemo.BitmapPreviewActivity;
 import com.example.administrator.opencvdemo.notroot.EventHelper;
 import com.example.administrator.opencvdemo.v2.FuWaiHelper;
 import com.example.module_orc.IDiscernCallback;
@@ -20,10 +19,10 @@ public class Test {
         OrcHelper.getInstance().executeCallAsync(ONLY_BITMAP, bitmap, "zwp", "test", new IDiscernCallback() {
             @Override
             public void call(final List<OrcModel> result) {
-                OrcModel orcModel = result.get(0);
-                if (!orcModel.getBitmap().isRecycled()){
-                    ScreenCapture.get().setCurrentBitmap(orcModel.getBitmap());
-                    BitmapPreviewActivity.show(BaseApplication.getAppContext());
+                if (result.size()>0){
+                    OrcModel orcModel = result.get(0);
+                    AutoTool.execShellCmd(orcModel.getRect());
+
                 }
             }
         });

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.PixelFormat;
 import android.hardware.display.DisplayManager;
 import android.hardware.display.VirtualDisplay;
@@ -20,6 +21,7 @@ import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import com.example.administrator.opencvdemo.BaseApplication;
 import com.example.administrator.opencvdemo.floatservice.RequestPermissionsActivity;
 import com.example.module_orc.IDiscernCallback;
 import com.example.module_orc.OrcHelper;
@@ -77,9 +79,9 @@ public class ScreenCapture {
         this.mContext = context;
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         mScreenDensity = metrics.densityDpi;
-        mScreenWidth = metrics.widthPixels;
-        mScreenHeight = metrics.heightPixels;
-        mScreenHeight = mScreenHeight > 1500 ? 1920 : mScreenHeight;
+        mScreenWidth = BaseApplication.getScreenWidth();
+        mScreenHeight = BaseApplication.getScreenHeight();
+//        mScreenHeight = mScreenHeight > 1500 ? 1920 : mScreenHeight;
         Log.d(TAG, "mScreenWidth: " + mScreenWidth);
         Log.d(TAG, "mScreenHeight: " + mScreenHeight);
         Log.d(TAG, "densityDpi: " + metrics.densityDpi);
@@ -216,7 +218,7 @@ public class ScreenCapture {
             }
         }catch (Exception e){
             e.printStackTrace();
-            SPUtils.setInt("PixelFormat",PixelFormat.RGBX_8888);
+//            SPUtils.setInt("PixelFormat",PixelFormat.RGBX_8888);
         }
     }
 
@@ -334,19 +336,24 @@ public class ScreenCapture {
         Bitmap bitmap = Bitmap.createBitmap(width + rowPadding / pixelStride, height, Bitmap.Config.ARGB_8888);
         bitmap.copyPixelsFromBuffer(buffer);
         bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height);
-//         savePicture(bitmap);
+//        bitmap = savePicture(bitmap);
         image.close();
         return bitmap;
     }
 
-    private static void savePicture(Bitmap bitmap) {
+    private static Bitmap savePicture(Bitmap bitmap) {
         try {
-            FileOutputStream stream = new FileOutputStream(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC) + "/aa.jpg");
+          String path =  Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC) + "/aa_"+System.currentTimeMillis()+".jpg";
+            FileOutputStream stream = new FileOutputStream(path);
             bitmap.compress( Bitmap.CompressFormat.JPEG,80,stream);
             stream.close();
+            bitmap =  BitmapFactory.decodeFile(path);
         } catch (IOException e) {
             e.printStackTrace();
+        }finally {
+            return bitmap;
         }
+
     }
 
     public static byte[] getBitmapByte(Bitmap bitmap) {

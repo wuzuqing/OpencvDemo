@@ -1,17 +1,19 @@
 package com.example.administrator.opencvdemo.v2.task;
 
 import android.os.Handler;
-import android.util.Log;
 
+import com.example.administrator.opencvdemo.config.CheckName;
 import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.TaskModel;
-import com.example.administrator.opencvdemo.util.ACache;
 import com.example.administrator.opencvdemo.util.AutoTool;
 import com.example.administrator.opencvdemo.util.CmdData;
+import com.example.administrator.opencvdemo.util.SPUtils;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.AbsTaskElement;
 import com.example.administrator.opencvdemo.v2.FuNeiHelper;
 import com.example.administrator.opencvdemo.v2.FuWaiHelper;
+import com.example.administrator.opencvdemo.v2.TaskState;
+import com.example.module_orc.OrcConfig;
 import com.example.module_orc.ignore.BenfubangdanIgnoreRect;
 
 import org.opencv.core.Rect;
@@ -39,9 +41,9 @@ public class MobaiTaskElement extends AbsTaskElement {
 
     @Override
     protected boolean doTask() throws Exception {
-        if (checkTime( KEY_WORK_MB, ACache.TIME_DAY)) {
-            return  true;
-        }
+//        if (checkTime( KEY_WORK_MB, ACache.TIME_DAY)) {
+//            return  true;
+//        }
         pageData = Util.getBitmapAndPageData();
 
         if (checkExp(netPoint, "当前网络异常")) return false;//检查网络环境
@@ -63,70 +65,54 @@ public class MobaiTaskElement extends AbsTaskElement {
         } else if (checkPage("排行榜") && step == 1) {
             if (doBenfuBangDan) {
                 status = 0;
-                AutoTool.execShellCmd(bangDanKuaFu);
+                AutoTool.execShellCmdNotOffset(bangDanKuaFu);
             } else {
                 status = 0;
-                AutoTool.execShellCmd(bangDanSelf);
+                AutoTool.execShellCmdNotOffset(bangDanSelf);
             }
             step = 2;
             Thread.sleep(1000);
 
         } else if (step==2 && ( checkPage("本服榜单") || checkPage("跨服榜单"))) {
-            Rect moBai = BenfubangdanIgnoreRect.moBaiMax;
+            Rect moBai = BenfubangdanIgnoreRect.moBaiMax.clone();
+            moBai.y += OrcConfig.offsetHeight;
             Rect target;
             while (true) {
                 target = pageData.get(0).getRect();   // 膜拜
-                Log.d(TAG, "doTask: target:"+target.toString() + " moBai:"+moBai.toString() + " status:"+status);
                 if (status == 0) {
                     if (checkMobai(moBai, target)) {
-                        Thread.sleep(800);
-                        AutoTool.execShellCmd(moBai);
-                        Thread.sleep(3500);
-                        AutoTool.execShellCmd(moBai);
-                        Thread.sleep(800);
-                        AutoTool.execShellCmd(moBai);
-                        Thread.sleep(800);
+                        clickEmpty(moBai);
                     } else {
-                        target = pageData.get(1).getRect();
+                        target = pageData.get(1).getRect().clone();
+                        target.y += OrcConfig.offsetHeight;
                         AutoTool.execShellCmdXy(target.x, target.y);
                         status = 1;
                         Thread.sleep(2000);
                     }
                 } else if (status == 1) {
-                    if (target.width == moBai.width && target.height == moBai.height && target.x ==moBai.x) {
-                        Thread.sleep(800);
-                        AutoTool.execShellCmd(moBai);
-                        Thread.sleep(3500);
-                        AutoTool.execShellCmd(moBai);
-                        Thread.sleep(800);
-                        AutoTool.execShellCmd(moBai);
-                        Thread.sleep(800);
+                    if (checkMobai(moBai, target)) {
+                        clickEmpty(moBai);
                     } else {
                         target = pageData.get(2).getRect();
+                        target.y += OrcConfig.offsetHeight;
                         AutoTool.execShellCmdXy(target.x, target.y);
                         status = 2;
                         Thread.sleep(2000);
                     }
                 } else if (status == 2) {
-                    if (target.width == moBai.width && target.height == moBai.height && target.x ==moBai.x) {
-                        Thread.sleep(800);
-                        AutoTool.execShellCmd(moBai);
-                        Thread.sleep(3500);
-                        AutoTool.execShellCmd(moBai);
-                        Thread.sleep(800);
-                        AutoTool.execShellCmd(moBai);
-                        Thread.sleep(800);
+                    if (checkMobai(moBai,target)) {
+                        clickEmpty(moBai);
                     } else {
                         if (!doBenfuBangDan) {
-                            AutoTool.execShellCmd(huangGongClose);
+                            AutoTool.execShellCmdNotOffset(huangGongClose);
                             Thread.sleep(1200);
                             doBenfuBangDan = true;
                             step = 1;
                             return false;
                         } else {
-                            AutoTool.execShellCmd(huangGongClose);
+                            AutoTool.execShellCmdNotOffset(huangGongClose);
                             Thread.sleep(1200);
-                            AutoTool.execShellCmd(huangGongClose);
+                            AutoTool.execShellCmdNotOffset(huangGongClose);
                             Thread.sleep(800);
                             return true;
                         }
@@ -136,6 +122,10 @@ public class MobaiTaskElement extends AbsTaskElement {
             }
         } else {
             if (check(20)) {
+                if (step==1 && TaskState.failCount==5){
+                    SPUtils.setBoolean(CheckName.FU_WAI_PAI_HANG_BANG, false);
+                    FuWaiHelper.paiHangBangInit();
+                }
                 resetStep();
                 return true;
             }
@@ -144,6 +134,16 @@ public class MobaiTaskElement extends AbsTaskElement {
             return false;
         }
         return false;
+    }
+
+    private void clickEmpty(Rect moBai) throws InterruptedException {
+        Thread.sleep(200);
+        AutoTool.execShellCmd(moBai);
+        Thread.sleep(4500);
+        AutoTool.execShellCmd(moBai);
+        Thread.sleep(800);
+        AutoTool.execShellCmd(moBai);
+        Thread.sleep(800);
     }
 
     private boolean checkMobai(Rect moBai, Rect target) {

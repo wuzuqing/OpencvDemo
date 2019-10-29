@@ -14,7 +14,7 @@ import static com.example.module_orc.ignore.HuanggongIgnoreRect.bottom;
 import static com.example.module_orc.ignore.StartGameIgnoreRect.startGame;
 
 class GetPageByOther {
-    private static final String TAG = "GetPageByOther";
+    private static final String TAG = "LogUtils";
 
     public static String getPage(List<Rect> rects) {
         //  {298, 184, 59x37}
@@ -79,6 +79,6 @@ class GetPageByOther {
 
     private static boolean fuNei(Rect rect) {
         //       普通                                                                                   //华为mate8
-        return (rect.width == 98 && rect.height == 150)|| (rect.width == 90 && rect.height == 158)||(rect.y == 315 && rect.width == 27);
+        return (rect.width == 98 && Math.abs(rect.height-151)<4)|| (rect.width == 90 && rect.height == 158)||(rect.y == 315 && rect.width == 27);
     }
 }

@@ -3,7 +3,6 @@ package com.example.administrator.opencvdemo.v2.task;
 
 import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.TaskModel;
-import com.example.administrator.opencvdemo.util.ACache;
 import com.example.administrator.opencvdemo.util.AutoTool;
 import com.example.administrator.opencvdemo.util.CmdData;
 import com.example.administrator.opencvdemo.util.Util;
@@ -19,9 +18,9 @@ public class FengluTaskElement extends AbsTaskElement {
     PointModel huangGongClose = CmdData.get(HUANG_GONG_CLOSE);
     @Override
     protected boolean doTask() throws Exception{
-        if (checkTime( KEY_WORK_FL, ACache.TIME_DAY * 1)) {
-            return  true;
-        }
+//        if (checkTime( KEY_WORK_FL, ACache.TIME_DAY * 1)) {
+//            return  true;
+//        }
         pageData = Util.getBitmapAndPageData();
 
         if (checkExp(netPoint, "当前网络异常")) return false;//检查网络环境
@@ -51,11 +50,11 @@ public class FengluTaskElement extends AbsTaskElement {
             Thread.sleep(200);
             return false;
         }
-        AutoTool.execShellCmd(getFengLu);
+        AutoTool.execShellCmdNotOffset(getFengLu);
         Thread.sleep(600);
-        AutoTool.execShellCmd(huangGongClose);
+        AutoTool.execShellCmdNotOffset(huangGongClose);
         Thread.sleep(200);
-        AutoTool.execShellCmd(huangGongClose);
+        AutoTool.execShellCmdNotOffset(huangGongClose);
         // Thread.sleep(200);
         // AutoTool.execShellCmdChuFu();
         Thread.sleep(1200);

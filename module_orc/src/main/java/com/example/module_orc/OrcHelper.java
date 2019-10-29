@@ -1,6 +1,7 @@
 package com.example.module_orc;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
@@ -313,5 +314,15 @@ public class OrcHelper {
                 e.printStackTrace();
             }
         }
+    }
+
+    public  int getNavigationBarHeight() {
+        int navigationBarHeight = -1;
+        Resources resources = getInstance().mContext.getResources();
+        int resourceId = resources.getIdentifier("navigation_bar_height","dimen", "android");
+        if (resourceId > 0) {
+            navigationBarHeight = resources.getDimensionPixelSize(resourceId);
+        }
+        return navigationBarHeight;
     }
 }

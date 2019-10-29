@@ -1,7 +1,6 @@
 package com.example.administrator.opencvdemo.activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -32,7 +31,7 @@ public class DialogActivity extends NoAnimatorActivity implements Constant {
     private EditText etYanHuiNumber;
     private EditText etUserInfo;
     private CheckBox cbGx,cbKfJl,cbLoop,cbZw,cbOnlyFl, cbZh,cbFl, cbMb, cbTask, cbChouCai, cbGuanKa, cbShuYuan,
-            cbYanHui, cbZc, cbXs, cbCJ, cbOldShouCai,cbYx,cbLm,cbLmFb,cbGy,cbLf,cbYm;
+            cbYanHui, cbZc, cbXs, cbCJ, cbOldShouCai,cbYx,cbLm,cbLmFb,cbGy,cbLf,cbYm,cbPf;
     boolean isTy;
     private CheckBox cbHyzh;
 
@@ -42,6 +41,7 @@ public class DialogActivity extends NoAnimatorActivity implements Constant {
         setContentView(R.layout.dialog_setting);
         etSpace =  findViewById(R.id.et_space);
         cbLoop =  findViewById(R.id.cb_loop);
+        cbPf =  findViewById(R.id.cb_PixelFormat);
         etYanHuiNumber =  findViewById(R.id.et_yan_hui_number);
         etCount =  findViewById(R.id.et_count);
         etXsPosition =  findViewById(R.id.et_xs_position);
@@ -102,6 +102,7 @@ public class DialogActivity extends NoAnimatorActivity implements Constant {
         cbGy.setChecked(SPUtils.getBoolean(KEY_GUAN_YAN));
         cbYm.setChecked(SPUtils.getBoolean(KEY_YA_MEN));
         cbLoop.setChecked(SPUtils.getBoolean(KEY_LOOP,true));
+        cbPf.setChecked(SPUtils.getBoolean("PixelFormat",false));
 
     }
 
@@ -147,6 +148,7 @@ public class DialogActivity extends NoAnimatorActivity implements Constant {
             SPUtils.setBoolean(KEY_LOOP, cbLoop.isChecked());
             SPUtils.setBoolean(KEY_YA_MEN, cbYm.isChecked());
             SPUtils.setBoolean(KEY_LAO_FANG, cbLf.isChecked());
+            SPUtils.setBoolean("PixelFormat",cbPf.isChecked());
         }
         Util.resetTaskModel();
         SPUtils.setInt(CURRENT_USER_INFO,0);
