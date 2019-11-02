@@ -19,6 +19,13 @@ public class ClzwTaskElement extends AbsTaskElement {
     public ClzwTaskElement(TaskModel taskModel) {
         super(taskModel);
     }
+    private boolean isJoinClzw;
+
+    @Override
+    protected void doTaskBefore() {
+        super.doTaskBefore();
+        isJoinClzw = false;
+    }
 
     @Override
     protected boolean doTask() throws Exception {
@@ -34,23 +41,42 @@ public class ClzwTaskElement extends AbsTaskElement {
         pageData = Util.getPageData();
 
         if (checkExp(netPoint, "当前网络异常")) return false;//检查网络环境
+        if (isJoinClzw){
+            if (checkPage("道具使用")) {
+                AutoTool.execShellCmd(pageData.get(0).getRect());
+                Thread.sleep(800);
+                return false;
+            } else{
+                for (OrcModel model : pageData) {
+                    if (model.getResult().startsWith("获得")){
+                        AutoTool.execShellCmd(model.getRect());
+                        Thread.sleep(700);
+                        return false;
+                    }
+                }
 
-        if (checkPage("府外")){
+                boolean hasResetBg = SPUtils.getBoolean(CheckName.ZHEGN_WU_BEI_JING, false);
+                if (!hasResetBg){
+                    String color = Util.getColor(beiJing);
+                    beiJing.setNormalColor(color);
+                    needSaveCoord = true;
+                }
+
+                clickClose();
+                Thread.sleep(800);
+            }
+        }else if (FuNeiHelper.shiYe!=null && Util.checkColor(FuNeiHelper.shiYe)){
+            AutoTool.execShellCmd(FuNeiHelper.shiYe);
+            Thread.sleep(1000);
+            isJoinClzw = true;
+            return false;
+        }else if (!isJoinClzw && checkPage("府外")){
 
         }else if (checkPage("府内")) {
-//            FuNeiHelper.init();
-            if (FuNeiHelper.shiYe!=null && Util.checkColor(FuNeiHelper.shiYe)){
-                AutoTool.execShellCmd(FuNeiHelper.shiYe);
-            }else{
-                AutoTool.execShellCmd(pageData.get(1).getRect());
-            }
+            AutoTool.execShellCmd(pageData.get(1).getRect());
             Thread.sleep(1000);
             return false;
-        } else if (checkPage("道具使用")) {
-            AutoTool.execShellCmd(pageData.get(0).getRect());
-            Thread.sleep(800);
-            return false;
-        } else if (!checkPage("处理公务")) {
+        } else  if (!checkPage("处理公务")) {
             if (check(12)) {
                 resetStep();
                 return true;
@@ -58,24 +84,6 @@ public class ClzwTaskElement extends AbsTaskElement {
             Thread.sleep(200);
             return false;
         }
-        for (OrcModel model : pageData) {
-            if (model.getResult().startsWith("获得")){
-                AutoTool.execShellCmd(model.getRect());
-                Thread.sleep(700);
-                return false;
-            }
-        }
-
-        boolean hasResetBg = SPUtils.getBoolean(CheckName.ZHEGN_WU_BEI_JING, false);
-        if (!hasResetBg){
-            String color = Util.getColor(beiJing);
-            beiJing.setNormalColor(color);
-            needSaveCoord = true;
-        }
-
-        clickClose();
-        Thread.sleep(800);
-
         return true;
     }
 }

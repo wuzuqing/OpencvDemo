@@ -37,16 +37,20 @@ public class JyzcTaskElement extends AbsTaskElement {
 
         if (!TextUtils.isEmpty(jyzcModel)) {
             coordinateList = (List<PointModel>) JsonUtils.fromJson(jyzcModel,
-                new TypeToken<List<PointModel>>() {}.getType());
-        }else{
+                    new TypeToken<List<PointModel>>() {
+                    }.getType());
+        } else {
             coordinateList = new ArrayList<>();
         }
     }
+
     private int isCountOne;
+    private boolean isInJycz;
 
     @Override
     protected void doTaskBefore() {
         isCountOne = 0;
+        isInJycz =false;
     }
 
     @Override
@@ -55,19 +59,62 @@ public class JyzcTaskElement extends AbsTaskElement {
 
         if (checkExp(netPoint, "当前网络异常")) return false;//检查网络环境
 
-        if (checkPage("府内")) {
-//            FuNeiHelper.init();
-            if (FuNeiHelper.huaAn!=null && Util.checkColor(FuNeiHelper.huaAn)){
-                AutoTool.execShellCmd(FuNeiHelper.huaAn);
-            }else{
+        if (isInJycz){
+            if (checkPage("道具使用")) {
                 AutoTool.execShellCmd(pageData.get(0).getRect());
+                Thread.sleep(800);
+                return false;
+            } else{
+                if (isFristInitPoint) {
+                    initPage();
+                }
+                if (needClickZhengshou) {
+                    AutoTool.execShellCmd(CmdData.get(ZHENG_SHOU));
+                    Thread.sleep(800);
+                    needClickZhengshou = false;
+                    return false;
+                }
+                if (isEnd) {
+                    clickClose();
+                    Thread.sleep(1000);
+                    return true;
+                }
+                int count = 0;
+
+                if (!coordinateList.isEmpty()) {
+                    for (PointModel model : coordinateList) {
+                        if (Util.checkColor(model)) {
+                            EventHelper.click(model.getX(), model.getY());
+                            Thread.sleep(200);
+                            count++;
+                        }
+                    }
+                } else {
+                    for (OrcModel orcModel : pageData) {
+                        if (TextUtils.equals("经营", orcModel.getResult())) {
+                            Rect rect = orcModel.getRect();
+                            AutoTool.execShellCmdXy(rect.x, rect.y);
+                            Thread.sleep(200);
+                            count++;
+                        }
+                    }
+                }
+                if (count == 1) {
+                    isCountOne++;
+                }
+                Thread.sleep(400);
+                isEnd = count == 0 || isCountOne > 3;
+                LogUtils.logd(" count" + count);
             }
+        }else if (FuNeiHelper.huaAn != null && Util.checkColor(FuNeiHelper.huaAn)) {
+            AutoTool.execShellCmd(FuNeiHelper.huaAn);
             isEnd = false;
             Thread.sleep(1000);
-            return false;
-        } else if (checkPage("道具使用")) {
+        } else if (checkPage("府内")) {
+//            FuNeiHelper.init();
             AutoTool.execShellCmd(pageData.get(0).getRect());
-            Thread.sleep(800);
+            isEnd = false;
+            Thread.sleep(1000);
             return false;
         } else if (!checkPage("经营资产")) {
             if (check(12)) {
@@ -77,46 +124,6 @@ public class JyzcTaskElement extends AbsTaskElement {
             Thread.sleep(300);
             return false;
         }
-        if (isFristInitPoint) {
-            initPage();
-        }
-        if (needClickZhengshou) {
-            AutoTool.execShellCmd(CmdData.get(ZHENG_SHOU));
-            Thread.sleep(800);
-            needClickZhengshou = false;
-            return false;
-        }
-        if (isEnd) {
-            clickClose();
-            Thread.sleep(1000);
-            return true;
-        }
-        int count = 0;
-
-        if (!coordinateList.isEmpty()){
-            for (PointModel model : coordinateList) {
-                if (Util.checkColor(model)){
-                    EventHelper.click(model.getX(), model.getY());
-                    Thread.sleep(200);
-                    count++;
-                }
-            }
-        }else{
-            for (OrcModel orcModel : pageData) {
-                if (TextUtils.equals("经营", orcModel.getResult())) {
-                    Rect rect = orcModel.getRect();
-                    AutoTool.execShellCmdXy(rect.x, rect.y);
-                    Thread.sleep(200);
-                    count++;
-                }
-            }
-        }
-        if (count==1){
-            isCountOne++;
-        }
-        Thread.sleep(400);
-        isEnd = count == 0 || isCountOne >3;
-        LogUtils.logd(" count" + count);
         return false;
     }
 
