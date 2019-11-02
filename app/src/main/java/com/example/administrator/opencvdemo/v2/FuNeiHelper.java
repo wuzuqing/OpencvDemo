@@ -32,13 +32,13 @@ public class FuNeiHelper {
     }
 
     public static void init() {
-        if (isIniting) {
-            return;
-        }
-        boolean isInit = SPUtils.getBoolean(CheckName. FU_NEI, false);
-        if (isInit) {
-            return;
-        }
+//        if (isIniting) {
+//            return;
+//        }
+//        boolean isInit = SPUtils.getBoolean(CheckName. FU_NEI, false);
+//        if (isInit) {
+//            return;
+//        }
         isIniting = true;
         ImageParse.getSyncData(ScreenCapture.get().getCurrentBitmap(), new ImageParse.Call() {
             @Override

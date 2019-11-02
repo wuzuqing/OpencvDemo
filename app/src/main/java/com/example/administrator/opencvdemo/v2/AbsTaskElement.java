@@ -21,6 +21,8 @@ import com.example.administrator.opencvdemo.youtu.ImageParse;
 import com.example.module_orc.OrcConfig;
 import com.example.module_orc.OrcModel;
 
+import org.opencv.core.Rect;
+
 import java.util.List;
 
 public abstract class AbsTaskElement implements TaskElement, Constant {
@@ -58,6 +60,7 @@ public abstract class AbsTaskElement implements TaskElement, Constant {
     @Override
     public final void run() {
         TaskState.resetFail();
+        doTaskBefore();
         while (TaskState.isWorking) {
             // if (!EventHelper.isGame()) {
             //     sleep(2000);
@@ -87,6 +90,10 @@ public abstract class AbsTaskElement implements TaskElement, Constant {
                 taskHandler.sendEmptyMessage(0);
             }
         }
+    }
+
+    protected void doTaskBefore() {
+
     }
 
     private void sleep(long tile) {
@@ -185,8 +192,22 @@ public abstract class AbsTaskElement implements TaskElement, Constant {
         model.setX(coord.getX()+coord.getWidth()/2);
         model.setY(coord.getY()+coord.getHeight()/2);
         model.setNormalColor(Util.getColor(model));
-        LogUtils.logd("oldX:"+oldX +" newX:"+model.getX());
-        LogUtils.logd("oldY:"+oldY +" newY:"+model.getY());
-        LogUtils.logd("oldColor:"+oldColor +" newColor:"+model.getNormalColor());
+        LogUtils.logd("oldX:"+oldX +" newX:"+model.getX() + "oldY:"+oldY +" newY:"+model.getY() + "oldColor:"+oldColor +" newColor:"+model.getNormalColor());
+    }
+    protected void setNewCoord(PointModel model,Rect rect){
+        if (model==null){
+            return ;
+        }
+        int oldX = model.getX();
+        int oldY = model.getY();
+        if (oldX == rect.x && oldY == rect.y){
+            return;
+        }
+        String oldColor = model.getNormalColor();
+        model.setX(rect.x+rect.width/2);
+        model.setY(rect.y+rect.height/2);
+        model.setNormalColor(Util.getColor(model));
+        LogUtils.logd("oldX:"+oldX +" newX:"+model.getX() + "oldY:"+oldY +" newY:"+model.getY() + "oldColor:"+oldColor +" newColor:"+model.getNormalColor());
+        needSaveCoord = true;
     }
 }

@@ -11,6 +11,7 @@ import com.example.administrator.opencvdemo.util.SPUtils;
 import com.example.administrator.opencvdemo.util.TaskUtil;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.AbsTaskElement;
+import com.example.administrator.opencvdemo.v2.FuNeiHelper;
 import com.example.administrator.opencvdemo.v2.TaskState;
 
 import java.util.List;
@@ -38,11 +39,7 @@ public class JoinGameTaskElement extends AbsTaskElement {
             }
             pageData = Util.getPageData();
             if (checkPage("进入游戏")) {
-                boolean isInit = SPUtils.getBoolean(CheckName.START_BTN_VERSION, false);
-                if (!isInit){
-                    SPUtils.getBoolean(CheckName.START_BTN_VERSION, true);
-                    initPage();
-                }
+                setNewCoord(startPoint,pageData.get(0).getRect());
                 AutoTool.execShellCmd(pageData.get(0).getRect());  //进入游戏
                 Thread.sleep(1200);
                 break;
@@ -53,11 +50,16 @@ public class JoinGameTaskElement extends AbsTaskElement {
                 AutoTool.execShellCmd(pageData.get(0).getRect()); //点击登录
                 Thread.sleep(1200);
                 break;
-            }
-            else if (check(8)) {
+            }else if (check(8)) {
                 AutoTool.killApp();
                 resetStep();
                 return true;
+            }else{
+                boolean isInit = SPUtils.getBoolean(CheckName.START_BTN_VERSION, false);
+                if (!isInit){
+//                    SPUtils.getBoolean(CheckName.START_BTN_VERSION, true);
+                    initPage();
+                }
             }
             TaskUtil.sleep(400);
         }
@@ -73,16 +75,32 @@ public class JoinGameTaskElement extends AbsTaskElement {
             if (checkPage("游戏公告")) {
                 boolean isInit = SPUtils.getBoolean(CheckName.GAME_NOTICE_BTN_VERSION, false);
                 if (!isInit){
-                    SPUtils.getBoolean(CheckName.GAME_NOTICE_BTN_VERSION, true);
                     initPage();
                 }
-                AutoTool.execShellCmdXy(pageData.get(0).getRect().x,pageData.get(0).getRect().y);  //关闭通告对话框
+                AutoTool.execShellCmdXy(pageData.get(0).getRect().x,pageData.get(0).getRect().y );  //关闭通告对话框
                 break;
             } else if (check(8)) {
                 resetStep();
                 return true;
+            }else{
+                boolean isInit = SPUtils.getBoolean(CheckName.GAME_NOTICE_BTN_VERSION, false);
+                if (!isInit){
+                    initPage();
+                }
             }
-            TaskUtil.sleep(200);
+        }
+        TaskUtil.sleep(1200);
+        while (TaskState.isWorking){
+            Util.getCapBitmapNew();
+            if (FuNeiHelper.huaAn!=null && Util.checkColor(FuNeiHelper.huaAn)){
+                break;
+            }else if (check(8)){
+                AutoTool.killApp();
+                resetStep();
+                return true;
+            }else{
+                FuNeiHelper.init();
+            }
         }
         return true;
     }

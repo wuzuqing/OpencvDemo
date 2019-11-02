@@ -125,7 +125,7 @@ public class EventHelper {
     public static void setCurrentEvent(AccessibilityEvent event) {
         accessibilityEvent = event;
         currentPackageName = event.getPackageName().toString();
-        LogUtils.logd("setCurrentEvent:" + currentPackageName + ":" + event.getAction());
+//        LogUtils.logd("setCurrentEvent:" + currentPackageName + ":" + event.getAction());
     }
 
     private static TaskAccessibilityService mService;

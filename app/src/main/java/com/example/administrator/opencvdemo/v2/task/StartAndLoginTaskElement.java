@@ -53,6 +53,7 @@ public class StartAndLoginTaskElement extends AbsTaskElement {
             if (Util.checkColor(pointModel)) {
                 break;
             } else if (checkPage("登录")) {
+                setNewCoord(pointModel,pageData.get(0).getRect());
                 break;
             } else if (!TextUtils.isEmpty(OrcConfig.pageName)) {
                 // 退出游戏
@@ -61,7 +62,7 @@ public class StartAndLoginTaskElement extends AbsTaskElement {
             } else if (check(3)) {
                 boolean isInit = SPUtils.getBoolean(CheckName.LOGIN_BTN_VERSION, false);
                 if (!isInit) {
-                    SPUtils.getBoolean(CheckName.LOGIN_BTN_VERSION, true);
+//                    SPUtils.getBoolean(CheckName.LOGIN_BTN_VERSION, true);
                     initPage();
                 }
                 return false;

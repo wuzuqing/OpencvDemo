@@ -15,7 +15,6 @@ import com.example.administrator.opencvdemo.util.ScreenCapture;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.AbsTaskElement;
 import com.example.administrator.opencvdemo.v2.FuNeiHelper;
-import com.example.administrator.opencvdemo.youtu.ImageParse;
 import com.example.module_orc.OrcModel;
 import com.example.module_orc.util.GsonUtils;
 import com.google.gson.reflect.TypeToken;
@@ -43,6 +42,12 @@ public class JyzcTaskElement extends AbsTaskElement {
             coordinateList = new ArrayList<>();
         }
     }
+    private int isCountOne;
+
+    @Override
+    protected void doTaskBefore() {
+        isCountOne = 0;
+    }
 
     @Override
     protected boolean doTask() throws Exception {
@@ -51,7 +56,7 @@ public class JyzcTaskElement extends AbsTaskElement {
         if (checkExp(netPoint, "当前网络异常")) return false;//检查网络环境
 
         if (checkPage("府内")) {
-            FuNeiHelper.init();
+//            FuNeiHelper.init();
             if (FuNeiHelper.huaAn!=null && Util.checkColor(FuNeiHelper.huaAn)){
                 AutoTool.execShellCmd(FuNeiHelper.huaAn);
             }else{
@@ -106,8 +111,11 @@ public class JyzcTaskElement extends AbsTaskElement {
                 }
             }
         }
+        if (count==1){
+            isCountOne++;
+        }
         Thread.sleep(400);
-        isEnd = count == 0;
+        isEnd = count == 0 || isCountOne >3;
         LogUtils.logd(" count" + count);
         return false;
     }

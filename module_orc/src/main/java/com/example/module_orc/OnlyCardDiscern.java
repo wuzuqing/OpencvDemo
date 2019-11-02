@@ -1,6 +1,7 @@
 package com.example.module_orc;
 
 import android.graphics.Bitmap;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.example.module_orc.ignore.IIgnoreRect;
@@ -150,15 +151,17 @@ public class OnlyCardDiscern implements Runnable {
             }
             for (OrcModel model : orcModels) {
                 try {
-                    dst = new Mat(threshold, model.getRect());
                     if (DEBUG) {
+
                         Imgproc.rectangle(src, model.getRect(), new Scalar(0, 0, 255), 1, 8, 0);
+                        Imgcodecs.imwrite(OrcHelper.getInstance().getTargetFile("/some/" + model.getRect().toString() + ".jpg").getAbsolutePath(), dst);
                     }
-                    Imgcodecs.imwrite(OrcHelper.getInstance().getTargetFile("/some/" + model.getRect().toString() + ".jpg").getAbsolutePath(), dst);
+                    dst = new Mat(threshold, model.getRect());
                     bitmap = Bitmap.createBitmap(dst.cols(), dst.rows(), Bitmap.Config.ARGB_8888);
                     Utils.matToBitmap(dst, bitmap);
                     model.setBitmap(bitmap);
                     String value = OrcHelper.getInstance().orcText(bitmap, "small");
+                    model.setResult(value);
                     Rect modelRect = model.getRect().clone();
                     modelRect.x *=3;
                     modelRect.y *=3;
@@ -166,10 +169,29 @@ public class OnlyCardDiscern implements Runnable {
                     modelRect.width *=3;
                     modelRect.height *=3;
                     model.setRect(modelRect);
-                    model.setResult(value);
+
 
                 }catch (Exception e){
                     e.printStackTrace();
+                }
+            }
+        }else{
+            for (Rect rect1 : rects) {
+                dst = new Mat(threshold, rect1);
+                bitmap = Bitmap.createBitmap(dst.cols(), dst.rows(), Bitmap.Config.ARGB_8888);
+                Utils.matToBitmap(dst, bitmap);
+
+                String value = OrcHelper.getInstance().orcText(bitmap, "small");
+                if (!TextUtils.isEmpty(value)){
+                    OrcModel orcModel = new OrcModel();
+                    rect1.x *=3;
+                    rect1.y *=3;
+                    rect1.y += OrcConfig.offsetHeight;
+                    rect1.width *=3;
+                    rect1.height *=3;
+                    orcModel.setRect(rect1);
+                    orcModel.setResult(value);
+                    orcModels.add(orcModel);
                 }
             }
         }
