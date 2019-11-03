@@ -57,6 +57,7 @@ public class JoinGameTaskElement extends AbsTaskElement {
             }else{
                 boolean isInit = SPUtils.getBoolean(CheckName.START_BTN_VERSION, false);
                 if (!isInit){
+                    TaskUtil.sleep(400);
 //                    SPUtils.getBoolean(CheckName.START_BTN_VERSION, true);
                     initPage();
                 }
@@ -77,7 +78,11 @@ public class JoinGameTaskElement extends AbsTaskElement {
                 if (!isInit){
                     initPage();
                 }
-                AutoTool.execShellCmdXy(pageData.get(0).getRect().x,pageData.get(0).getRect().y );  //关闭通告对话框
+                if (Util.checkColor(gameNoticePoint)){
+                    AutoTool.execShellCmd(gameNoticePoint);
+                }else{
+                    AutoTool.execShellCmdXy(pageData.get(0).getRect().x,pageData.get(0).getRect().y );  //关闭通告对话框
+                }
                 break;
             } else if (check(8)) {
                 resetStep();

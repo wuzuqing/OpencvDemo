@@ -70,11 +70,11 @@ public class StartAndLoginTaskElement extends AbsTaskElement {
             Thread.sleep(600);
         }
         if (TaskState.needContinue) return false;
-        boolean isInit = SPUtils.getBoolean(CheckName.LOGIN_BTN_VERSION, false);
-        if (!isInit) {
-            SPUtils.getBoolean(CheckName.LOGIN_BTN_VERSION, true);
-            initPage();
-        }
+//        boolean isInit = SPUtils.getBoolean(CheckName.LOGIN_BTN_VERSION, false);
+//        if (!isInit) {
+//            SPUtils.getBoolean(CheckName.LOGIN_BTN_VERSION, true);
+//            initPage();
+//        }
         //输入账号
         UserInfo userInfo = TaskState.get().getUserInfo();
         EventHelper.inputUserInfo(userInfo.getName());
