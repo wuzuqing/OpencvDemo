@@ -73,6 +73,7 @@
         <activity android:name=".BitmapPreviewActivity" />
         <activity android:name=".activity.AssetsPointSettingActivity" />
         <activity android:name=".activity.DialogActivity" />
+        <activity android:name=".activity.AccountManagerActivity" />
 
         <service
             android:name=".notroot.TaskAccessibilityService"

@@ -573,12 +573,15 @@ public class Util implements Constant {
                         userInfoList.add(new UserInfo(info, ""));
                     }
                 }
-
-                SPUtils.setString(INFO_KEY, JsonUtils.toJson(userInfoList));
+                saveUserInfo(userInfoList);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static void saveUserInfo(List<UserInfo> userInfos){
+        SPUtils.setString(INFO_KEY, JsonUtils.toJson(userInfos));
     }
 
     public static void stopTask() {

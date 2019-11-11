@@ -101,6 +101,11 @@ public class TaskState implements Constant {
         needContinue = false;
     }
 
+    public static void resetUserInfo(){
+        mUserInfoList = Util.getUserInfo();
+
+    }
+
     public static boolean check(int failCount, int maxCount) {
         boolean check = failCount > maxCount;
         needContinue = check;

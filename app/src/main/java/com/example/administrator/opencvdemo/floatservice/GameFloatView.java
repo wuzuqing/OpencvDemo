@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.administrator.opencvdemo.R;
+import com.example.administrator.opencvdemo.activity.AccountManagerActivity;
 import com.example.administrator.opencvdemo.activity.AssetsPointSettingActivity;
 import com.example.administrator.opencvdemo.activity.DialogActivity;
 import com.example.administrator.opencvdemo.model.TaskModel;
@@ -22,7 +23,7 @@ import com.example.administrator.opencvdemo.util.LaunchApp;
 import com.example.administrator.opencvdemo.util.Test;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.TaskState;
-import com.example.administrator.opencvdemo.v2.task.ShuyuanTaskElement;
+import com.example.administrator.opencvdemo.v2.task.JyzcTaskElement;
 
 /**
  * 作者：士元
@@ -91,6 +92,10 @@ public class GameFloatView extends BaseFloatView {
         findViewById(R.id.tvOneTask).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(getContext(), AccountManagerActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getContext().startActivity(intent);
+                hidePanel1();
             }
         });
         findViewById(R.id.tvStartOne).setOnClickListener(new View.OnClickListener() {
@@ -145,7 +150,7 @@ public class GameFloatView extends BaseFloatView {
                 if (!ServiceHelper.getInstance().goAccess()){
                     hidePanel1();
                     TaskState.isWorking = true;
-                    AsyncTask.THREAD_POOL_EXECUTOR.execute(new ShuyuanTaskElement(new TaskModel("书院",true)));
+                    AsyncTask.THREAD_POOL_EXECUTOR.execute(new JyzcTaskElement(new TaskModel("经营资产",true)));
                 }
             }
         });
