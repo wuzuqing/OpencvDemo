@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.Result;
 import com.example.administrator.opencvdemo.model.TaskModel;
-import com.example.administrator.opencvdemo.notroot.EventHelper;
 import com.example.administrator.opencvdemo.util.AutoTool;
 import com.example.administrator.opencvdemo.util.CmdData;
 import com.example.administrator.opencvdemo.util.JsonUtils;
@@ -81,15 +80,16 @@ public class JyzcTaskElement extends AbsTaskElement {
                 }
                 int count = 0;
 
-                if (!coordinateList.isEmpty()) {
-                    for (PointModel model : coordinateList) {
-                        if (Util.checkColor(model)) {
-                            EventHelper.click(model.getX(), model.getY());
-                            Thread.sleep(200);
-                            count++;
-                        }
-                    }
-                } else {
+//                if (!coordinateList.isEmpty()) {
+//                    for (PointModel model : coordinateList) {
+//                        if (Util.checkColor(model)) {
+//                            EventHelper.click(model.getX(), model.getY());
+//                            Thread.sleep(200);
+//                            count++;
+//                        }
+//                    }
+//                } else
+                    {
                     for (OrcModel orcModel : pageData) {
                         if (TextUtils.equals("经营", orcModel.getResult())) {
                             Rect rect = orcModel.getRect();
