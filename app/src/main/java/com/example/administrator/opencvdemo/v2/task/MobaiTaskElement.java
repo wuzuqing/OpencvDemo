@@ -5,6 +5,7 @@ import android.os.Handler;
 import com.example.administrator.opencvdemo.config.CheckName;
 import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.TaskModel;
+import com.example.administrator.opencvdemo.util.ACache;
 import com.example.administrator.opencvdemo.util.AutoTool;
 import com.example.administrator.opencvdemo.util.CmdData;
 import com.example.administrator.opencvdemo.util.SPUtils;
@@ -40,15 +41,14 @@ public class MobaiTaskElement extends AbsTaskElement {
 
     @Override
     protected boolean doTask() throws Exception {
-//        if (checkTime( KEY_WORK_MB, ACache.TIME_DAY)) {
-//            return  true;
-//        }
+        if (checkTime( KEY_WORK_MB, ACache.TIME_DAY)) {
+            return  true;
+        }
         pageData = Util.getBitmapAndPageData();
 
         if (checkExp(netPoint, "当前网络异常")) return false;//检查网络环境
 
         if (checkPage("府内")) {
-//            FuNeiHelper.init();
             AutoTool.execShellCmdChuFu();
             Thread.sleep(1800);
             return false;

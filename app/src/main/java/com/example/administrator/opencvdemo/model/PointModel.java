@@ -17,7 +17,22 @@ public class PointModel {
     private int y;
     private String normalColor;
     private boolean isReset;
+    private int subY;
 
+    @Override
+    public String toString() {
+        return "PointModel{" +
+                "key='" + key + '\'' +
+                ", name='" + name + '\'' +
+                ", x=" + x +
+                ", y=" + y +
+                ", normalColor='" + normalColor + '\'' +
+                ", subY=" + subY +
+                ", subColor='" + subColor + '\'' +
+                '}';
+    }
+
+    private String subColor;
     public boolean isReset() {
         return isReset;
     }
@@ -26,11 +41,6 @@ public class PointModel {
         isReset = reset;
     }
 
-    @Override
-    public String toString() {
-        return "PointModel{" + "key='" + key + '\'' + ", name='" + name + '\'' + ", x=" + x + ", y=" + y + ", normalColor='" +
-                normalColor + '\'' + '}';
-    }
 
     public PointModel(String key, String name) {
         this.key = key;
@@ -87,5 +97,21 @@ public class PointModel {
             this.name = model.name;
             this.normalColor = model.normalColor;
         }
+    }
+
+    public void setSubColor(String subColor) {
+        this.subColor = subColor;
+    }
+
+    public int getSubY() {
+        return subY;
+    }
+
+    public String getSubColor() {
+        return subColor;
+    }
+
+    public void setSubY(int subY) {
+        this.subY = subY;
     }
 }

@@ -206,7 +206,7 @@ public class OnlyCardDiscern implements Runnable {
             }
             callback.call(orcModels);
         }
-        Log.i("LogUtils", "discern: usedTime" + (System.currentTimeMillis() - start) +" pageName:"+pageName + " \nvalue:" +orcModels.toString());
+//        Log.i("LogUtils", "discern: usedTime" + (System.currentTimeMillis() - start) +" pageName:"+pageName + " \nvalue:" +orcModels.toString());
     }
 
     private String parseName(String pageName) {

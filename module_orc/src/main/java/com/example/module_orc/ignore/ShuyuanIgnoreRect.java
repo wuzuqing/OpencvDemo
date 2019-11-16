@@ -1,7 +1,5 @@
 package com.example.module_orc.ignore;
 
-import android.util.Log;
-
 import com.example.module_orc.OrcConfig;
 import com.example.module_orc.OrcModel;
 
@@ -23,7 +21,7 @@ public class ShuyuanIgnoreRect implements IIgnoreRect {
         List<OrcModel> result = new ArrayList<>();
         result.add(OrcConfig.append(new Rect(284,129,74,16)));
         for (Rect rect : rects) {
-            Log.d(TAG, "ignoreRect: "+rect.toString());
+//            Log.d(TAG, "ignoreRect: "+rect.toString());
             if (rect.y == 617 || rect.y == 459 || rect.y ==301){
                 rect.y -=24;
                 result.add(OrcConfig.append(rect));

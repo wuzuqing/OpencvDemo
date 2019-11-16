@@ -23,7 +23,7 @@ import com.example.administrator.opencvdemo.util.LaunchApp;
 import com.example.administrator.opencvdemo.util.Test;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.TaskState;
-import com.example.administrator.opencvdemo.v2.task.JyzcTaskElement;
+import com.example.administrator.opencvdemo.v2.task.ShuyuanTaskElement;
 
 /**
  * 作者：士元
@@ -150,7 +150,7 @@ public class GameFloatView extends BaseFloatView {
                 if (!ServiceHelper.getInstance().goAccess()){
                     hidePanel1();
                     TaskState.isWorking = true;
-                    AsyncTask.THREAD_POOL_EXECUTOR.execute(new JyzcTaskElement(new TaskModel("经营资产",true)));
+                    AsyncTask.THREAD_POOL_EXECUTOR.execute(new ShuyuanTaskElement(new TaskModel("登录",true)));
                 }
             }
         });

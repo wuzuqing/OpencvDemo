@@ -12,6 +12,7 @@ import com.example.administrator.opencvdemo.notroot.EventHelper;
 import com.example.administrator.opencvdemo.util.AutoTool;
 import com.example.administrator.opencvdemo.util.CmdData;
 import com.example.administrator.opencvdemo.util.LaunchApp;
+import com.example.administrator.opencvdemo.util.LogUtils;
 import com.example.administrator.opencvdemo.util.SPUtils;
 import com.example.administrator.opencvdemo.util.TaskUtil;
 import com.example.administrator.opencvdemo.util.Util;
@@ -49,22 +50,28 @@ public class StartAndLoginTaskElement extends AbsTaskElement {
         TaskState.resetFail();
 
         while (TaskState.isWorking) {
-            pageData = Util.getBitmapAndPageData();
-            if (Util.checkColor(pointModel)) {
+            Util.getCapBitmapWithOffset();
+            LogUtils.logd("step:1 capScreen");
+            if (Util.checkColorAndOffset(pointModel)) {
                 break;
-            } else if (checkPage("登录")) {
-                setNewCoord(pointModel,pageData.get(0).getRect());
+            }
+            LogUtils.logd("step:2 parsePage");
+            pageData = Util.getPageData();
+            if (checkPage("登录")) {
+                setNewCoord(pointModel, pageData.get(0).getRect());
+                LogUtils.logd("step:3 resetCoord");
                 break;
             } else if (!TextUtils.isEmpty(OrcConfig.pageName)) {
                 // 退出游戏
                 killApp();
                 return false;
-            } else if (check(3)) {
+            } else if (check(6)) {
                 boolean isInit = SPUtils.getBoolean(CheckName.LOGIN_BTN_VERSION, false);
                 if (!isInit) {
 //                    SPUtils.getBoolean(CheckName.LOGIN_BTN_VERSION, true);
                     initPage();
                 }
+                LogUtils.logd("step:4 continue");
                 return false;
             }
             Thread.sleep(600);
@@ -75,6 +82,7 @@ public class StartAndLoginTaskElement extends AbsTaskElement {
 //            SPUtils.getBoolean(CheckName.LOGIN_BTN_VERSION, true);
 //            initPage();
 //        }
+        LogUtils.logd("step:5 input account");
         //输入账号
         UserInfo userInfo = TaskState.get().getUserInfo();
         EventHelper.inputUserInfo(userInfo.getName());
@@ -82,11 +90,13 @@ public class StartAndLoginTaskElement extends AbsTaskElement {
 
         if (Util.checkColor(pointModel)) {
             AutoTool.execShellCmd(pointModel);
+            LogUtils.logd("step:6 click default");
         } else {
             AutoTool.execShellCmd(pageData.get(0).getRect()); //点击登录
+            LogUtils.logd("step:7 click parsePage");
         }
-        TaskUtil.sleep(1400);
-
+//        TaskUtil.sleep(1400);
+        LogUtils.logd("step:7 click finish");
         return true;
     }
 

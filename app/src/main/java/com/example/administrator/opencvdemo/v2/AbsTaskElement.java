@@ -16,6 +16,7 @@ import com.example.administrator.opencvdemo.util.LogUtils;
 import com.example.administrator.opencvdemo.util.NetWorkUtils;
 import com.example.administrator.opencvdemo.util.SPUtils;
 import com.example.administrator.opencvdemo.util.ScreenCapture;
+import com.example.administrator.opencvdemo.util.TaskUtil;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.youtu.ImageParse;
 import com.example.module_orc.OrcConfig;
@@ -75,17 +76,17 @@ public abstract class AbsTaskElement implements TaskElement, Constant {
                 e.printStackTrace();
             }
         }
-        if (needSaveCoord){
+        if (needSaveCoord) {
             String jsonList = JsonUtils.toJson(CmdData.coordinateList);
-            SPUtils.setString(COORDINATE_KEY,jsonList);
+            SPUtils.setString(COORDINATE_KEY, jsonList);
             needSaveCoord = false;
         }
         if (TaskState.isWorking) {
-            if (mTaskModel.isOnlyOne()){
+            if (mTaskModel.isOnlyOne()) {
                 TaskState.isWorking = false;
                 return;
             }
-            if (  taskHandler != null) {
+            if (taskHandler != null) {
                 TaskState.get().saveNextTask();
                 taskHandler.sendEmptyMessage(0);
             }
@@ -127,12 +128,12 @@ public abstract class AbsTaskElement implements TaskElement, Constant {
     }
 
     public static boolean checkExp(PointModel model, String msg) throws InterruptedException {
-        //        if (TaskUtil.bitmap == null || TaskUtil.bitmap.isRecycled()) return true;
-        //        if (Util.getColor(TaskUtil.bitmap, model.getX(), model.getY()).equals(model.getNormalColor())) { //检查网络环境
-        //            AutoTool.execShellCmd(model);
-        //            Thread.sleep(600);
-        //            return true;
-        //        }
+        if (TaskUtil.bitmap == null || TaskUtil.bitmap.isRecycled()) return true;
+        if (Util.getColor(TaskUtil.bitmap, model.getX(), model.getY() + OrcConfig.offsetHeight).equals(model.getNormalColor())) { //检查网络环境
+            AutoTool.execShellCmd(model);
+            Thread.sleep(600);
+            return true;
+        }
         return false;
     }
 
@@ -152,21 +153,20 @@ public abstract class AbsTaskElement implements TaskElement, Constant {
     }
 
     protected void swipeToRight() throws InterruptedException {
-        EventHelper.swipeHor(800, 100,600);
-        Thread.sleep(800);
+        EventHelper.swipeHor(800, 100, 600);
         Thread.sleep(2400);
         FuWaiHelper.paiHangBangInit();
     }
 
-    public void initPage(){
-        ImageParse.getSyncData(ScreenCapture.get().getCurrentBitmap(),new ImageParse.Call() {
+    public void initPage() {
+        ImageParse.getSyncData(ScreenCapture.get().getCurrentBitmap(), new ImageParse.Call() {
             @Override
             public void call(List<Result.ItemsBean> result) {
                 if (result == null || result.size() == 0) {
                     return;
                 }
                 try {
-                   callBack(result);
+                    callBack(result);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -178,36 +178,51 @@ public abstract class AbsTaskElement implements TaskElement, Constant {
 
     }
 
-    public boolean equals(String text,String text1){
-        return TextUtils.equals(text,text1);
+    public boolean equals(String text, String text1) {
+        return TextUtils.equals(text, text1);
     }
 
-    protected void setNewCoord(PointModel model,Result.ItemsBean.ItemcoordBean coord){
-        if (model==null){
-            return ;
+    protected void setNewCoord(PointModel model, Result.ItemsBean.ItemcoordBean coord) {
+        setNewCoord(model, coord, 0);
+    }
+
+    protected void setNewCoord(PointModel model, Result.ItemsBean.ItemcoordBean coord, int offsetY) {
+        if (model == null) {
+            return;
         }
         int oldX = model.getX();
         int oldY = model.getY();
         String oldColor = model.getNormalColor();
-        model.setX(coord.getX()+coord.getWidth()/2);
-        model.setY(coord.getY()+coord.getHeight()/2);
+        model.setX(coord.getX() + coord.getWidth() / 2);
+        model.setY(coord.getY() + coord.getHeight() / 2);
         model.setNormalColor(Util.getColor(model));
-        LogUtils.logd("oldX:"+oldX +" newX:"+model.getX() + "oldY:"+oldY +" newY:"+model.getY() + "oldColor:"+oldColor +" newColor:"+model.getNormalColor());
+        if (offsetY!=0){
+            model.setSubY(model.getY()+offsetY);
+            int height = TaskUtil.bitmap.getHeight();
+            if (model.getSubY()>height){
+                model.setSubY(height-10);
+            }
+            model.setSubColor(Util.getColor(TaskUtil.bitmap,model.getX(),model.getSubY()));
+            LogUtils.logd("oldX:" + oldX + " newX:" + model.getX() + "oldY:" + oldY + " newY:" + model.getY() + "oldColor:" + oldColor + " newColor:" + model.getNormalColor()+ " SubColor:" + model.getSubColor());
+        }else{
+            LogUtils.logd("oldX:" + oldX + " newX:" + model.getX() + "oldY:" + oldY + " newY:" + model.getY() + "oldColor:" + oldColor + " newColor:" + model.getNormalColor());
+        }
     }
-    protected void setNewCoord(PointModel model,Rect rect){
-        if (model==null){
-            return ;
+
+    protected void setNewCoord(PointModel model, Rect rect) {
+        if (model == null) {
+            return;
         }
         int oldX = model.getX();
         int oldY = model.getY();
-        if (oldX == rect.x && oldY == rect.y){
+        if (oldX == rect.x && oldY == rect.y) {
             return;
         }
         String oldColor = model.getNormalColor();
-        model.setX(rect.x+rect.width/2);
-        model.setY(rect.y+rect.height/2);
+        model.setX(rect.x + rect.width / 2);
+        model.setY(rect.y + rect.height / 2);
         model.setNormalColor(Util.getColor(model));
-        LogUtils.logd("oldX:"+oldX +" newX:"+model.getX() + "oldY:"+oldY +" newY:"+model.getY() + "oldColor:"+oldColor +" newColor:"+model.getNormalColor());
+        LogUtils.logd("oldX:" + oldX + " newX:" + model.getX() + "oldY:" + oldY + " newY:" + model.getY() + "oldColor:" + oldColor + " newColor:" + model.getNormalColor());
         needSaveCoord = true;
     }
 }

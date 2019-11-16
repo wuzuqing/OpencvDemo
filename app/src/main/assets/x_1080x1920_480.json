@@ -86,21 +86,21 @@
   {
     "key": "BUSINESS",
     "name": "商业",
-    "normalColor": "#560100",
+    "normalColor": "#6E3818",
     "x": 890,
     "y": 753
   },
   {
     "key": "AGRICULTURAL",
     "name": "农业",
-    "normalColor": "#600100",
+    "normalColor": "#834318",
     "x": 889,
     "y": 1249
   },
   {
     "key": "SOLDIERS",
     "name": "士兵",
-    "normalColor": "#640100",
+    "normalColor": "#9E511D",
     "x": 897,
     "y": 1744
   },
@@ -426,7 +426,7 @@
   {
     "key": "ACADEMY_ONE_KEY",
     "name": "一键完成",
-    "normalColor": "#DCC998",
+    "normalColor": "#C7C7C7",
     "x": 999,
     "y": 319
   },
@@ -1057,43 +1057,55 @@
   {
     "key": "SHUYUAN_GET_1",
     "name": "书院1",
-    "normalColor": "#E17E25",
-    "x": 40,
-    "y": 1830
+    "normalColor": "#F2EEA8",
+    "x": 299,
+    "y": 871,
+    "subY": 991,
+    "subColor": "#130804"
   },
   {
     "key": "SHUYUAN_GET_2",
     "name": "书院2",
-    "normalColor": "#E17E25",
-    "x": 40,
-    "y": 1830
+    "normalColor": "#ECE7A4",
+    "x": 786,
+    "y": 871,
+    "subY": 991,
+    "subColor": "#130804"
   },
   {
     "key": "SHUYUAN_GET_3",
     "name": "书院3",
-    "normalColor": "#E17E25",
-    "x": 40,
-    "y": 1830
+    "normalColor": "#CAC48C",
+    "x": 301,
+    "y": 1346,
+    "subY": 1466,
+    "subColor": "#130804"
   },
   {
     "key": "SHUYUAN_GET_4",
     "name": "书院4",
-    "normalColor": "#E17E25",
-    "x": 40,
-    "y": 1830
+    "normalColor": "#CBC58D",
+    "x": 786,
+    "y": 1345,
+    "subY": 1465,
+    "subColor": "#1A0E09"
   },
   {
     "key": "SHUYUAN_GET_5",
     "name": "书院5",
-    "normalColor": "#E17E25",
-    "x": 40,
-    "y": 1830
+    "normalColor": "#CCC68D",
+    "x": 301,
+    "y": 1821,
+    "subY": 1910,
+    "subColor": "#6D523F"
   },
   {
     "key": "SHUYUAN_GET_6",
     "name": "书院6",
-    "normalColor": "#E17E25",
-    "x": 40,
-    "y": 1830
+    "normalColor": "#CCC78E",
+    "x": 786,
+    "y": 1820,
+    "subY": 1910,
+    "subColor": "#6D523F"
   }
 ]

@@ -33,6 +33,7 @@ import com.example.administrator.opencvdemo.v2.task.JyzcTaskElement;
 import com.example.administrator.opencvdemo.v2.task.MobaiTaskElement;
 import com.example.administrator.opencvdemo.v2.task.ShuyuanTaskElement;
 import com.example.administrator.opencvdemo.v2.task.StartAndLoginTaskElement;
+import com.example.module_orc.OrcConfig;
 import com.example.module_orc.OrcHelper;
 import com.example.module_orc.OrcModel;
 import com.google.gson.reflect.TypeToken;
@@ -336,6 +337,22 @@ public class Util implements Constant {
         LogUtils.logd("color:" + color + " pointModel:" + pointModel.toString());
         return color.equals(pointModel.getNormalColor()) || likeColor(color, pointModel.getNormalColor());
     }
+    public static boolean checkSubColor(PointModel pointModel) {
+        if (TaskUtil.bitmap == null || pointModel == null || TextUtils.isEmpty(pointModel.getSubColor())) {
+            return false;
+        }
+        String color = getColor(TaskUtil.bitmap, pointModel.getX(), pointModel.getSubY());
+        LogUtils.logd("color:" + color + " pointModel:" + pointModel.toString());
+        return color.equals(pointModel.getSubColor()) || likeColor(color, pointModel.getSubColor());
+    }
+    public static boolean checkColorAndOffset(PointModel pointModel) {
+        if (TaskUtil.bitmap == null || pointModel == null) {
+            return false;
+        }
+        String color = getColor(TaskUtil.bitmap, pointModel.getX(), pointModel.getY()+OrcConfig.offsetHeight );
+        LogUtils.logd("checkColorAndOffset color:" + color + " offsetHeight:"+OrcConfig.offsetHeight + " pointModel:" + pointModel.toString());
+        return color.equals(pointModel.getNormalColor()) || likeColor(color, pointModel.getNormalColor());
+    }
 
     public static boolean checkColorAndClick(PointModel pointModel) {
         boolean isTrue = checkColor(pointModel);
@@ -480,6 +497,18 @@ public class Util implements Constant {
         return TaskUtil.bitmap;
     }
 
+    public static Bitmap getCapBitmapWithOffset(){
+        Bitmap bitmap = getCapBitmapNew();
+        if (bitmap==null){
+            return null;
+        }
+        if (bitmap.getHeight()>1920){
+            OrcConfig.offsetHeight = (bitmap .getHeight() - 1920 -OrcHelper.getInstance().getNavigationBarHeight() ) / 2;
+        }else{
+            OrcConfig.offsetHeight =0;
+        }
+        return bitmap;
+    }
 
     private static List<PointModel> shuYanModel;
 
