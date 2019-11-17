@@ -121,6 +121,12 @@ public class AutoTool {
         }
         execShellCmd(chuFUPointModel);
     }
+    public static void execShellCmdChuFuV2() {
+        if (chuFUPointModel == null) {
+            chuFUPointModel = CmdData.get("CHU_FU");
+        }
+        execShellCmdNotOffset(chuFUPointModel);
+    }
 
     public static void execShellCmd(int length, int key) throws InterruptedException {
         for (int i = 0; i < length; i++) {

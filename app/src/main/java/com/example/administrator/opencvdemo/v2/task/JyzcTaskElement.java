@@ -50,10 +50,11 @@ public class JyzcTaskElement extends AbsTaskElement {
     private boolean isInJycz;
 
     @Override
-    protected void doTaskBefore() {
+    protected boolean doTaskBefore() {
         isCountOne = 0;
         usedDefault = false;
         isInJycz = false;
+        return true;
     }
 
     @Override

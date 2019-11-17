@@ -27,9 +27,9 @@ public class ClzwTaskElement extends AbsTaskElement {
     private boolean isJoinClzw;
 
     @Override
-    protected void doTaskBefore() {
-        super.doTaskBefore();
+    protected boolean doTaskBefore() {
         isJoinClzw = false;
+        return true;
     }
 
     @Override

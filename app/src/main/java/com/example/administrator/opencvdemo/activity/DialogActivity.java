@@ -30,7 +30,7 @@ public class DialogActivity extends NoAnimatorActivity implements Constant {
     private EditText etCount;
     private EditText etYanHuiNumber;
     private EditText etUserInfo;
-    private CheckBox cbGx,cbKfJl,cbLoop,cbZw,cbOnlyFl, cbZh,cbFl, cbMb, cbTask, cbChouCai, cbGuanKa, cbShuYuan,
+    private CheckBox cbGx,cbKfJl,cbLoop,cbZw,cbOnlyFl, cbZh,cbFl, cbMb, cbTask, cbChouCai, cbGuanKa, cbShuYuan,cbKfMb,
             cbYanHui, cbZc, cbXs, cbCJ, cbOldShouCai,cbYx,cbLm,cbLmFb,cbGy,cbLf,cbYm,cbPf;
     boolean isTy;
     private CheckBox cbHyzh;
@@ -52,6 +52,7 @@ public class DialogActivity extends NoAnimatorActivity implements Constant {
         cbFl =  findViewById(R.id.cb_fl);
         cbOnlyFl =  findViewById(R.id.cb_fl_only);
         cbMb =  findViewById(R.id.cb_mb);
+        cbKfMb =  findViewById(R.id.cb_kf_bo);
         cbGx =  findViewById(R.id.cb_gx);
         cbKfJl =  findViewById(R.id.cb_kf_jl);
         cbTask =  findViewById(R.id.cb_task);
@@ -82,6 +83,7 @@ public class DialogActivity extends NoAnimatorActivity implements Constant {
         cbFl.setChecked(SPUtils.getBoolean(KEY_WORK_FL));
         cbOnlyFl.setChecked(SPUtils.getBoolean(KEY_WORK_ONLY_FL));
         cbMb.setChecked(SPUtils.getBoolean(KEY_WORK_MB));
+        cbKfMb.setChecked(SPUtils.getBoolean(KEY_WORK_KF_MB));
         cbTask.setChecked(SPUtils.getBoolean(KEY_WORK_TASK));
         cbChouCai.setChecked(SPUtils.getBoolean(KEY_CHOU_CAI));
         cbZh.setChecked(SPUtils.getBoolean("zh"));
@@ -127,6 +129,7 @@ public class DialogActivity extends NoAnimatorActivity implements Constant {
             SPUtils.setString(KEY_YAN_HUI_NUMBER, etYanHuiNumber.getText().toString());
 
             SPUtils.setBoolean(KEY_WORK_MB,cbMb.isChecked());
+            SPUtils.setBoolean(KEY_WORK_KF_MB,cbKfMb.isChecked());
             SPUtils.setBoolean(KEY_WORK_TASK, cbTask.isChecked());
             SPUtils.setBoolean(KEY_CHOU_CAI, cbChouCai.isChecked());
             SPUtils.setBoolean(KEY_GUAN_KA, cbGuanKa.isChecked());

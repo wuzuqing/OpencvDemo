@@ -38,33 +38,49 @@ public class MobaiTaskElement extends AbsTaskElement {
         super.bindHandler(handler);
         step = 0;
     }
+    private boolean hasKuaFu = false;
+    @Override
+    protected boolean doTaskBefore() {
+        step = 0;
+        doBenfuBangDan = false;
+        if (checkTime(KEY_WORK_MB, ACache.getTodayEndTime())) {
+            return false;
+        }
+        hasKuaFu = SPUtils.getBoolean(KEY_WORK_KF_MB,false);
+        return true;
+    }
 
     @Override
     protected boolean doTask() throws Exception {
-        if (checkTime( KEY_WORK_MB, ACache.TIME_DAY)) {
-            return  true;
-        }
         pageData = Util.getBitmapAndPageData();
 
         if (checkExp(netPoint, "当前网络异常")) return false;//检查网络环境
 
         if (checkPage("府内")) {
-            AutoTool.execShellCmdChuFu();
+            AutoTool.execShellCmdChuFuV2();
             Thread.sleep(1800);
             return false;
-        } else if (checkPage("府外") && step==0) {
+        } else if (checkPage("府外") && step == 0) {
             doBenfuBangDan = false;
             step = 1;
             swipeToRight();
-            if (!Util.checkColorAndClick(FuWaiHelper.paiHangBang)){
+            if (!Util.checkColorAndClick(FuWaiHelper.paiHangBang)) {
                 AutoTool.execShellCmd(paiHang);
             }
             Thread.sleep(800);
             return false;
         } else if (checkPage("排行榜") && step == 1) {
             if (doBenfuBangDan) {
-                status = 0;
-                AutoTool.execShellCmdNotOffset(bangDanKuaFu);
+                if (hasKuaFu){
+                    status = 0;
+                    AutoTool.execShellCmdNotOffset(bangDanKuaFu);
+                }else{
+                    AutoTool.execShellCmdNotOffset(huangGongClose);
+                    Thread.sleep(1200);
+                    AutoTool.execShellCmdNotOffset(huangGongClose);
+                    Thread.sleep(800);
+                    return true;
+                }
             } else {
                 status = 0;
                 AutoTool.execShellCmdNotOffset(bangDanSelf);
@@ -72,7 +88,7 @@ public class MobaiTaskElement extends AbsTaskElement {
             step = 2;
             Thread.sleep(1000);
 
-        } else if (step==2 && ( checkPage("本服榜单") || checkPage("跨服榜单"))) {
+        } else if (step == 2 && (checkPage("本服榜单") || checkPage("跨服榜单"))) {
             Rect moBai = BenfubangdanIgnoreRect.moBaiMax.clone();
             moBai.y += OrcConfig.offsetHeight;
             Rect target;
@@ -99,7 +115,7 @@ public class MobaiTaskElement extends AbsTaskElement {
                         Thread.sleep(2000);
                     }
                 } else if (status == 2) {
-                    if (checkMobai(moBai,target)) {
+                    if (checkMobai(moBai, target)) {
                         clickEmpty(moBai);
                     } else {
                         if (!doBenfuBangDan) {
@@ -121,14 +137,14 @@ public class MobaiTaskElement extends AbsTaskElement {
             }
         } else {
             if (check(20)) {
-                if (step==1 && TaskState.failCount==5){
+                if (step == 1 && TaskState.failCount == 5) {
                     SPUtils.setBoolean(CheckName.FU_WAI_PAI_HANG_BANG, false);
                     FuWaiHelper.paiHangBangInit();
                 }
                 resetStep();
                 return true;
             }
-            AutoTool.execShellCmdXy(540,20);
+            AutoTool.execShellCmdXy(540, 20);
             Thread.sleep(200);
             return false;
         }
@@ -146,6 +162,6 @@ public class MobaiTaskElement extends AbsTaskElement {
     }
 
     private boolean checkMobai(Rect moBai, Rect target) {
-        return target.width == moBai.width && target.height == moBai.height && target.x ==moBai.x;
+        return target.width == moBai.width && target.height == moBai.height && target.x == moBai.x;
     }
 }

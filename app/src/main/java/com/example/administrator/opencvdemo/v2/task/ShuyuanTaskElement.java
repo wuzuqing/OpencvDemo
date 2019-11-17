@@ -8,6 +8,7 @@ import com.example.administrator.opencvdemo.config.CheckName;
 import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.Result;
 import com.example.administrator.opencvdemo.model.TaskModel;
+import com.example.administrator.opencvdemo.util.ACache;
 import com.example.administrator.opencvdemo.util.AutoTool;
 import com.example.administrator.opencvdemo.util.CmdData;
 import com.example.administrator.opencvdemo.util.Constant;
@@ -40,9 +41,9 @@ public class ShuyuanTaskElement extends AbsTaskElement {
 
     @Override
     protected boolean doTask() throws Exception {
-//        if (checkTime( KEY_SHU_YUAN, ACache.TIME_DAY * 1)) {
-//            return  true;
-//        }
+        if (checkTime( KEY_SHU_YUAN, ACache.TIME_HOUR * 3)) {
+            return  true;
+        }
         while (TaskState.isWorking && !isInShuYuan) {
             pageData = Util.getBitmapAndPageData();
             if (checkExp(netPoint, "当前网络异常")) continue;//检查网络环境

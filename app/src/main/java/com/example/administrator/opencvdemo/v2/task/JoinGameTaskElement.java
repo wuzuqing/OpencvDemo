@@ -37,7 +37,7 @@ public class JoinGameTaskElement extends AbsTaskElement {
             Util.getCapBitmapWithOffset();
             if (Util.checkColorAndOffset(startPoint)){
                 LogUtils.logd("step:2 click default");
-                AutoTool.execShellCmd(startPoint);
+                AutoTool.execShellCmdNotOffset(startPoint);
                 break;
             }
             pageData = Util.getPageData();

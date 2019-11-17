@@ -42,6 +42,7 @@ public interface Constant {
     String KEY_WORK_FL = "KEY_WORK_FL";
     String KEY_WORK_ONLY_FL = "KEY_WORK_ONLY_FL";
     String KEY_WORK_MB = "KEY_WORK_MB";
+    String KEY_WORK_KF_MB = "KEY_WORK_KF_MB";
     String KEY_WORK_TASK = "KEY_WORK_TASK";
     String KEY_CHOU_CAI = "KEY_CHOU_CAI";
     String KEY_GUAN_KA = "KEY_GUAN_KA";

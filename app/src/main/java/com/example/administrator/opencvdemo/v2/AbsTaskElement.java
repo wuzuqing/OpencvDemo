@@ -61,8 +61,8 @@ public abstract class AbsTaskElement implements TaskElement, Constant {
     @Override
     public final void run() {
         TaskState.resetFail();
-        doTaskBefore();
-        while (TaskState.isWorking) {
+        boolean taskBefore = doTaskBefore();
+        while (TaskState.isWorking && taskBefore) {
             // if (!EventHelper.isGame()) {
             //     sleep(2000);
             //     continue;
@@ -93,8 +93,8 @@ public abstract class AbsTaskElement implements TaskElement, Constant {
         }
     }
 
-    protected void doTaskBefore() {
-
+    protected boolean doTaskBefore() {
+        return true;
     }
 
     private void sleep(long tile) {
@@ -196,15 +196,15 @@ public abstract class AbsTaskElement implements TaskElement, Constant {
         model.setX(coord.getX() + coord.getWidth() / 2);
         model.setY(coord.getY() + coord.getHeight() / 2);
         model.setNormalColor(Util.getColor(model));
-        if (offsetY!=0){
-            model.setSubY(model.getY()+offsetY);
+        if (offsetY != 0) {
+            model.setSubY(model.getY() + offsetY);
             int height = TaskUtil.bitmap.getHeight();
-            if (model.getSubY()>height){
-                model.setSubY(height-10);
+            if (model.getSubY() > height) {
+                model.setSubY(height - 10);
             }
-            model.setSubColor(Util.getColor(TaskUtil.bitmap,model.getX(),model.getSubY()));
-            LogUtils.logd("oldX:" + oldX + " newX:" + model.getX() + "oldY:" + oldY + " newY:" + model.getY() + "oldColor:" + oldColor + " newColor:" + model.getNormalColor()+ " SubColor:" + model.getSubColor());
-        }else{
+            model.setSubColor(Util.getColor(TaskUtil.bitmap, model.getX(), model.getSubY()));
+            LogUtils.logd("oldX:" + oldX + " newX:" + model.getX() + "oldY:" + oldY + " newY:" + model.getY() + "oldColor:" + oldColor + " newColor:" + model.getNormalColor() + " SubColor:" + model.getSubColor());
+        } else {
             LogUtils.logd("oldX:" + oldX + " newX:" + model.getX() + "oldY:" + oldY + " newY:" + model.getY() + "oldColor:" + oldColor + " newColor:" + model.getNormalColor());
         }
     }

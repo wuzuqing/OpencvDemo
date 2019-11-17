@@ -79,6 +79,7 @@ public class AccountManagerActivity extends NoAnimatorActivity implements Consta
             newUserInfos.add(userInfo);
         }
         Util.saveUserInfo(newUserInfos);
+        saveParams(null);
     }
 
 

@@ -28,6 +28,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -682,4 +683,12 @@ public class ACache {
 		}
 	}
 
+	public static int getTodayEndTime(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE,1);
+        calendar.set(Calendar.HOUR_OF_DAY,0);
+        calendar.set(Calendar.MINUTE,0);
+        calendar.set(Calendar.SECOND,0);
+        return (int) (calendar.getTimeInMillis()-System.currentTimeMillis())/1000;
+    }
 }

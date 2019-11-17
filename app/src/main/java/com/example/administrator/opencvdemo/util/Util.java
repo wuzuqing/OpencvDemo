@@ -634,7 +634,6 @@ public class Util implements Constant {
             initSaveFile();
             fengLuFile = saveFile;
         } else {
-
             initFengLu();
         }
         return ACache.get(fengLuFile).getAsString(key);
