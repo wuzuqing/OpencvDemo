@@ -74,7 +74,7 @@ public class AccountManagerActivity extends NoAnimatorActivity implements Consta
         }
         List<UserInfo> newUserInfos = new ArrayList<>();
         UserInfo userInfo;
-        for (int i = startInt; i < endInt; i++) {
+        for (int i = startInt; i <= endInt; i++) {
             userInfo = new UserInfo(String.format("%s%d", pex, i), pwd);
             newUserInfos.add(userInfo);
         }

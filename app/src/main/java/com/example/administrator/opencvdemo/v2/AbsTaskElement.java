@@ -86,7 +86,7 @@ public abstract class AbsTaskElement implements TaskElement, Constant {
                 TaskState.isWorking = false;
                 return;
             }
-            if (taskHandler != null) {
+            if (taskHandler != null &&  !TaskState.get().isEnd()) {
                 TaskState.get().saveNextTask();
                 taskHandler.sendEmptyMessage(0);
             }

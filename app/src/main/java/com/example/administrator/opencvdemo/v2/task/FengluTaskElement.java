@@ -47,7 +47,6 @@ public class FengluTaskElement extends AbsTaskElement {
             Thread.sleep(800);
             return false;
         } else if (checkPage("皇宫")) {
-//            AutoTool.execShellCmd(wang);
             AutoTool.execShellCmd(pageData.get(0).getRect());
             Thread.sleep(800);
         } else if (!checkPage("皇宫俸禄")) {
@@ -63,15 +62,8 @@ public class FengluTaskElement extends AbsTaskElement {
         AutoTool.execShellCmdNotOffset(huangGongClose);
         Thread.sleep(200);
         AutoTool.execShellCmdNotOffset(huangGongClose);
-        // Thread.sleep(200);
-        // AutoTool.execShellCmdChuFu();
         Thread.sleep(1200);
-        // if (Util.checkColor(TaskUtil.bitmap, getFengLu)) {
-        //
-        //   return true;
-        // } else {
-        //
-        // }
+        Util.saveLastRefreshTime(KEY_WORK_FL, ACache.getTodayEndTime());
         return true;
     }
 }

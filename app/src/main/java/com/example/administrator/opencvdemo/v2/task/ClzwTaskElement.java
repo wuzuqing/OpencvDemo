@@ -106,6 +106,7 @@ public class ClzwTaskElement extends AbsTaskElement {
 
             clickClose();
             Thread.sleep(800);
+            Util.saveLastRefreshTime(KEY_WORK_ZW, ACache.TIME_HOUR * 2);
         }
         return true;
     }

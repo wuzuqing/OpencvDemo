@@ -1,7 +1,9 @@
 package com.example.administrator.opencvdemo.v2.task;
 
 import android.os.Handler;
+import android.text.TextUtils;
 
+import com.example.administrator.opencvdemo.BaseApplication;
 import com.example.administrator.opencvdemo.config.CheckName;
 import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.TaskModel;
@@ -9,6 +11,7 @@ import com.example.administrator.opencvdemo.util.ACache;
 import com.example.administrator.opencvdemo.util.AutoTool;
 import com.example.administrator.opencvdemo.util.CmdData;
 import com.example.administrator.opencvdemo.util.SPUtils;
+import com.example.administrator.opencvdemo.util.TaskUtil;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.AbsTaskElement;
 import com.example.administrator.opencvdemo.v2.FuWaiHelper;
@@ -30,7 +33,6 @@ public class MobaiTaskElement extends AbsTaskElement {
     PointModel huangGongClose = CmdData.get(HUANG_GONG_CLOSE);
     private int status;
 
-    private boolean isWait;
     private int step = 0;
 
     @Override
@@ -38,7 +40,10 @@ public class MobaiTaskElement extends AbsTaskElement {
         super.bindHandler(handler);
         step = 0;
     }
+
     private boolean hasKuaFu = false;
+    private boolean isInBangDan;
+
     @Override
     protected boolean doTaskBefore() {
         step = 0;
@@ -46,7 +51,8 @@ public class MobaiTaskElement extends AbsTaskElement {
         if (checkTime(KEY_WORK_MB, ACache.getTodayEndTime())) {
             return false;
         }
-        hasKuaFu = SPUtils.getBoolean(KEY_WORK_KF_MB,false);
+        hasKuaFu = SPUtils.getBoolean(KEY_WORK_KF_MB, false);
+        isInBangDan = false;
         return true;
     }
 
@@ -71,14 +77,11 @@ public class MobaiTaskElement extends AbsTaskElement {
             return false;
         } else if (checkPage("排行榜") && step == 1) {
             if (doBenfuBangDan) {
-                if (hasKuaFu){
+                if (hasKuaFu) {
                     status = 0;
                     AutoTool.execShellCmdNotOffset(bangDanKuaFu);
-                }else{
-                    AutoTool.execShellCmdNotOffset(huangGongClose);
-                    Thread.sleep(1200);
-                    AutoTool.execShellCmdNotOffset(huangGongClose);
-                    Thread.sleep(800);
+                } else {
+                    end();
                     return true;
                 }
             } else {
@@ -102,7 +105,7 @@ public class MobaiTaskElement extends AbsTaskElement {
                         target.y += OrcConfig.offsetHeight;
                         AutoTool.execShellCmdXy(target.x, target.y);
                         status = 1;
-                        Thread.sleep(2000);
+                        Thread.sleep(1000);
                     }
                 } else if (status == 1) {
                     if (checkMobai(moBai, target)) {
@@ -112,7 +115,7 @@ public class MobaiTaskElement extends AbsTaskElement {
                         target.y += OrcConfig.offsetHeight;
                         AutoTool.execShellCmdXy(target.x, target.y);
                         status = 2;
-                        Thread.sleep(2000);
+                        Thread.sleep(1000);
                     }
                 } else if (status == 2) {
                     if (checkMobai(moBai, target)) {
@@ -120,15 +123,12 @@ public class MobaiTaskElement extends AbsTaskElement {
                     } else {
                         if (!doBenfuBangDan) {
                             AutoTool.execShellCmdNotOffset(huangGongClose);
-                            Thread.sleep(1200);
+                            Thread.sleep(1000);
                             doBenfuBangDan = true;
                             step = 1;
                             return false;
                         } else {
-                            AutoTool.execShellCmdNotOffset(huangGongClose);
-                            Thread.sleep(1200);
-                            AutoTool.execShellCmdNotOffset(huangGongClose);
-                            Thread.sleep(800);
+                            end();
                             return true;
                         }
                     }
@@ -151,14 +151,32 @@ public class MobaiTaskElement extends AbsTaskElement {
         return false;
     }
 
+    private void end() throws InterruptedException {
+        Util.saveLastRefreshTime(KEY_WORK_KF_MB, ACache.getTodayEndTime());
+        AutoTool.execShellCmdNotOffset(huangGongClose);
+        Thread.sleep(1200);
+        AutoTool.execShellCmdNotOffset(huangGongClose);
+        Thread.sleep(800);
+    }
+
+    private String midColor;
+
     private void clickEmpty(Rect moBai) throws InterruptedException {
+        int x = BaseApplication.getScreenWidth() / 2;
+        if (TextUtils.isEmpty(midColor)) {
+            midColor = Util.getColor(TaskUtil.bitmap, x, moBai.y);
+        }
         Thread.sleep(200);
         AutoTool.execShellCmd(moBai);
-        Thread.sleep(4500);
-        AutoTool.execShellCmd(moBai);
-        Thread.sleep(800);
-        AutoTool.execShellCmd(moBai);
-        Thread.sleep(800);
+        Thread.sleep(2400);
+        while (true) {
+            Util.getCapBitmapWithOffset();
+            if (TextUtils.equals(midColor, Util.getColor(TaskUtil.bitmap, x, moBai.y))) {
+                break;
+            }
+            AutoTool.execShellCmd(moBai);
+            Thread.sleep(400);
+        }
     }
 
     private boolean checkMobai(Rect moBai, Rect target) {

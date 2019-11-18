@@ -65,12 +65,15 @@ public class TaskState implements Constant {
 
     public void saveNextUserInfo() {
         mCurrentAccountIndex++;
-        mCurrentAccountIndex = mCurrentAccountIndex % mUserInfoList.size();
+        if (mCurrentAccountIndex != mUserInfoList.size()-1){
+            isWorking = false;
+        }
+//        mCurrentAccountIndex = mCurrentAccountIndex % mUserInfoList.size();
         SPUtils.setInt(CURRENT_USER_INFO, mCurrentAccountIndex);
     }
 
     public UserInfo getUserInfo() {
-        return mUserInfoList.get(mCurrentAccountIndex);
+        return mUserInfoList.get(mCurrentAccountIndex % mUserInfoList.size());
     }
 
     public void resetStep() {
@@ -111,5 +114,14 @@ public class TaskState implements Constant {
         needContinue = check;
         TaskState.failCount++;
         return check;
+    }
+
+    /**
+     * 如果不是循环
+     * @return
+     */
+    public boolean isEnd() {
+        LogUtils.logd("isLoop:"+SPUtils.getBoolean(KEY_LOOP)  + " mCurrentAccountIndex:"+mCurrentAccountIndex+"/"+mUserInfoList.size());
+        return !SPUtils.getBoolean(KEY_LOOP) && mCurrentAccountIndex>=mUserInfoList.size();
     }
 }

@@ -26,6 +26,7 @@ import com.example.administrator.opencvdemo.model.TaskModel;
 import com.example.administrator.opencvdemo.model.UserInfo;
 import com.example.administrator.opencvdemo.notroot.WPZMGService2;
 import com.example.administrator.opencvdemo.v2.TaskElement;
+import com.example.administrator.opencvdemo.v2.TaskState;
 import com.example.administrator.opencvdemo.v2.task.ClzwTaskElement;
 import com.example.administrator.opencvdemo.v2.task.FengluTaskElement;
 import com.example.administrator.opencvdemo.v2.task.JoinGameTaskElement;
@@ -695,10 +696,13 @@ public class Util implements Constant {
         LogUtils.logd("checkTime:" + userInfo.getName() + " type:" + type + "  saveTime:" + saveTime);
 //        return false;
         if (TextUtils.isEmpty(Util.getFileString(String.format("%s%s", userInfo.getName(), type)))) {
-            Util.saveLastRefreshTime(userInfo.getName(), type, "1", saveTime);
+//            Util.saveLastRefreshTime(userInfo.getName(), type, "1", saveTime);
             return false;
         }
         return true;
+    }
+    public static void saveLastRefreshTime( String type, int saveTime) {
+        Util.saveLastRefreshTime(TaskState.get().getUserInfo().getName(), type, "1", saveTime);
     }
 
     public static boolean checkTime(UserInfo userInfo, String type, int saveTime, boolean isFengLu) {

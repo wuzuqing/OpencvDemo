@@ -98,6 +98,7 @@ public class ShuyuanTaskElement extends AbsTaskElement {
             Thread.sleep(600);
             AutoTool.execShellCmdChuFu();
             Thread.sleep(600);
+            Util.saveLastRefreshTime(KEY_SHU_YUAN, ACache.TIME_HOUR * 3);
             break;
         }
 

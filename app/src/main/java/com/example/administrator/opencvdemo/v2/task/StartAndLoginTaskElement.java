@@ -1,8 +1,6 @@
 package com.example.administrator.opencvdemo.v2.task;
 
 
-import android.text.TextUtils;
-
 import com.example.administrator.opencvdemo.config.CheckName;
 import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.Result;
@@ -18,7 +16,6 @@ import com.example.administrator.opencvdemo.util.TaskUtil;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.AbsTaskElement;
 import com.example.administrator.opencvdemo.v2.TaskState;
-import com.example.module_orc.OrcConfig;
 
 import java.util.List;
 
@@ -61,11 +58,7 @@ public class StartAndLoginTaskElement extends AbsTaskElement {
                 setNewCoord(pointModel, pageData.get(0).getRect());
                 LogUtils.logd("step:3 resetCoord");
                 break;
-            } else if (!TextUtils.isEmpty(OrcConfig.pageName)) {
-                // 退出游戏
-                killApp();
-                return false;
-            } else if (check(6)) {
+            }  else if (check(6)) {
                 boolean isInit = SPUtils.getBoolean(CheckName.LOGIN_BTN_VERSION, false);
                 if (!isInit) {
 //                    SPUtils.getBoolean(CheckName.LOGIN_BTN_VERSION, true);
@@ -73,6 +66,10 @@ public class StartAndLoginTaskElement extends AbsTaskElement {
                 }
                 LogUtils.logd("step:4 continue");
                 return false;
+            }else if (check(12)){
+                // 退出游戏
+                killApp();
+                return true;
             }
             Thread.sleep(600);
         }
