@@ -3,6 +3,7 @@ package com.example.administrator.opencvdemo.v2;
 import android.content.Context;
 
 import com.example.administrator.opencvdemo.model.UserInfo;
+import com.example.administrator.opencvdemo.util.AutoTool;
 import com.example.administrator.opencvdemo.util.Constant;
 import com.example.administrator.opencvdemo.util.LogUtils;
 import com.example.administrator.opencvdemo.util.SPUtils;
@@ -65,8 +66,9 @@ public class TaskState implements Constant {
 
     public void saveNextUserInfo() {
         mCurrentAccountIndex++;
-        if (mCurrentAccountIndex != mUserInfoList.size()-1){
+        if (mCurrentAccountIndex == mUserInfoList.size()-1){
             isWorking = false;
+            AutoTool.killApp();
         }
 //        mCurrentAccountIndex = mCurrentAccountIndex % mUserInfoList.size();
         SPUtils.setInt(CURRENT_USER_INFO, mCurrentAccountIndex);
