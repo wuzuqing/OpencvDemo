@@ -41,12 +41,15 @@ public class TaskState implements Constant {
      */
     private static List<UserInfo> mUserInfoList;
 
+
     public void init(Context context) {
         SPUtils.init(context);
 //        currentTaskIndex = SPUtils.getInt(CURRENT_TASK_STEP);
-        mCurrentAccountIndex = SPUtils.getInt(CURRENT_USER_INFO);
+        mCurrentAccountIndex = Util.getUserIndex();
         mUserInfoList = Util.getUserInfo();
         mTaskModelList = Util.getTaskElement();
+
+        LogUtils.logd("isMobaiEnd:"+Util.isMobaiEnd);
         mCurrentAccountIndex = mCurrentAccountIndex % mUserInfoList.size();
     }
 
@@ -71,7 +74,8 @@ public class TaskState implements Constant {
             AutoTool.killApp();
         }
 //        mCurrentAccountIndex = mCurrentAccountIndex % mUserInfoList.size();
-        SPUtils.setInt(CURRENT_USER_INFO, mCurrentAccountIndex);
+        Util.saveUserInfoIndex(mCurrentAccountIndex);
+//        SPUtils.setInt(CURRENT_USER_INFO, mCurrentAccountIndex);
     }
 
     public UserInfo getUserInfo() {
@@ -96,6 +100,10 @@ public class TaskState implements Constant {
         } else {
             LogUtils.logdAndToast("已取消任务");
         }
+    }
+
+    public boolean isMobaiEnd() {
+        return Util.isMobaiEnd;
     }
 
     public static int failCount = 0;

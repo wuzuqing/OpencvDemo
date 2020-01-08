@@ -1571,102 +1571,102 @@ public class TaskUtil implements Constant {
 
     private static int currentUserInfo = 0;
 
-    public static void register(TaskModel task, UserInfo userInfo) {
-        try {
-
-            List<UserInfo> userInfos = Util.getUserInfo();
-            currentUserInfo = 0;
-            PointModel loginClose = CmdData.get(LOGIN_DIALOG_CLOSE);
-            PointModel realyNameOk = CmdData.get(REALY_NAME_OK);
-            PointModel registerOk = CmdData.get(REGISTER_OK);
-            PointModel createUser = CmdData.get(CREATE_USER);
-            PointModel startGame = CmdData.get(START_GAME);
-            PointModel register = CmdData.get(REGISTER_CLICK);
-            PointModel registerOther = CmdData.get(REGISTER_OTHER);
-            netPoint = CmdData.get(NET_CLOSE);
-            dialogClose3 = CmdData.get(DIALOG_CLOSE3);        //道具对话框关闭按钮
-            resetFail();
-            while (!NetWorkUtils.isNetConnected(BaseApplication.getAppContext())) {//检查网络
-                if (isDestory) return;
-                if (check(failCount, 30)) {
-//                    mHandler.sendEmptyMessageDelayed(RESET_TASK, 60000);
-                    return;
-                }
-                Thread.sleep(2000);
-            }
-            while (true) {
-                if (currentUserInfo == userInfos.size()) {
-                    LogUtils.logd("注册结束");
-                    isDestory = true;
-                    return;
-                }
-//                SuUtil.kill();       //退出游戏
-                Thread.sleep(1000);
-                LaunchApp.launchapp(BaseApplication.getAppContext(), LaunchApp.JPZMG_PACKAGE_NAME);    //启动游戏
-                Thread.sleep(2400);
-
-                while (true) {   //检查准备输入账号的环境
-                    if (isDestory) return;
-                    Util.getCapBitmap();
-                    if (Util.checkColor(loginClose) || check(failCount, 8)) break;
-                    Thread.sleep(600);
-                }
-                resetFail();
-                AutoTool.execShellCmd(register);
-                Thread.sleep(1000);
-                SPUtils.setInt(CURRENT_USER_INFO, currentUserInfo);
-                if (needContinue) continue;
-                userInfo = userInfos.get(currentUserInfo % userInfos.size());
-                currentUserInfo++;
-                int length = 11;
-
-                AutoTool.execShellCmd(length + 1, 112);
-                Thread.sleep(500);
-                AutoTool.execShellCmd(CmdData.inputTextUserInfoName + userInfo.getName()); //输入账号
-                Thread.sleep(1000);
-                AutoTool.execShellCmd("input keyevent 20");
-                Thread.sleep(isNewApi ? 400 : 200);
-                AutoTool.execShellCmd(6, 112);
-                Thread.sleep(isNewApi ? 1000 : 500);
-                AutoTool.execShellCmd(CmdData.inputTextUserInfoName + userInfo.getPwd());
-                Thread.sleep(600);
-                AutoTool.execShellCmd(registerOk); //点击注册
-                Thread.sleep(800);
-                AutoTool.execShellCmd(realyNameOk); //确定
-                Thread.sleep(1200);
-                AutoTool.execShellCmd("input keyevent 20");
-                Thread.sleep(800);
-                AutoTool.execShellCmd("input keyevent 19");
-                Thread.sleep(800);
-                AutoTool.execShellCmd(CmdData.inputTextUserInfoName + "wuzuqing");
-                Thread.sleep(800);
-                AutoTool.execShellCmd("input keyevent 20");
-                Thread.sleep(200);
-                AutoTool.execShellCmd(CmdData.inputTextUserInfoName + "45092319900211537X");
-                Thread.sleep(800);
-                AutoTool.execShellCmd(registerOther);
-                Thread.sleep(800);
-
-                while (true) {
-                    if (isDestory) return;
-                    Util.getCapBitmap();
-                    if (Util.checkColor(bitmap, startGame)) {
-                        AutoTool.execShellCmd(startGame); //进入游戏
-                        Thread.sleep(800);
-                        break;
-                    }
-                    check(failCount, 5);
-                    if (needContinue) break;
-                }
-                if (needContinue) continue;
-                AutoTool.execShellCmd(createUser); //创建角色
-                Thread.sleep(2400);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    public static void register(TaskModel task, UserInfo userInfo) {
+//        try {
+//
+//            List<UserInfo> userInfos = Util.getUserInfo();
+//            currentUserInfo = 0;
+//            PointModel loginClose = CmdData.get(LOGIN_DIALOG_CLOSE);
+//            PointModel realyNameOk = CmdData.get(REALY_NAME_OK);
+//            PointModel registerOk = CmdData.get(REGISTER_OK);
+//            PointModel createUser = CmdData.get(CREATE_USER);
+//            PointModel startGame = CmdData.get(START_GAME);
+//            PointModel register = CmdData.get(REGISTER_CLICK);
+//            PointModel registerOther = CmdData.get(REGISTER_OTHER);
+//            netPoint = CmdData.get(NET_CLOSE);
+//            dialogClose3 = CmdData.get(DIALOG_CLOSE3);        //道具对话框关闭按钮
+//            resetFail();
+//            while (!NetWorkUtils.isNetConnected(BaseApplication.getAppContext())) {//检查网络
+//                if (isDestory) return;
+//                if (check(failCount, 30)) {
+////                    mHandler.sendEmptyMessageDelayed(RESET_TASK, 60000);
+//                    return;
+//                }
+//                Thread.sleep(2000);
+//            }
+//            while (true) {
+//                if (currentUserInfo == userInfos.size()) {
+//                    LogUtils.logd("注册结束");
+//                    isDestory = true;
+//                    return;
+//                }
+////                SuUtil.kill();       //退出游戏
+//                Thread.sleep(1000);
+//                LaunchApp.launchapp(BaseApplication.getAppContext(), LaunchApp.JPZMG_PACKAGE_NAME);    //启动游戏
+//                Thread.sleep(2400);
+//
+//                while (true) {   //检查准备输入账号的环境
+//                    if (isDestory) return;
+//                    Util.getCapBitmap();
+//                    if (Util.checkColor(loginClose) || check(failCount, 8)) break;
+//                    Thread.sleep(600);
+//                }
+//                resetFail();
+//                AutoTool.execShellCmd(register);
+//                Thread.sleep(1000);
+//                SPUtils.setInt(CURRENT_USER_INFO, currentUserInfo);
+//                if (needContinue) continue;
+//                userInfo = userInfos.get(currentUserInfo % userInfos.size());
+//                currentUserInfo++;
+//                int length = 11;
+//
+//                AutoTool.execShellCmd(length + 1, 112);
+//                Thread.sleep(500);
+//                AutoTool.execShellCmd(CmdData.inputTextUserInfoName + userInfo.getName()); //输入账号
+//                Thread.sleep(1000);
+//                AutoTool.execShellCmd("input keyevent 20");
+//                Thread.sleep(isNewApi ? 400 : 200);
+//                AutoTool.execShellCmd(6, 112);
+//                Thread.sleep(isNewApi ? 1000 : 500);
+//                AutoTool.execShellCmd(CmdData.inputTextUserInfoName + userInfo.getPwd());
+//                Thread.sleep(600);
+//                AutoTool.execShellCmd(registerOk); //点击注册
+//                Thread.sleep(800);
+//                AutoTool.execShellCmd(realyNameOk); //确定
+//                Thread.sleep(1200);
+//                AutoTool.execShellCmd("input keyevent 20");
+//                Thread.sleep(800);
+//                AutoTool.execShellCmd("input keyevent 19");
+//                Thread.sleep(800);
+//                AutoTool.execShellCmd(CmdData.inputTextUserInfoName + "wuzuqing");
+//                Thread.sleep(800);
+//                AutoTool.execShellCmd("input keyevent 20");
+//                Thread.sleep(200);
+//                AutoTool.execShellCmd(CmdData.inputTextUserInfoName + "45092319900211537X");
+//                Thread.sleep(800);
+//                AutoTool.execShellCmd(registerOther);
+//                Thread.sleep(800);
+//
+//                while (true) {
+//                    if (isDestory) return;
+//                    Util.getCapBitmap();
+//                    if (Util.checkColor(bitmap, startGame)) {
+//                        AutoTool.execShellCmd(startGame); //进入游戏
+//                        Thread.sleep(800);
+//                        break;
+//                    }
+//                    check(failCount, 5);
+//                    if (needContinue) break;
+//                }
+//                if (needContinue) continue;
+//                AutoTool.execShellCmd(createUser); //创建角色
+//                Thread.sleep(2400);
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 
     public static void oneTaskOld1(TaskModel task) throws InterruptedException { //2

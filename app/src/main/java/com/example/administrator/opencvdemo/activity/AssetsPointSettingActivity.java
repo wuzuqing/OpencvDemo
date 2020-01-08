@@ -86,9 +86,9 @@ public class AssetsPointSettingActivity extends NoAnimatorActivity implements Co
     public boolean onTouchEvent(final MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                if (mPointModel == null) {
-                    return false;
-                }
+//                if (mPointModel == null) {
+//                    return false;
+//                }
                 HandlerUtil.async(new Runnable() {
                     @Override
                     public void run() {
@@ -98,16 +98,18 @@ public class AssetsPointSettingActivity extends NoAnimatorActivity implements Co
                         color = Util.getColor(TaskUtil.bitmap, x, y);
                         LogUtils.logd("color:" + color + " x:" + x + " Y:" + y);
                         if (TextUtils.isEmpty(color)) return;
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                mPointModel.setX(x);
-                                mPointModel.setY(y);
-                                tvContent.setTextColor(Color.parseColor(color));
-                                mPointModel.setNormalColor(color);
-                                tvContent.setText(mPointModel.getName() + " \nx:" + mPointModel.getX() + " y:" + mPointModel.getY());
-                            }
-                        });
+                        if (mPointModel!=null){
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mPointModel.setX(x);
+                                    mPointModel.setY(y);
+                                    tvContent.setTextColor(Color.parseColor(color));
+                                    mPointModel.setNormalColor(color);
+                                    tvContent.setText(mPointModel.getName() + " \nx:" + mPointModel.getX() + " y:" + mPointModel.getY());
+                                }
+                            });
+                        }
                     }
                 });
                 break;

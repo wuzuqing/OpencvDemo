@@ -152,11 +152,13 @@ public class MobaiTaskElement extends AbsTaskElement {
     }
 
     private void end() throws InterruptedException {
-        Util.saveLastRefreshTime(KEY_WORK_KF_MB, ACache.getTodayEndTime());
-        AutoTool.execShellCmdNotOffset(huangGongClose);
-        Thread.sleep(1200);
-        AutoTool.execShellCmdNotOffset(huangGongClose);
-        Thread.sleep(800);
+        if (!TaskState.get().isMobaiEnd()){
+            Util.saveLastRefreshTime(KEY_WORK_KF_MB, ACache.getTodayEndTime());
+            AutoTool.execShellCmdNotOffset(huangGongClose);
+            Thread.sleep(1200);
+            AutoTool.execShellCmdNotOffset(huangGongClose);
+            Thread.sleep(800);
+        }
     }
 
     private String midColor;

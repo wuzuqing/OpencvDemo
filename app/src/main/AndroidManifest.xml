@@ -71,7 +71,9 @@
             />
 
         <activity android:name=".BitmapPreviewActivity" />
-        <activity android:name=".activity.AssetsPointSettingActivity" />
+        <activity android:name=".activity.AssetsPointSettingActivity"
+            android:theme="@style/FullTr"
+            />
         <activity android:name=".activity.DialogActivity" />
         <activity android:name=".activity.AccountManagerActivity" />
 

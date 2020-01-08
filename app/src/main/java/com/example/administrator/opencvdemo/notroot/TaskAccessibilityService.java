@@ -49,6 +49,19 @@ public class TaskAccessibilityService extends AccessibilityService {
     }
 
     /**
+     * 模拟返回操作
+     */
+    @TargetApi(28)
+    public void performTakeScreen() {
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        performGlobalAction(AccessibilityService.GLOBAL_ACTION_TAKE_SCREENSHOT);
+    }
+
+    /**
      * 模拟下滑操作
      */
     public void performScrollBackward() {

@@ -24,7 +24,6 @@ import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.Result;
 import com.example.administrator.opencvdemo.model.TaskModel;
 import com.example.administrator.opencvdemo.model.UserInfo;
-import com.example.administrator.opencvdemo.notroot.WPZMGService2;
 import com.example.administrator.opencvdemo.v2.TaskElement;
 import com.example.administrator.opencvdemo.v2.TaskState;
 import com.example.administrator.opencvdemo.v2.task.ClzwTaskElement;
@@ -229,9 +228,17 @@ public class Util implements Constant {
         }
         return sTaskModelList;
     }
-
+    public static boolean isMobaiEnd;
     public static List<TaskElement> getTaskElement() {
         List<TaskModel> taskModels = getTaskModel();
+        if (taskModels.size()==2
+                && taskModels.get(0).getName().equals("俸禄")
+                && taskModels.get(1).getName().equals("膜拜")
+                ){
+            isMobaiEnd = true;
+        }else{
+            isMobaiEnd = false;
+        }
         List<TaskElement> result = new ArrayList<>();
         result.add(new StartAndLoginTaskElement(new TaskModel("登录")));
         result.add(new JoinGameTaskElement(new TaskModel("进入游戏")));
@@ -267,7 +274,9 @@ public class Util implements Constant {
 //            "ck52434333,520333&ck83250887,520333&ck84012149,520333&ck75077701,520333&ck74266770,520333&" +
 //            "ck56270983,520333&ck41351036,520333&" +
 //            "ck97381288,520333&ck68721497,520333&ck99371248,520333&ck21627506,520333&" +
-            "ck69539153,520333&ck82369145,520333&ck19656822,520333&ck92984644,520333";
+            "wgl251&wgl252&wgl253&wgl254&wgl255&wgl256&wgl257&wgl258&wgl259&wgl260&wgl261&wgl262";
+//            "wgl243&wgl244&wgl245&wgl246&wgl247&wgl248&wgl249&wgl250&wgl251&wgl252&wgl253&wgl254&wgl255&wgl256&wgl257&wgl258&wgl259&wgl260&wgl261&wgl262";
+//            "ck69539153,520333&ck82369145,520333&ck19656822,520333&ck92984644,520333";
     public static long nextDayTime;
 
     public static void init() {
@@ -614,16 +623,16 @@ public class Util implements Constant {
         SPUtils.setString(INFO_KEY, JsonUtils.toJson(userInfos));
     }
 
-    public static void stopTask() {
-        Util.isWPZMGServiceRunning = false;
-        Context context = BaseApplication.getAppContext();
-        Intent intent2 = new Intent(context, WPZMGService2.class);
-        if (!Util.isWPZMGServiceRunning) {
-            intent2.putExtra("stop", true);
-            Util.setResLastTime(0);
-        }
-        context.startService(intent2);
-    }
+//    public static void stopTask() {
+////        Util.isWPZMGServiceRunning = false;
+////        Context context = BaseApplication.getAppContext();
+////        Intent intent2 = new Intent(context, WPZMGService2.class);
+////        if (!Util.isWPZMGServiceRunning) {
+////            intent2.putExtra("stop", true);
+////            Util.setResLastTime(0);
+////        }
+////        context.startService(intent2);
+////    }
 
     public static synchronized String getFileString(String key) {
         initSaveFile();
@@ -657,6 +666,19 @@ public class Util implements Constant {
     public static synchronized void saveLastRefreshTime(String user, String type, String time, int saveTime) {
         initSaveFile();
         ACache.get(saveFile).put(String.format("%s%s", user, type), time, saveTime);
+    }
+
+    public static synchronized void saveUserInfoIndex(int index){
+        initSaveFile();
+        ACache.get(saveFile).put("userIndex", String.valueOf(index));
+    }
+    public static int getUserIndex(){
+        initSaveFile();
+        String userIndex = ACache.get(saveFile).getAsString("userIndex");
+        if (TextUtils.isEmpty(userIndex)){
+            return 0;
+        }
+        return Integer.valueOf(userIndex);
     }
 
     private static void initSaveFile() {

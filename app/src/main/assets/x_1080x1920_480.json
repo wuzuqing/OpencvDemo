@@ -24,15 +24,15 @@
     "key": "LOGIN_GAME",
     "name": "登录",
     "normalColor": "#CC275F",
-    "x": 281,
-    "y": 1128
+    "x": 324,
+    "y": 1136
   },
   {
     "key": "START_GAME",
     "name": "进入游戏",
-    "normalColor": "#866434",
-    "x": 604,
-    "y": 1553
+    "normalColor": "#856332",
+    "x": 459,
+    "y": 1562
   },
   {
     "key": "GEN_XIN",
@@ -44,9 +44,9 @@
   {
     "key": "DIALOG_CLOSE2",
     "name": "通告对话框关闭",
-    "normalColor": "#D5BE3F",
-    "x": 979,
-    "y": 458
+    "normalColor": "#D6B177",
+    "x": 964,
+    "y": 319
   },
   {
     "key": "NET_CLOSE",
@@ -65,23 +65,23 @@
   {
     "key": "HUA_AN",
     "name": "华安",
-    "normalColor": "#2F2620",
-    "x": 446,
-    "y": 1133
+    "normalColor": "#BDBABD",
+    "x": 499,
+    "y": 1061
   },
   {
     "key": "DIALOG_CLOSE3",
     "name": "道具对话框关闭",
-    "normalColor": "#FEE34B",
-    "x": 989,
-    "y": 643
+    "normalColor": "#1D2738",
+    "x": 1006,
+    "y": 600
   },
   {
     "key": "ZHENG_SHOU",
     "name": "征收",
-    "normalColor": "#A68251",
-    "x": 115,
-    "y": 1689
+    "normalColor": "#A47442",
+    "x": 87,
+    "y": 1836
   },
   {
     "key": "BUSINESS",
