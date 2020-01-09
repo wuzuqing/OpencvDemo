@@ -68,11 +68,13 @@ public class JoinGameTaskElement extends AbsTaskElement {
             }
             Util.sleep(400);
         }
-        Thread.sleep(2000);
+        LogUtils.logd("step:5 wait");
+        Thread.sleep(3500);
         while (TaskState.isWorking) {
             Util.getCapBitmapWithOffset();
             if (Util.checkColorAndOffset(gameNoticePoint)){
                 click(gameNoticePoint);
+                LogUtils.logd("step:6 click default");
                 break;
             }
             //检查 通告对话框的环境
@@ -84,8 +86,10 @@ public class JoinGameTaskElement extends AbsTaskElement {
                 }
                 if (Util.checkColor(gameNoticePoint)){
                     click(gameNoticePoint);
+                    LogUtils.logd("step:7 click default");
                 }else{
                     clickMid(pageData.get(0).getRect());
+                    LogUtils.logd("step:8 click  parse page");
                 }
                 break;
             } else if (check(8)) {
@@ -99,7 +103,8 @@ public class JoinGameTaskElement extends AbsTaskElement {
 //                }
             }
         }
-        Util.sleep(1200);
+        Util.sleep(800);
+        LogUtils.logd("step:9 wait");
         while (TaskState.isWorking){
             Util.getCapBitmapNew();
             if (FuNeiHelper.huaAn!=null && Util.checkColor(FuNeiHelper.huaAn)){
@@ -110,8 +115,10 @@ public class JoinGameTaskElement extends AbsTaskElement {
                 return true;
             }else{
                 FuNeiHelper.init();
+                LogUtils.logd("step:10 init");
             }
         }
+        LogUtils.logd("step:11 end");
         return true;
     }
 

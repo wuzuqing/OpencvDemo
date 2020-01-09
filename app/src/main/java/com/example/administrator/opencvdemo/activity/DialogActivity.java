@@ -31,7 +31,7 @@ public class DialogActivity extends NoAnimatorActivity implements Constant {
     private EditText etCount;
     private EditText etYanHuiNumber;
     private EditText etUserInfo;
-    private CheckBox cbGx,cbKfJl,cbLoop,cbZw,cbOnlyFl, cbZh,cbFl, cbMb, cbTask, cbChouCai, cbGuanKa, cbShuYuan,cbKfMb,
+    private CheckBox cbGx,cbKfJl,cbLoop,cbZw,cbOnlyFl, cbZh, cbMb, cbTask, cbChouCai, cbGuanKa, cbShuYuan,cbKfMb,
             cbYanHui, cbZc, cbXs, cbCJ, cbOldShouCai,cbYx,cbLm,cbLmFb,cbGy,cbLf,cbYm;
     boolean isTy;
     private CheckBox cbHyzh;
@@ -49,7 +49,6 @@ public class DialogActivity extends NoAnimatorActivity implements Constant {
         cbChouCai =  findViewById(R.id.cb_shoucai);
         cbYm =  findViewById(R.id.cb_ym);
         cbZw =  findViewById(R.id.cb_zw);
-        cbFl =  findViewById(R.id.cb_fl);
         cbOnlyFl =  findViewById(R.id.cb_fl_only);
         cbMb =  findViewById(R.id.cb_mb);
         cbKfMb =  findViewById(R.id.cb_kf_bo);
@@ -80,9 +79,8 @@ public class DialogActivity extends NoAnimatorActivity implements Constant {
         etCount.setText(String.valueOf(SPUtils.getInt("count", 1)));
         etXsPosition.setText(String.valueOf(SPUtils.getInt("etXsPosition", 1)));
         cbZw.setChecked(SPUtils.getBoolean(KEY_WORK_ZW));
-        cbFl.setChecked(SPUtils.getBoolean(KEY_WORK_FL));
-        cbOnlyFl.setChecked(SPUtils.getBoolean(KEY_WORK_ONLY_FL));
-        cbMb.setChecked(SPUtils.getBoolean(KEY_WORK_MB));
+        cbOnlyFl.setChecked(SPUtils.getBoolean(KEY_WORK_ONLY_FL,true));
+        cbMb.setChecked(SPUtils.getBoolean(KEY_WORK_MB,true));
         cbKfMb.setChecked(SPUtils.getBoolean(KEY_WORK_KF_MB));
         cbTask.setChecked(SPUtils.getBoolean(KEY_WORK_TASK));
         cbChouCai.setChecked(SPUtils.getBoolean(KEY_CHOU_CAI));
@@ -97,13 +95,13 @@ public class DialogActivity extends NoAnimatorActivity implements Constant {
         cbZc.setChecked(SPUtils.getBoolean(KEY_REGISTER));
         cbXs.setChecked(SPUtils.getBoolean(KEY_XIAN_SHI));
         cbCJ.setChecked(SPUtils.getBoolean(KEY_CHENG_JIU));
-        cbOldShouCai.setChecked(SPUtils.getBoolean(KEY_OLD_SHOU_CAI,true));
+        cbOldShouCai.setChecked(SPUtils.getBoolean(KEY_OLD_SHOU_CAI));
         cbYx.setChecked(SPUtils.getBoolean(KEY_EMAIL));
         cbLm.setChecked(SPUtils.getBoolean(KEY_LIAN_MENG));
         cbLmFb.setChecked(SPUtils.getBoolean(KEY_LIAN_MENG_FU_BEN));
         cbGy.setChecked(SPUtils.getBoolean(KEY_GUAN_YAN));
         cbYm.setChecked(SPUtils.getBoolean(KEY_YA_MEN));
-        cbLoop.setChecked(SPUtils.getBoolean(KEY_LOOP,true));
+        cbLoop.setChecked(SPUtils.getBoolean(KEY_LOOP));
     }
 
     private void reset() {

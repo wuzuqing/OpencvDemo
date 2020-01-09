@@ -105,10 +105,10 @@ public class Util implements Constant {
         if (SPUtils.getBoolean(KEY_KUA_FU_JL)) {
             taskModels.add(getSimpleModel("跨服奖励", TASK_KUA_FU_JIANG_LI, KEY_SPACE_TIME_THREE, 86400)); //政绩
         }
-        if (SPUtils.getBoolean(KEY_WORK_ZW, true)) {
+        if (SPUtils.getBoolean(KEY_WORK_ZW, false)) {
             taskModels.add(getSimpleModel("政务", TASK_ZHENG_WU, KEY_SPACE_TIME_TWO, 20000)); //政绩
         }
-        if (SPUtils.getBoolean(KEY_CHOU_CAI, true)) {
+        if (SPUtils.getBoolean(KEY_CHOU_CAI, false)) {
             taskModels.add(getTaskModel(spaceTime));    //收菜
         }
         if (SPUtils.getBoolean(KEY_SHU_YUAN)) {
@@ -124,7 +124,7 @@ public class Util implements Constant {
             taskModels.add(getSimpleModel("俸禄", TASK_FENG_LU, KEY_SPACE_TIME_FOUR, 86400)); //政绩
         }
 
-        if (SPUtils.getBoolean(KEY_WORK_MB)) {
+        if (SPUtils.getBoolean(KEY_WORK_MB,true)) {
             taskModels.add(getSimpleModel("膜拜", TASK_MO_BAI, KEY_SPACE_TIME_THREE, 86400)); //政绩
         }
         if (SPUtils.getBoolean(KEY_LAO_FANG)) {

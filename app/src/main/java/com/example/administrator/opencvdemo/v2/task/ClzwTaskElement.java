@@ -33,9 +33,9 @@ public class ClzwTaskElement extends AbsTaskElement {
 
     @Override
     protected boolean doTask() throws Exception {
-        if (checkTime(KEY_WORK_ZW, ACache.TIME_HOUR * 2)) {
-            return true;
-        }
+        // if (checkTime(KEY_WORK_ZW, ACache.TIME_HOUR * 2)) {
+        //     return true;
+        // }
         while (TaskState.isWorking && !isJoinClzw) {
             Util.getCapBitmapWithOffset();
             if (FuNeiHelper.shiYe != null && Util.checkColor(FuNeiHelper.shiYe)) {
@@ -47,6 +47,7 @@ public class ClzwTaskElement extends AbsTaskElement {
                 continue;
             }
             pageData = Util.getPageData();
+            printWorkName();
             if (checkPage("府外")) {
 
             } else if (checkPage("府内")) {
@@ -58,6 +59,7 @@ public class ClzwTaskElement extends AbsTaskElement {
                     resetStep();
                     return true;
                 }
+                FuNeiHelper.init();
                 Thread.sleep(200);
                 return false;
             }

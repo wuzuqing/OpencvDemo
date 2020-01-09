@@ -21,14 +21,12 @@ public class PointModel {
 
     @Override
     public String toString() {
-        return "PointModel{" +
+        return "{" +
                 "key='" + key + '\'' +
                 ", name='" + name + '\'' +
                 ", x=" + x +
                 ", y=" + y +
                 ", normalColor='" + normalColor + '\'' +
-                ", subY=" + subY +
-                ", subColor='" + subColor + '\'' +
                 '}';
     }
 

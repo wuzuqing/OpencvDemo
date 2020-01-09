@@ -31,9 +31,9 @@ public class FuNeiHelper {
     }
 
     public static void init() {
-//        if (isIniting) {
-//            return;
-//        }
+       if (isIniting) {
+           return;
+       }
 //        boolean isInit = SPUtils.getBoolean(CheckName. FU_NEI, false);
 //        if (isInit) {
 //            return;

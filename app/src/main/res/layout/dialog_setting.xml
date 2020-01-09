@@ -214,14 +214,6 @@
                 android:text="只领俸禄"
                 />
 
-            <CheckBox
-                android:id="@+id/cb_fl"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:textSize="9sp"
-                android:text="俸禄"
-                />
 
             <CheckBox
                 android:layout_width="wrap_content"

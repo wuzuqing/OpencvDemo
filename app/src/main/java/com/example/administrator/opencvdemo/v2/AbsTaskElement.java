@@ -165,6 +165,10 @@ public abstract class AbsTaskElement implements TaskElement, Constant , IInputCl
         }
     }
 
+    private void printCurrentPage(){
+        LogUtils.logd("当前页面：" + OrcConfig.pageName);
+    }
+
     protected void swipeToRight() throws InterruptedException {
         EventHelper.swipeHor(800, 150, 600);
         Thread.sleep(2400);

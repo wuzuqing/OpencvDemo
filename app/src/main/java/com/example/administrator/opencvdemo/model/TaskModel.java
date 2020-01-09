@@ -3,6 +3,7 @@ package com.example.administrator.opencvdemo.model;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import android.support.annotation.NonNull;
 
 /**
  * @author 吴祖清
@@ -108,9 +109,9 @@ public class TaskModel {
         return result;
     }
 
+    @NonNull
     @Override
     public String toString() {
-        return "TaskModel{" + "name='" + name + '\'' + ", lastRefreshTime=" + lastRefreshTime + ", spaceTime=" + spaceTime + ", data=" +
-                data + ", type=" + type + '}';
+        return "TaskModel{" + "name='" + name+ ", type=" + type + '}';
     }
 }
