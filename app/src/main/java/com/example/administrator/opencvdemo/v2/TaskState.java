@@ -73,9 +73,9 @@ public class TaskState implements Constant {
             isWorking = false;
             LaunchManager.killApp();
         }
+        Util.gc();
 //        mCurrentAccountIndex = mCurrentAccountIndex % mUserInfoList.size();
         AccountManager.saveUserInfoIndex(mCurrentAccountIndex);
-//        SPUtils.setInt(CURRENT_USER_INFO, mCurrentAccountIndex);
     }
 
     public UserInfo getUserInfo() {

@@ -1,13 +1,11 @@
 package com.example.administrator.opencvdemo.v2.task;
 
-import com.example.administrator.opencvdemo.config.CheckName;
 import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.TaskModel;
 import com.example.administrator.opencvdemo.util.ACache;
 import com.example.administrator.opencvdemo.util.PointManagerV2;
 import com.example.administrator.opencvdemo.util.Constant;
 import com.example.administrator.opencvdemo.util.LogUtils;
-import com.example.administrator.opencvdemo.util.SPUtils;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.AbsTaskElement;
 import com.example.administrator.opencvdemo.v2.FuNeiHelper;
@@ -33,9 +31,9 @@ public class ClzwTaskElement extends AbsTaskElement {
 
     @Override
     protected boolean doTask() throws Exception {
-        // if (checkTime(KEY_WORK_ZW, ACache.TIME_HOUR * 2)) {
-        //     return true;
-        // }
+        if (checkTime(KEY_WORK_ZW, ACache.TIME_HOUR * 2)) {
+            return true;
+        }
         while (TaskState.isWorking && !isJoinClzw) {
             Util.getCapBitmapWithOffset();
             if (FuNeiHelper.shiYe != null && Util.checkColor(FuNeiHelper.shiYe)) {
@@ -95,15 +93,20 @@ public class ClzwTaskElement extends AbsTaskElement {
                 }
             }
             if (hasGet) {
-                Thread.sleep(700);
+                Thread.sleep(900);
                 continue;
+            }else{
+                if (!check(6)){
+                    Thread.sleep(900);
+                    continue;
+                }
             }
-            boolean hasResetBg = SPUtils.getBoolean(CheckName.ZHEGN_WU_BEI_JING, false);
-            if (!hasResetBg) {
-                String color = Util.getColor(beiJing);
-                beiJing.setNormalColor(color);
-                needSaveCoord = true;
-            }
+            // boolean hasResetBg = SPUtils.getBoolean(CheckName.ZHEGN_WU_BEI_JING, false);
+            // if (!hasResetBg) {
+            //     String color = Util.getColor(beiJing);
+            //     beiJing.setNormalColor(color);
+            //     needSaveCoord = true;
+            // }
 
             clickClose();
             Thread.sleep(800);

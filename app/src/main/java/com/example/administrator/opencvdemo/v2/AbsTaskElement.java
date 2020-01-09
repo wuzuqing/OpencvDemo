@@ -86,6 +86,7 @@ public abstract class AbsTaskElement implements TaskElement, Constant , IInputCl
             }
             if (taskHandler != null) {
                 TaskState.get().saveNextTask();
+                taskHandler.removeCallbacksAndMessages(null);
                 taskHandler.sendEmptyMessage(0);
             }
         }

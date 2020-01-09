@@ -22,8 +22,6 @@ public class WPZMGService3 extends Service implements Constant {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == 0) {
-                LaunchManager.killApp();
-                mTaskState.init(getApplicationContext());
                 TaskElement taskStateTask = mTaskState.getTask();
                 taskStateTask.printWorkName();
                 taskStateTask.bindHandler(this);
@@ -38,6 +36,7 @@ public class WPZMGService3 extends Service implements Constant {
     public void onCreate() {
         super.onCreate();
         mTaskState = TaskState.get();
+        mTaskState.init(getApplicationContext());
     }
 
     @Override

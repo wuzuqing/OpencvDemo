@@ -808,4 +808,15 @@ public class Util implements Constant {
     public static void sleep(long time) throws InterruptedException {
         Thread.sleep(BaseApplication.densityDpi == 480 ? time + 800 : time);
     }
+
+    public static void gc() {
+        try {
+            if (bitmap!=null && !bitmap.isRecycled()){
+                bitmap.recycle();
+            }
+            System.gc();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 }
