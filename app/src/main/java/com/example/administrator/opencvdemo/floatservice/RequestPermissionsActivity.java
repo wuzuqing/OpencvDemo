@@ -1,5 +1,6 @@
 package com.example.administrator.opencvdemo.floatservice;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -41,15 +42,16 @@ public class RequestPermissionsActivity extends AppCompatActivity {
         }
     }
     private void startMainService() {
+        setResult(Activity.RESULT_OK);
         if (getIntent() != null && getIntent().hasExtra("hao")) {
             Intent intent1 = new Intent(RequestPermissionsActivity.this, MainService.class);
             intent1.putExtra("action", "ACTION_BOOT_COMPLETED");
             startService(intent1);
-            finish();
+            // finish();
         } else {
             MainService.start(RequestPermissionsActivity.this);
         }
-
+        finish();
     }
 
     @Override

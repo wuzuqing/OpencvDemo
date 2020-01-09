@@ -76,7 +76,7 @@ public abstract class AbsTaskElement implements TaskElement, Constant , IInputCl
             }
         }
         if (needSaveCoord) {
-            PointManagerV2.saveCoordinate();
+            // PointManagerV2.saveCoordinate();
             needSaveCoord = false;
         }
         if (TaskState.isWorking) {

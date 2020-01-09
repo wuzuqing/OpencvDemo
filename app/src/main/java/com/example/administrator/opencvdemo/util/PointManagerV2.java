@@ -134,6 +134,5 @@ public class PointManagerV2 implements Constant {
     public static void saveCoordinate() {
         String jsonList = JsonUtils.toJson(PointManagerV2.coordinateList);
         Util.setFileStrAndSp(COORDINATE_KEY,jsonList);
-        LogUtils.logd("coordinateList:"+jsonList);
     }
 }

@@ -60,7 +60,7 @@ public class StartAndLoginTaskElement extends AbsTaskElement {
                 boolean isInit = SPUtils.getBoolean(CheckName.LOGIN_BTN_VERSION, false);
                 if (!isInit) {
 //                    SPUtils.getBoolean(CheckName.LOGIN_BTN_VERSION, true);
-                    initPage();
+//                     initPage();
                 }
                 LogUtils.logd("step:4 continue");
                 return false;

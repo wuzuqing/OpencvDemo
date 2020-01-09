@@ -1,11 +1,13 @@
 package com.example.administrator.opencvdemo;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -85,8 +87,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(getSelf(), RequestPermissionsActivity.class));
-                finish();
+                startActivityForResult(new Intent(getSelf(), RequestPermissionsActivity.class),100);
+                // finish();
             }
         });
         File imagePath = OrcHelper.getInstance().rootDir;
@@ -207,6 +209,14 @@ public class MainActivity extends AppCompatActivity {
         reqPermission();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==100 && resultCode == Activity.RESULT_OK){
+            finish();
+        }
+    }
+
     private FragmentActivity getSelf() {
         return this;
     }
@@ -222,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
                         Manifest.permission.WRITE_EXTERNAL_STORAGE
                 )
                 .explain("程序需要此权限，拒绝可能会导致您无法接收订单消息", "我们需要储存权限，拒绝可能会导致应用无法正常运行")
-                .retry(true)
+                // .retry(true)
                 .callBack(new OnRequestPermissionsCallBack() {
                     @Override
                     public void onGrant() {
