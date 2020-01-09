@@ -29,9 +29,9 @@ public class HttpManager {
         map.put("account", TaskState.get().getUserInfo().getName());
         map.put("area", area);
         map.put("task", tasks);
-        OkHttp3Utils.doPost("/game/updateTaskRecord", map, new GsonObjectCallback<String>() {
+        OkHttp3Utils.doPost("/game/updateTaskRecord", map, new GsonObjectCallback<HttpBaseModel>() {
             @Override
-            public void onUi(String result) {
+            public void onUi(HttpBaseModel result) {
 
             }
 
@@ -47,9 +47,9 @@ public class HttpManager {
         map.put("flat", flag);
         map.put("type", type);
         map.put("points", points);
-        OkHttp3Utils.doPost("/game/updatePoints", map, new GsonObjectCallback<String>() {
+        OkHttp3Utils.doPost("/game/updatePoints", map, new GsonObjectCallback<HttpBaseModel>() {
             @Override
-            public void onUi(String result) {
+            public void onUi(HttpBaseModel result) {
 
             }
 

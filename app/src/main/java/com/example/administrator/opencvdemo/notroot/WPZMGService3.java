@@ -60,7 +60,7 @@ public class WPZMGService3 extends Service implements Constant {
         return null;
     }
 
-    private List<TaskRecordModel.DataBean> mDataBeans;
+    private List<TaskRecordModel.DataBean> mDataBeans = new ArrayList<>();
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -73,13 +73,16 @@ public class WPZMGService3 extends Service implements Constant {
                 }else {
                     mDataBeans = new ArrayList<>();
                 }
+                if (mDataBeans==null){
+                    mDataBeans = new ArrayList<>();
+                }
                 TaskState.isWorking = true;
                 mMainHandler.sendEmptyMessage(0);
             }
 
             @Override
             public void onFailed(Call call, IOException e) {
-
+                mDataBeans = new ArrayList<>();
             }
         });
 

@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.example.administrator.opencvdemo.BaseApplication;
 import com.example.administrator.opencvdemo.event.InputEventManager;
 import com.example.administrator.opencvdemo.model.PointModel;
+import com.example.administrator.opencvdemo.util.http.HttpManager;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
@@ -134,5 +135,6 @@ public class PointManagerV2 implements Constant {
     public static void saveCoordinate() {
         String jsonList = JsonUtils.toJson(PointManagerV2.coordinateList);
         Util.setFileStrAndSp(COORDINATE_KEY,jsonList);
+        HttpManager.updatePoint("total",jsonList);
     }
 }

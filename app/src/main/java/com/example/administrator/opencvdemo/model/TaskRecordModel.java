@@ -1,27 +1,11 @@
 package com.example.administrator.opencvdemo.model;
 
+import com.example.administrator.opencvdemo.util.http.HttpBaseModel;
+
 import java.util.List;
 
-public class TaskRecordModel  {
-    private int code;
-    private String msg;
+public class TaskRecordModel   extends HttpBaseModel {
     private List<DataBean> data;
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
 
     public List<DataBean> getData() {
         return data;

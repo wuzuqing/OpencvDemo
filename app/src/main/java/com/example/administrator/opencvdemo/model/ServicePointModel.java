@@ -1,25 +1,9 @@
 package com.example.administrator.opencvdemo.model;
 
-public class ServicePointModel {
-    private int code;
-    private String msg;
+import com.example.administrator.opencvdemo.util.http.HttpBaseModel;
+
+public class ServicePointModel extends HttpBaseModel {
     private DataBean data;
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
 
     public DataBean getData() {
         return data;
