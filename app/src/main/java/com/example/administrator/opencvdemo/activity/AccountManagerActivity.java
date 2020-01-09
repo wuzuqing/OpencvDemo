@@ -10,6 +10,7 @@ import android.widget.EditText;
 
 import com.example.administrator.opencvdemo.R;
 import com.example.administrator.opencvdemo.model.UserInfo;
+import com.example.administrator.opencvdemo.util.AccountManager;
 import com.example.administrator.opencvdemo.util.Constant;
 import com.example.administrator.opencvdemo.util.ToastUitl;
 import com.example.administrator.opencvdemo.util.Util;
@@ -59,7 +60,7 @@ public class AccountManagerActivity extends NoAnimatorActivity implements Consta
         String pwd = etPwd.getText().toString();
         String total = etTotal.getText().toString();
         if (!TextUtils.isEmpty(total)){
-            Util.saveUserInfo(total);
+            AccountManager.saveUserInfo(total);
             return;
         }
         if (TextUtils.isEmpty(start) || TextUtils.isEmpty(end) || TextUtils.isEmpty(pex) || TextUtils.isEmpty(pwd)) {
@@ -78,7 +79,7 @@ public class AccountManagerActivity extends NoAnimatorActivity implements Consta
             userInfo = new UserInfo(String.format("%s%d", pex, i), pwd);
             newUserInfos.add(userInfo);
         }
-        Util.saveUserInfo(newUserInfos);
+        AccountManager.saveUserInfo(newUserInfos);
         saveParams(null);
     }
 

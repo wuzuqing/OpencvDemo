@@ -10,6 +10,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.example.administrator.opencvdemo.R;
+import com.example.administrator.opencvdemo.util.AccountManager;
 import com.example.administrator.opencvdemo.util.Constant;
 import com.example.administrator.opencvdemo.util.SPUtils;
 import com.example.administrator.opencvdemo.util.Util;
@@ -31,7 +32,7 @@ public class DialogActivity extends NoAnimatorActivity implements Constant {
     private EditText etYanHuiNumber;
     private EditText etUserInfo;
     private CheckBox cbGx,cbKfJl,cbLoop,cbZw,cbOnlyFl, cbZh,cbFl, cbMb, cbTask, cbChouCai, cbGuanKa, cbShuYuan,cbKfMb,
-            cbYanHui, cbZc, cbXs, cbCJ, cbOldShouCai,cbYx,cbLm,cbLmFb,cbGy,cbLf,cbYm,cbPf;
+            cbYanHui, cbZc, cbXs, cbCJ, cbOldShouCai,cbYx,cbLm,cbLmFb,cbGy,cbLf,cbYm;
     boolean isTy;
     private CheckBox cbHyzh;
 
@@ -41,7 +42,6 @@ public class DialogActivity extends NoAnimatorActivity implements Constant {
         setContentView(R.layout.dialog_setting);
         etSpace =  findViewById(R.id.et_space);
         cbLoop =  findViewById(R.id.cb_loop);
-        cbPf =  findViewById(R.id.cb_PixelFormat);
         etYanHuiNumber =  findViewById(R.id.et_yan_hui_number);
         etCount =  findViewById(R.id.et_count);
         etXsPosition =  findViewById(R.id.et_xs_position);
@@ -104,14 +104,12 @@ public class DialogActivity extends NoAnimatorActivity implements Constant {
         cbGy.setChecked(SPUtils.getBoolean(KEY_GUAN_YAN));
         cbYm.setChecked(SPUtils.getBoolean(KEY_YA_MEN));
         cbLoop.setChecked(SPUtils.getBoolean(KEY_LOOP,true));
-        cbPf.setChecked(SPUtils.getBoolean("PixelFormat",false));
-
     }
 
     private void reset() {
         if (!TextUtils.isEmpty(etUserInfo.getText())) {
             String s = etUserInfo.getText().toString();
-            Util.saveUserInfo(s);
+            AccountManager.saveUserInfo(s);
         }
         if (isTy){
             SPUtils.setBoolean(KEY_CHOU_CAI, cbChouCai.isChecked());
@@ -151,7 +149,6 @@ public class DialogActivity extends NoAnimatorActivity implements Constant {
             SPUtils.setBoolean(KEY_LOOP, cbLoop.isChecked());
             SPUtils.setBoolean(KEY_YA_MEN, cbYm.isChecked());
             SPUtils.setBoolean(KEY_LAO_FANG, cbLf.isChecked());
-            SPUtils.setBoolean("PixelFormat",cbPf.isChecked());
         }
         Util.resetTaskModel();
         SPUtils.setInt(CURRENT_USER_INFO,0);

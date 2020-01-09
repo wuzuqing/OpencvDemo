@@ -2,33 +2,13 @@ package com.example.administrator.opencvdemo.floatservice;
 
 import android.app.Activity;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.PixelFormat;
-import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.TextView;
-
 import com.example.administrator.opencvdemo.BaseApplication;
-import com.example.administrator.opencvdemo.R;
-import com.example.administrator.opencvdemo.util.AutoTool;
 import com.example.administrator.opencvdemo.util.HandlerUtil;
-import com.example.administrator.opencvdemo.util.LaunchApp;
-import com.example.administrator.opencvdemo.util.ScreenCapture;
 import com.example.module_orc.OpenCVHelper;
-import com.example.module_orc.OrcHelper;
-import com.example.module_orc.OrcModel;
-
-import java.util.List;
-
-import static com.example.administrator.opencvdemo.util.LaunchApp.SELF_APP;
 
 public class MainService extends Service {
 
@@ -47,7 +27,6 @@ public class MainService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        HandlerUtil.send("启动服务");
         createTouchView();
         BaseApplication.setIsShowPanel(true);
         startScreenBroadcastReceiver();
@@ -70,16 +49,6 @@ public class MainService extends Service {
         }
         return START_STICKY;
     }
-    //
-    // private void xiaoHao(boolean some) {
-    //     Util.isWPZMGServiceRunning = !Util.isWPZMGServiceRunning;
-    //     Intent intent2 = new Intent(MainService.this, WPZMGService2.class);
-    //     if (!Util.isWPZMGServiceRunning) {
-    //         intent2.putExtra("stop", true);
-    //         Util.setResLastTime(0);
-    //     }
-    //     startService(intent2);
-    // }
 
     @Override
     public void onDestroy() {

@@ -41,21 +41,13 @@ public class HandlerUtil implements Constant{
     public static void async(Runnable task) {
         new Thread(task).start();
     }
-    public static void async(final String cmd) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                AutoTool.execShellCmd(cmd);
-            }
-        }).start();
-    }
+
 
     public static void post(Runnable runnable, int time) {
         mHandler.postDelayed(runnable,time);
     }
 
-    public static void send(String message) {
-    }
+
     private static TextView tvDjs;
     public static void startDjs(TextView tvLimitTime) {
         tvDjs = tvLimitTime;

@@ -1,5 +1,13 @@
 package com.example.administrator.opencvdemo.util;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -17,8 +25,8 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.text.format.Formatter;
 import android.util.Log;
-
 import com.example.administrator.opencvdemo.BaseApplication;
+import com.example.administrator.opencvdemo.event.InputEventManager;
 import com.example.administrator.opencvdemo.floatservice.MainService;
 import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.Result;
@@ -36,16 +44,6 @@ import com.example.administrator.opencvdemo.v2.task.StartAndLoginTaskElement;
 import com.example.module_orc.OrcConfig;
 import com.example.module_orc.OrcHelper;
 import com.example.module_orc.OrcModel;
-import com.google.gson.reflect.TypeToken;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 
 /**
  * @author 吴祖清
@@ -58,10 +56,33 @@ import java.util.List;
  */
 
 public class Util implements Constant {
+
+    private static final int TASK_JYZC = 1;//收菜
+    private static final int TASK_ZHENG_WU = 2;//政务
+    private static final int TASK_MO_BAI = 3;//膜拜
+    private static final int TASK_FENG_LU = 4;//俸禄
+    private static final int TASK_REN_WU_JIANG_LU = 5;//任务奖励
+    private static final int TASK_GUAN_KA = 6;//关卡
+    private static final int TASK_SHU_YUAN = 7;//书院
+    private static final int TASK_CHEGN_JIU = 9;//成就
+    private static final int TASK_REGISTER = 10;//注册
+    private static final int TIME_LIMIT_REWARD = 11;//限时奖励
+    private static final int EMAIL = 12;//邮件
+    private static final int SUI_JI_ZHAO_HUAN = 14;//随机召唤
+    private static final int LIAN_MENG_GAO_JIAN = 15;//联盟高建
+    private static final int GUAN_YAN = 16;//官宴
+    private static final int TASK_LIAN_MENG_FU_BEN = 17;//联盟副本
+    private static final int TASK_KUA_FU_JIANG_LI = 18;//跨服奖励
+    private static final int TASK_ZHEGN_LIU = 19;//正九
+    private static final int TASK_LAO_FANG = 20;//牢房
+    private static final int TASK_YA_MEN = 21;//衙门
+
     private static List<TaskModel> sTaskModelList;
-    private static String pathName = CmdData.saveFilePath.getAbsolutePath();
+    private static String pathName = PointManagerV2.saveFilePath.getAbsolutePath();
     public static boolean isWPZMGServiceRunning;
     private static String action;
+    public static boolean isMoBaiEnd;
+    private static long nextDayTime;
 
     public static void setAction(String action) {
         Util.action = action;
@@ -76,7 +97,7 @@ public class Util implements Constant {
         return action;
     }
 
-    public static List<TaskModel> getTask(int spaceTime) {
+    private static List<TaskModel> getTask(int spaceTime) {
         List<TaskModel> taskModels = new ArrayList<>();
         if (SPUtils.getBoolean(KEY_XIAN_SHI)) {
             taskModels.add(getSimpleModel("限时奖励", TIME_LIMIT_REWARD, KEY_SPACE_TIME_THREE, 86400)); //政绩
@@ -84,10 +105,10 @@ public class Util implements Constant {
         if (SPUtils.getBoolean(KEY_KUA_FU_JL)) {
             taskModels.add(getSimpleModel("跨服奖励", TASK_KUA_FU_JIANG_LI, KEY_SPACE_TIME_THREE, 86400)); //政绩
         }
-        if (SPUtils.getBoolean(KEY_WORK_ZW,true)) {
+        if (SPUtils.getBoolean(KEY_WORK_ZW, true)) {
             taskModels.add(getSimpleModel("政务", TASK_ZHENG_WU, KEY_SPACE_TIME_TWO, 20000)); //政绩
         }
-        if (SPUtils.getBoolean(KEY_CHOU_CAI,true)) {
+        if (SPUtils.getBoolean(KEY_CHOU_CAI, true)) {
             taskModels.add(getTaskModel(spaceTime));    //收菜
         }
         if (SPUtils.getBoolean(KEY_SHU_YUAN)) {
@@ -99,10 +120,9 @@ public class Util implements Constant {
         if (SPUtils.getBoolean(KEY_EMAIL)) {
             taskModels.add(getSimpleModel("邮箱", EMAIL, KEY_SPACE_TIME_THREE, 86400)); //邮箱
         }
-        if (SPUtils.getBoolean(KEY_WORK_FL,true)) {
+        if (SPUtils.getBoolean(KEY_WORK_FL, true)) {
             taskModels.add(getSimpleModel("俸禄", TASK_FENG_LU, KEY_SPACE_TIME_FOUR, 86400)); //政绩
         }
-
 
         if (SPUtils.getBoolean(KEY_WORK_MB)) {
             taskModels.add(getSimpleModel("膜拜", TASK_MO_BAI, KEY_SPACE_TIME_THREE, 86400)); //政绩
@@ -122,9 +142,9 @@ public class Util implements Constant {
             taskModels.add(getSimpleModel("成就", TASK_CHEGN_JIU, KEY_SPACE_TIME_THREE, 86400)); //政绩
         }
 
-//        if (SPUtils.getBoolean(KEY_YAN_HUI)) {
-//            taskModels.add(getSimpleModel("宴会", TASK_YAN_HUI, KEY_SPACE_TIME_SHU_YUAN, 180)); //政绩
-//        }
+        //        if (SPUtils.getBoolean(KEY_YAN_HUI)) {
+        //            taskModels.add(getSimpleModel("宴会", TASK_YAN_HUI, KEY_SPACE_TIME_SHU_YUAN, 180)); //政绩
+        //        }
         if (SPUtils.getBoolean(KEY_GUAN_KA)) {
             taskModels.add(getSimpleModel("关卡", TASK_GUAN_KA, KEY_SPACE_TIME_TWO, 20000)); //政绩
         }
@@ -145,7 +165,7 @@ public class Util implements Constant {
         return taskModels;
     }
 
-    public static TaskModel getSimpleModel(String name, int type, String spacekey, int spaceTime) {
+    private static TaskModel getSimpleModel(String name, int type, String spacekey, int spaceTime) {
         TaskModel taskModel = new TaskModel();
         taskModel.setName(name);
         taskModel.setType(type);
@@ -159,11 +179,11 @@ public class Util implements Constant {
     public static List<PointModel> getRenWuTopModel() {
         if (renWuTopModel == null) {
             renWuTopModel = new ArrayList<>();
-            renWuTopModel.add(CmdData.get(TASK_TOP_10));
-            renWuTopModel.add(CmdData.get(TASK_TOP_30));
-            renWuTopModel.add(CmdData.get(TASK_TOP_60));
-            renWuTopModel.add(CmdData.get(TASK_TOP_100));
-            renWuTopModel.add(CmdData.get(TASK_TOP_140));
+            renWuTopModel.add(PointManagerV2.get(TASK_TOP_10));
+            renWuTopModel.add(PointManagerV2.get(TASK_TOP_30));
+            renWuTopModel.add(PointManagerV2.get(TASK_TOP_60));
+            renWuTopModel.add(PointManagerV2.get(TASK_TOP_100));
+            renWuTopModel.add(PointManagerV2.get(TASK_TOP_140));
         }
         return renWuTopModel;
     }
@@ -171,21 +191,20 @@ public class Util implements Constant {
     public static List<PointModel> getRenWuRightModel() {
         if (renWuRightModel == null) {
             renWuRightModel = new ArrayList<>();
-            renWuRightModel.add(CmdData.get(Constant.TASK_RIGHT_1));
-            renWuRightModel.add(CmdData.get(Constant.TASK_RIGHT_2));
-            renWuRightModel.add(CmdData.get(Constant.TASK_RIGHT_3));
-            renWuRightModel.add(CmdData.get(Constant.TASK_RIGHT_4));
-            renWuRightModel.add(CmdData.get(Constant.TASK_RIGHT_5));
+            renWuRightModel.add(PointManagerV2.get(Constant.TASK_RIGHT_1));
+            renWuRightModel.add(PointManagerV2.get(Constant.TASK_RIGHT_2));
+            renWuRightModel.add(PointManagerV2.get(Constant.TASK_RIGHT_3));
+            renWuRightModel.add(PointManagerV2.get(Constant.TASK_RIGHT_4));
+            renWuRightModel.add(PointManagerV2.get(Constant.TASK_RIGHT_5));
         }
         return renWuRightModel;
     }
-
 
     @NonNull
     private static List<PointModel> getPointModels(String... keys) {
         List<PointModel> data = new ArrayList<>();
         for (String key : keys) {
-            PointModel pointModel = CmdData.get(key);
+            PointModel pointModel = PointManagerV2.get(key);
             if (pointModel == null) {
                 data.add(new PointModel("11", "22"));
             } else {
@@ -197,19 +216,16 @@ public class Util implements Constant {
 
     /**
      * 收菜
-     *
-     * @param spaceTime
-     * @return
      */
     @NonNull
     private static TaskModel getTaskModel(int spaceTime) {
         TaskModel taskModel = new TaskModel();
         taskModel.setSpaceTime(spaceTime);
         taskModel.setName("收取资源");
-        taskModel.setType(ONE);
+        taskModel.setType(TASK_JYZC);
         taskModel.setSpaceTime(SPUtils.getInt(KEY_SPACE_TIME_ONE, 120));
         taskModel.setCount(1);
-        taskModel.setData(getPointModels(BUSINESS, AGRICULTURAL, SOLDIERS));
+        taskModel.setData(getPointModels(JYZC_SY, JYZC_NY, JYZC_SB));
         return taskModel;
     }
 
@@ -228,17 +244,12 @@ public class Util implements Constant {
         }
         return sTaskModelList;
     }
-    public static boolean isMobaiEnd;
+
     public static List<TaskElement> getTaskElement() {
         List<TaskModel> taskModels = getTaskModel();
-        if (taskModels.size()==2
-                && taskModels.get(0).getName().equals("俸禄")
-                && taskModels.get(1).getName().equals("膜拜")
-                ){
-            isMobaiEnd = true;
-        }else{
-            isMobaiEnd = false;
-        }
+        isMoBaiEnd = taskModels.size() == 2
+            && taskModels.get(0).getName().equals("俸禄")
+            && taskModels.get(1).getName().equals("膜拜");
         List<TaskElement> result = new ArrayList<>();
         result.add(new StartAndLoginTaskElement(new TaskModel("登录")));
         result.add(new JoinGameTaskElement(new TaskModel("进入游戏")));
@@ -255,7 +266,7 @@ public class Util implements Constant {
 
     private static TaskElement createTaskElement(TaskModel model) {
         switch (model.getType()) {
-            case ONE:
+            case TASK_JYZC:
                 return new JyzcTaskElement(model);
             case TASK_ZHENG_WU:
                 return new ClzwTaskElement(model);
@@ -269,41 +280,14 @@ public class Util implements Constant {
         return null;
     }
 
-
-    private static String sDefUserInfo =
-//            "ck52434333,520333&ck83250887,520333&ck84012149,520333&ck75077701,520333&ck74266770,520333&" +
-//            "ck56270983,520333&ck41351036,520333&" +
-//            "ck97381288,520333&ck68721497,520333&ck99371248,520333&ck21627506,520333&" +
-            "wgl251&wgl252&wgl253&wgl254&wgl255&wgl256&wgl257&wgl258&wgl259&wgl260&wgl261&wgl262";
-//            "wgl243&wgl244&wgl245&wgl246&wgl247&wgl248&wgl249&wgl250&wgl251&wgl252&wgl253&wgl254&wgl255&wgl256&wgl257&wgl258&wgl259&wgl260&wgl261&wgl262";
-//            "ck69539153,520333&ck82369145,520333&ck19656822,520333&ck92984644,520333";
-    public static long nextDayTime;
-
     public static void init() {
-        File parentFile = CmdData.saveFilePath.getParentFile();
+        File parentFile = PointManagerV2.saveFilePath.getParentFile();
         if (!parentFile.exists()) {
             parentFile.mkdirs();
         }
         getTaskModel();
-        if (TextUtils.isEmpty(SPUtils.getString(INFO_KEY))) {
-            saveUserInfo(sDefUserInfo);
-        }
+
         refreshNextDayTime();
-
-//        List<GuanKaPoint> points = DbCore.getDaoSession().getGuanKaPointDao().loadAll();
-//        if (points == null || points.size() == 0) {
-//            String string = JsonUtils.getJsonFromMusic("guanka.json");
-//            if (TextUtils.isEmpty(string)) {
-//                string = JsonUtils.getJson("guanka.json", BaseApplication.getAppContext());
-//            }
-//            points = (List<GuanKaPoint>) JsonUtils.fromJson(string, new TypeToken<List<GuanKaPoint>>() {
-//            }.getType());
-//            for (GuanKaPoint point : points) {
-//                DbCore.getDaoSession().getGuanKaPointDao().insertOrReplace(point);
-//            }
-////            LogUtils.logd("points:" + points.toString());
-//        }
-
     }
 
     public static void refreshNextDayTime() {
@@ -313,10 +297,10 @@ public class Util implements Constant {
         instance.set(Calendar.MINUTE, 0);
         instance.add(Calendar.DATE, 1);
         nextDayTime = instance.getTimeInMillis();
+        @SuppressLint("SimpleDateFormat")
         String format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(instance.getTime());
         LogUtils.logd("format:" + format);
     }
-
 
     public static String getColor(Bitmap bitmap, int x, int y) {
         if (bitmap == null) {
@@ -326,70 +310,71 @@ public class Util implements Constant {
         return getColorHtml(pixel);
     }
 
-    public static String getColor(PointModel model) {
-        return getColor(ScreenCapture.get().getCurrentBitmap(), model.getX(), model.getY());
+    public static String getColor(int x, int y) {
+        if (bitmap == null) {
+            return "";
+        }
+        int pixel = bitmap.getPixel(x, y);
+        return getColorHtml(pixel);
     }
 
-    public static boolean checkColor(Bitmap bitmap, PointModel pointModel) {
-        if (bitmap == null || pointModel == null) {
-            return false;
-        }
-        String color = getColor(bitmap, pointModel.getX(), pointModel.getY());
-        LogUtils.logd("color:" + color + " pointModel:" + pointModel.toString());
-        return color.equals(pointModel.getNormalColor()) || likeColor(color, pointModel.getNormalColor());
+    public static String getColor(PointModel model) {
+        return getColor(model.getX(), model.getY());
+    }
+
+    private static String getColorHtml(int color) {
+        return String.format("#%06X", (0xFFFFFF & color));
     }
 
     public static boolean checkColor(PointModel pointModel) {
-        if (TaskUtil.bitmap == null || pointModel == null) {
+        if (bitmap == null || pointModel == null) {
             return false;
         }
-        String color = getColor(TaskUtil.bitmap, pointModel.getX(), pointModel.getY());
+        String color = getColor(pointModel.getX(), pointModel.getY());
         LogUtils.logd("color:" + color + " pointModel:" + pointModel.toString());
         return color.equals(pointModel.getNormalColor()) || likeColor(color, pointModel.getNormalColor());
     }
+
     public static boolean checkSubColor(PointModel pointModel) {
-        if (TaskUtil.bitmap == null || pointModel == null || TextUtils.isEmpty(pointModel.getSubColor())) {
+        if (bitmap == null || pointModel == null || TextUtils.isEmpty(pointModel.getSubColor())) {
             return false;
         }
-        String color = getColor(TaskUtil.bitmap, pointModel.getX(), pointModel.getSubY());
+        String color = getColor(pointModel.getX(), pointModel.getSubY());
         LogUtils.logd("color:" + color + " pointModel:" + pointModel.toString());
         return color.equals(pointModel.getSubColor()) || likeColor(color, pointModel.getSubColor());
     }
+
     public static boolean checkColorAndOffset(PointModel pointModel) {
-        if (TaskUtil.bitmap == null || pointModel == null) {
+        if (bitmap == null || pointModel == null) {
             return false;
         }
-        String color = getColor(TaskUtil.bitmap, pointModel.getX(), pointModel.getY()+OrcConfig.offsetHeight );
-        LogUtils.logd("checkColorAndOffset color:" + color + " offsetHeight:"+OrcConfig.offsetHeight + " pointModel:" + pointModel.toString());
+        String color = getColor(pointModel.getX(), pointModel.getY() + OrcConfig.offsetHeight);
+        LogUtils.logd("checkColorAndOffset color:" + color + " offsetHeight:" + OrcConfig.offsetHeight + " pointModel:" + pointModel.toString());
         return color.equals(pointModel.getNormalColor()) || likeColor(color, pointModel.getNormalColor());
     }
 
     public static boolean checkColorAndClick(PointModel pointModel) {
         boolean isTrue = checkColor(pointModel);
         if (isTrue) {
-            AutoTool.execShellCmd(pointModel);
+            InputEventManager.getInstance().click(pointModel.getX(), pointModel.getY());
         }
         return isTrue;
     }
 
     public static boolean checkColor(PointModel pointModel, int offset, int xiangXi) {
-        if (TaskUtil.bitmap == null || pointModel == null) {
+        if (bitmap == null || pointModel == null) {
             return false;
         }
-        String color = getColor(TaskUtil.bitmap, pointModel.getX(), pointModel.getY());
+        String color = getColor(pointModel.getX(), pointModel.getY());
         LogUtils.logd("color:" + color + " pointModel:" + pointModel.toString());
         return color.equals(pointModel.getNormalColor()) || likeColor(color, pointModel.getNormalColor(), offset, xiangXi);
     }
 
-    public static boolean checkColor(Bitmap bitmap, PointModel pointModel, PointModel pointModel2) {
-        return checkColor(pointModel) || checkColor(pointModel2);
-    }
-
-    public static boolean likeColor(int old, int newColor) {
+    private static boolean likeColor(int old, int newColor) {
         return likeColor(old, newColor, 8, 1);
     }
 
-    public static boolean likeColor(int old, int newColor, int offset, int xianXi) {
+    private static boolean likeColor(int old, int newColor, int offset, int xianXi) {
         int redO = Color.red(old);
         int greenO = Color.green(old);
         int blueO = Color.blue(old);
@@ -400,89 +385,90 @@ public class Util implements Constant {
         int absG = Math.abs(greenO - greenN);
         int absB = Math.abs(blueO - blueN);
         int count = 0;
-        if (absR < offset) count++;
-        if (absG < offset) count++;
-        if (absB < offset) count++;
+        if (absR < offset) {
+            count++;
+        }
+        if (absG < offset) {
+            count++;
+        }
+        if (absB < offset) {
+            count++;
+        }
         return count > xianXi;
     }
 
-    public static boolean likeColor(String old, String newColorStr) {
+    private static boolean likeColor(String old, String newColorStr) {
         return likeColor(Color.parseColor(old), Color.parseColor(newColorStr));
     }
 
-    public static boolean likeColor(String old, String newColorStr, int offset) {
-        return likeColor(Color.parseColor(old), Color.parseColor(newColorStr), offset, 1);
-    }
-
-    public static boolean likeColor(String old, String newColorStr, int offset, int count) {
+    private static boolean likeColor(String old, String newColorStr, int offset, int count) {
         return likeColor(Color.parseColor(old), Color.parseColor(newColorStr), offset, count);
-    }
-
-    public static boolean checkColor(int color, PointModel pointModel) {
-        if (pointModel == null) {
-            return false;
-        }
-        return getColorHtml(color).equals(pointModel.getNormalColor());
     }
 
     public static void setResLastTime(int time) {
         List<TaskModel> taskModel1 = getTaskModel();
         for (TaskModel taskModel : taskModel1) {
-            if (taskModel.getType() == ONE) {
+            if (taskModel.getType() == TASK_JYZC) {
                 taskModel.setLastRefreshTime(time);
                 return;
             }
         }
     }
 
+    //
+    // public static Bitmap getCapBitmap() {
+    //     return getCapBitmap(false);
+    // }
+    //
+    // public static Bitmap getCapBitmap(boolean delete) {
+    //     if (delete) {
+    //         PointManagerV2.saveFilePath.delete();
+    //     }
+    //     return getCapBitmap(1500);
+    // }
+    //
+    // public static Bitmap getCapBitmap(long time) {
+    //
+    //     try {
+    //         AutoTool.execShellCmd(PointManagerV2.screenCap);
+    //         Thread.sleep(time);
+    //         while (true) {
+    //             bitmap = BitmapFactory.decodeFile(pathName);
+    //             Thread.sleep(250);
+    //             if (bitmap != null) {
+    //                 break;
+    //             }
+    //         }
+    //     } catch (InterruptedException e) {
+    //         e.printStackTrace();
+    //     }
+    //
+    //     return bitmap;
+    // }
 
-    public static String getColorHtml(int color) {
-        return String.format("#%06X", (0xFFFFFF & color));
+    public static Bitmap bitmap = null;
+
+    public static Bitmap getBitmap() {
+        return bitmap;
     }
 
-
-    public static int[] getColorRGB(int selectedColor) {
-        int[] rgb = new int[3];
-        int color = (int) Long.parseLong(String.format("%06X", (0xFFFFFF & selectedColor)), 16);
-        rgb[0] = (color >> 16) & 0xFF; // hex to int : R
-        rgb[1] = (color >> 8) & 0xFF; // hex to int : G
-        rgb[2] = (color >> 0) & 0xFF; // hex to int : B
-        return rgb;
+    public static void setBitmap(Bitmap bitmap) {
+        Util.bitmap = bitmap;
     }
 
-
-    public static Bitmap getCapBitmap() {
-        return getCapBitmap(false);
+    public static boolean isRecycled() {
+        return bitmap == null || bitmap.isRecycled();
     }
 
-    public static Bitmap getCapBitmap(boolean delete) {
-        if (delete) {
-            CmdData.saveFilePath.delete();
+    public static int getBitmapHeight() {
+        if (bitmap == null) {
+            return 0;
         }
-        return getCapBitmap(1500);
-    }
-
-
-    public static Bitmap getCapBitmap(long time) {
-
-
-        try {
-            AutoTool.execShellCmd(CmdData.screenCap);
-            Thread.sleep(time);
-            while (true) {
-                TaskUtil.bitmap = BitmapFactory.decodeFile(pathName);
-                Thread.sleep(250);
-                if (TaskUtil.bitmap != null) break;
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        return TaskUtil.bitmap;
+        return bitmap.getHeight();
     }
 
     public static Bitmap getCapBitmapNew() {
-//        Bitmap bitmap = null;
+        //        Bitmap bitmap = null;
         if (Build.VERSION.SDK_INT >= 21) {
             ScreenCapture.startCaptureSync();
             try {
@@ -490,32 +476,30 @@ public class Util implements Constant {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            TaskUtil.bitmap = ScreenCapture.get().getCurrentBitmap();
-            return ScreenCapture.get().getCurrentBitmap();
+            return bitmap;
         }
         try {
-            AutoTool.execShellCmd(CmdData.screenCap);
+            InputEventManager.getInstance().screenshots();
             Thread.sleep(1500);
-            while (true) {
-                TaskUtil.bitmap = BitmapFactory.decodeFile(pathName);
+            do {
+                bitmap = BitmapFactory.decodeFile(pathName);
                 Thread.sleep(250);
-                if (TaskUtil.bitmap != null) break;
-            }
+            } while (bitmap == null);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return TaskUtil.bitmap;
+        return bitmap;
     }
 
-    public static Bitmap getCapBitmapWithOffset(){
+    public static Bitmap getCapBitmapWithOffset() {
         Bitmap bitmap = getCapBitmapNew();
-        if (bitmap==null){
+        if (bitmap == null) {
             return null;
         }
-        if (bitmap.getHeight()>1920){
-            OrcConfig.offsetHeight = (bitmap .getHeight() - 1920 -OrcHelper.getInstance().getNavigationBarHeight() ) / 2;
-        }else{
-            OrcConfig.offsetHeight =0;
+        if (bitmap.getHeight() > 1920) {
+            OrcConfig.offsetHeight = (bitmap.getHeight() - 1920 - OrcHelper.getInstance().getNavigationBarHeight()) / 2;
+        } else {
+            OrcConfig.offsetHeight = 0;
         }
         return bitmap;
     }
@@ -525,22 +509,22 @@ public class Util implements Constant {
     public static List<PointModel> getRenShuYanModel() {
         if (shuYanModel == null) {
             shuYanModel = new ArrayList<>();
-            shuYanModel.add(CmdData.get(ACADEMY_GET_1));
-            shuYanModel.add(CmdData.get(ACADEMY_GET_2));
-            shuYanModel.add(CmdData.get(ACADEMY_GET_3));
-            shuYanModel.add(CmdData.get(ACADEMY_GET_4));
+            shuYanModel.add(PointManagerV2.get(ACADEMY_GET_1));
+            shuYanModel.add(PointManagerV2.get(ACADEMY_GET_2));
+            shuYanModel.add(PointManagerV2.get(ACADEMY_GET_3));
+            shuYanModel.add(PointManagerV2.get(ACADEMY_GET_4));
         }
         return shuYanModel;
     }
 
     public static List<PointModel> getShuYanModel() {
         List<PointModel> shuYanModel = new ArrayList<>();
-        shuYanModel.add(CmdData.get(SHUYUAN_GET_1));
-        shuYanModel.add(CmdData.get(SHUYUAN_GET_2));
-        shuYanModel.add(CmdData.get(SHUYUAN_GET_3));
-        shuYanModel.add(CmdData.get(SHUYUAN_GET_4));
-        shuYanModel.add(CmdData.get(SHUYUAN_GET_5));
-        shuYanModel.add(CmdData.get(SHUYUAN_GET_6));
+        shuYanModel.add(PointManagerV2.get(SHUYUAN_GET_1));
+        shuYanModel.add(PointManagerV2.get(SHUYUAN_GET_2));
+        shuYanModel.add(PointManagerV2.get(SHUYUAN_GET_3));
+        shuYanModel.add(PointManagerV2.get(SHUYUAN_GET_4));
+        shuYanModel.add(PointManagerV2.get(SHUYUAN_GET_5));
+        shuYanModel.add(PointManagerV2.get(SHUYUAN_GET_6));
         return shuYanModel;
     }
 
@@ -578,65 +562,40 @@ public class Util implements Constant {
         return false;
     }
 
-    static String[] colors = {"#B16222", "#7D4F1D", "#A88230", "#FEF787"};
+    static String[] colors = { "#B16222", "#7D4F1D", "#A88230", "#FEF787" };
 
     public static boolean guanKaPosition(String color, int offset) {
         for (String s : colors) {
-            if (Util.likeColor(s, color, offset, 2)) return true;
+            if (Util.likeColor(s, color, offset, 2)) {
+                return true;
+            }
         }
         return false;
     }
 
     public static File saveFile;
-    private static final String INFO_KEY = "INFO_KEY";
-
-    public static List<UserInfo> getUserInfo() {
-        String infos = SPUtils.getString(INFO_KEY);
-        if (TextUtils.isEmpty(infos)) {
-            return null;
-        }
-        return (List<UserInfo>) JsonUtils.fromJson(infos, new TypeToken<List<UserInfo>>() {
-        }.getType());
-    }
-
-    public static void saveUserInfo(String userInfo) {
-        String[] userInfos = userInfo.split("&");
-        if (userInfos.length > 0) {
-            try {
-                List<UserInfo> userInfoList = new ArrayList<>();
-                for (String info : userInfos) {
-                    if (info.contains(",")) {
-                        String[] split = info.split(",");
-                        userInfoList.add(new UserInfo(split[0], split[1]));
-                    } else {
-                        userInfoList.add(new UserInfo(info, ""));
-                    }
-                }
-                saveUserInfo(userInfoList);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public static void saveUserInfo(List<UserInfo> userInfos){
-        SPUtils.setString(INFO_KEY, JsonUtils.toJson(userInfos));
-    }
-
-//    public static void stopTask() {
-////        Util.isWPZMGServiceRunning = false;
-////        Context context = BaseApplication.getAppContext();
-////        Intent intent2 = new Intent(context, WPZMGService2.class);
-////        if (!Util.isWPZMGServiceRunning) {
-////            intent2.putExtra("stop", true);
-////            Util.setResLastTime(0);
-////        }
-////        context.startService(intent2);
-////    }
 
     public static synchronized String getFileString(String key) {
         initSaveFile();
         return ACache.get(saveFile).getAsString(key);
+    }
+
+    public static synchronized String getFileStringAndSp(String key) {
+        String value = getFileString(key);
+        if (TextUtils.isEmpty(value)) {
+            value = SPUtils.getString(key);
+        }
+        return value;
+    }
+
+    public static synchronized void setFileStr(String key, String value) {
+        initSaveFile();
+        ACache.get(saveFile).put(key, value);
+    }
+
+    public static synchronized void setFileStrAndSp(String key, String value) {
+        setFileStr(key, value);
+        SPUtils.setString(key, value);
     }
 
     public static synchronized String getFengLuFileString(String key) {
@@ -668,22 +627,12 @@ public class Util implements Constant {
         ACache.get(saveFile).put(String.format("%s%s", user, type), time, saveTime);
     }
 
-    public static synchronized void saveUserInfoIndex(int index){
-        initSaveFile();
-        ACache.get(saveFile).put("userIndex", String.valueOf(index));
-    }
-    public static int getUserIndex(){
-        initSaveFile();
-        String userIndex = ACache.get(saveFile).getAsString("userIndex");
-        if (TextUtils.isEmpty(userIndex)){
-            return 0;
-        }
-        return Integer.valueOf(userIndex);
-    }
-
     private static void initSaveFile() {
         if (saveFile == null) {
-            saveFile = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
+            saveFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES), "/cache");
+            if (!saveFile.exists()) {
+                saveFile.mkdirs();
+            }
         }
     }
 
@@ -699,46 +648,18 @@ public class Util implements Constant {
         ACache.get(fengLuFile).put(String.format("%s%s", user, type), time, saveTime);
     }
 
-    public static synchronized void lockFengLu(String user, String type, String time, int saveTime) {
-        if (BaseApplication.densityDpi == 480) {
-            initSaveFile();
-            fengLuFile = saveFile;
-        } else {
-            initFengLu();
-        }
-        ACache.get(fengLuFile).put(String.format("%s%s", user, type), time, saveTime);
-    }
-
-    public static synchronized void unLockFengLu(String user, String type) {
-        ACache.get(fengLuFile).remove(String.format("%s%s", user, type));
-    }
-
-
     public static boolean checkTime(UserInfo userInfo, String type, int saveTime) {
         LogUtils.logd("checkTime:" + userInfo.getName() + " type:" + type + "  saveTime:" + saveTime);
-//        return false;
+        //        return false;
         if (TextUtils.isEmpty(Util.getFileString(String.format("%s%s", userInfo.getName(), type)))) {
-//            Util.saveLastRefreshTime(userInfo.getName(), type, "1", saveTime);
+            //            Util.saveLastRefreshTime(userInfo.getName(), type, "1", saveTime);
             return false;
         }
         return true;
     }
-    public static void saveLastRefreshTime( String type, int saveTime) {
-        Util.saveLastRefreshTime(TaskState.get().getUserInfo().getName(), type, "1", saveTime);
-    }
 
-    public static boolean checkTime(UserInfo userInfo, String type, int saveTime, boolean isFengLu) {
-        LogUtils.logd("checkTime:" + userInfo.getName() + " type:" + type + "  saveTime:" + saveTime);
-        return false;
-//        if (TextUtils.isEmpty(Util.getFengLuFileString(String.format("%s%s", userInfo.getName(), type)))) {
-//            if (isFengLu) {
-//                Util.saveFengLuLastRefreshTime(userInfo.getName(), type, "1", saveTime);
-//            } else {
-//                Util.saveLastRefreshTime(userInfo.getName(), type, "1", saveTime);
-//            }
-//            return false;
-//        }
-//        return true;
+    public static void saveLastRefreshTime(String type, int saveTime) {
+        Util.saveLastRefreshTime(TaskState.get().getUserInfo().getName(), type, "1", saveTime);
     }
 
     public static int getSaveTime() {
@@ -761,14 +682,17 @@ public class Util implements Constant {
         int day = calendar.get(Calendar.DAY_OF_WEEK);
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         if (day == 4) {
-            if (hour > 16) return true;
+            if (hour > 16) {
+                return true;
+            }
         } else if (day == 5) {
-            if (hour < 10) return true;
+            if (hour < 10) {
+                return true;
+            }
         }
         LogUtils.logd("day :" + day + " hour:" + hour);
         return false;
     }
-
 
     public static long getAvailMemory() {// 获取android当前可用内存大小
         Context context = BaseApplication.getAppContext();
@@ -813,7 +737,6 @@ public class Util implements Constant {
         return Formatter.formatFileSize(context, initial_memory);// Byte转换为KB或者MB，内存大小规格化
     }
 
-
     /**
      * 唤醒手机屏幕并解锁
      */
@@ -823,7 +746,8 @@ public class Util implements Constant {
         boolean screenOn = pm.isScreenOn();
         if (!screenOn) {
             // 获取PowerManager.WakeLock对象,后面的参数|表示同时传入两个值,最后的是LogCat里用的Tag
-            @SuppressLint("InvalidWakeLockTag") PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "bright");
+            @SuppressLint("InvalidWakeLockTag")
+            PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "bright");
             wl.acquire(10000); // 点亮屏幕
             wl.release(); // 释放
         }
@@ -835,30 +759,29 @@ public class Util implements Constant {
         keyguardLock.disableKeyguard(); // 解锁
     }
 
-//    public static void lock() {
-//        PowerManager pm = (PowerManager) BaseApplication.getAppContext().getSystemService(Context.POWER_SERVICE);
-////        pm.goToSleep(SystemClock.uptimeMillis());
-//        PowerManager.WakeLock wakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "TAG");
-//        wakeLock.acquire();
-//        wakeLock.release();
-//    }
+    //    public static void lock() {
+    //        PowerManager pm = (PowerManager) BaseApplication.getAppContext().getSystemService(Context.POWER_SERVICE);
+    ////        pm.goToSleep(SystemClock.uptimeMillis());
+    //        PowerManager.WakeLock wakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "TAG");
+    //        wakeLock.acquire();
+    //        wakeLock.release();
+    //    }
 
-//
-//    public void setAlg(int minute) {
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.add(Calendar.MINUTE, minute);
-//        Intent alarmIntent = new Intent(AlarmClock.ACTION_SET_ALARM);
-//        alarmIntent.putExtra(AlarmClock.EXTRA_MESSAGE, "提醒消息 下午去XXX开会");
-//        alarmIntent.putExtra(AlarmClock.EXTRA_HOUR, calendar.get(Calendar.HOUR_OF_DAY));
-//        alarmIntent.putExtra(AlarmClock.EXTRA_MINUTES, calendar.get(Calendar.MINUTE) + 1);
-//        alarmIntent.putExtra(AlarmClock.EXTRA_SKIP_UI, true);
-//        alarmIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        startActivity(alarmIntent);
-//    }
-
+    //
+    //    public void setAlg(int minute) {
+    //        Calendar calendar = Calendar.getInstance();
+    //        calendar.add(Calendar.MINUTE, minute);
+    //        Intent alarmIntent = new Intent(AlarmClock.ACTION_SET_ALARM);
+    //        alarmIntent.putExtra(AlarmClock.EXTRA_MESSAGE, "提醒消息 下午去XXX开会");
+    //        alarmIntent.putExtra(AlarmClock.EXTRA_HOUR, calendar.get(Calendar.HOUR_OF_DAY));
+    //        alarmIntent.putExtra(AlarmClock.EXTRA_MINUTES, calendar.get(Calendar.MINUTE) + 1);
+    //        alarmIntent.putExtra(AlarmClock.EXTRA_SKIP_UI, true);
+    //        alarmIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    //        startActivity(alarmIntent);
+    //    }
 
     public static List<OrcModel> getPageData() {
-        return OrcHelper.getInstance().executeCallSync(TaskUtil.bitmap);
+        return OrcHelper.getInstance().executeCallSync(bitmap);
     }
 
     public static List<OrcModel> getBitmapAndPageData() {
@@ -880,5 +803,9 @@ public class Util implements Constant {
         LogUtils.logd("oldY:" + oldY + " newY:" + model.getY());
         LogUtils.logd("oldColor:" + oldColor + " newColor:" + model.getNormalColor());
         model.setReset(true);
+    }
+
+    public static void sleep(long time) throws InterruptedException {
+        Thread.sleep(BaseApplication.densityDpi == 480 ? time + 800 : time);
     }
 }

@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import com.example.administrator.opencvdemo.util.ScreenCapture;
+import com.example.administrator.opencvdemo.util.Util;
 
 /**
  * 作者：士元
@@ -24,7 +25,7 @@ public class BitmapPreviewActivity extends AppCompatActivity {
     }
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        Bitmap bitmap = ScreenCapture.get().getCurrentBitmap();
+        Bitmap bitmap =   Util.getBitmap() ;
         if (bitmap==null){
             finish();
         }

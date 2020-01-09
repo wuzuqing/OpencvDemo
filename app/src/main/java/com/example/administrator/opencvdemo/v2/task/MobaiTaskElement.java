@@ -8,10 +8,8 @@ import com.example.administrator.opencvdemo.config.CheckName;
 import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.TaskModel;
 import com.example.administrator.opencvdemo.util.ACache;
-import com.example.administrator.opencvdemo.util.AutoTool;
-import com.example.administrator.opencvdemo.util.CmdData;
+import com.example.administrator.opencvdemo.util.PointManagerV2;
 import com.example.administrator.opencvdemo.util.SPUtils;
-import com.example.administrator.opencvdemo.util.TaskUtil;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.AbsTaskElement;
 import com.example.administrator.opencvdemo.v2.FuWaiHelper;
@@ -26,11 +24,11 @@ public class MobaiTaskElement extends AbsTaskElement {
         super(taskModel);
     }
 
-    PointModel paiHang = CmdData.get(PAI_HANG_BANG);
-    PointModel bangDanSelf = CmdData.get(BANG_DAN_SELF);
-    PointModel bangDanKuaFu = CmdData.get(BANG_DAN_CROSS);
+    PointModel paiHang = PointManagerV2.get(PAI_HANG_BANG);
+    PointModel bangDanSelf = PointManagerV2.get(BANG_DAN_SELF);
+    PointModel bangDanKuaFu = PointManagerV2.get(BANG_DAN_CROSS);
     private boolean doBenfuBangDan;
-    PointModel huangGongClose = CmdData.get(HUANG_GONG_CLOSE);
+    PointModel huangGongClose = PointManagerV2.get(HUANG_GONG_CLOSE);
     private int status;
 
     private int step = 0;
@@ -63,7 +61,7 @@ public class MobaiTaskElement extends AbsTaskElement {
         if (checkExp(netPoint, "当前网络异常")) return false;//检查网络环境
 
         if (checkPage("府内")) {
-            AutoTool.execShellCmdChuFuV2();
+            PointManagerV2.execShellCmdChuFuV2();
             Thread.sleep(1800);
             return false;
         } else if (checkPage("府外") && step == 0) {
@@ -71,7 +69,7 @@ public class MobaiTaskElement extends AbsTaskElement {
             step = 1;
             swipeToRight();
             if (!Util.checkColorAndClick(FuWaiHelper.paiHangBang)) {
-                AutoTool.execShellCmd(paiHang);
+                click(paiHang);
             }
             Thread.sleep(800);
             return false;
@@ -79,14 +77,14 @@ public class MobaiTaskElement extends AbsTaskElement {
             if (doBenfuBangDan) {
                 if (hasKuaFu) {
                     status = 0;
-                    AutoTool.execShellCmdNotOffset(bangDanKuaFu);
+                    click(bangDanKuaFu);
                 } else {
                     end();
                     return true;
                 }
             } else {
                 status = 0;
-                AutoTool.execShellCmdNotOffset(bangDanSelf);
+                click(bangDanSelf);
             }
             step = 2;
             Thread.sleep(1000);
@@ -103,7 +101,7 @@ public class MobaiTaskElement extends AbsTaskElement {
                     } else {
                         target = pageData.get(1).getRect().clone();
                         target.y += OrcConfig.offsetHeight;
-                        AutoTool.execShellCmdXy(target.x, target.y);
+                        click(target);
                         status = 1;
                         Thread.sleep(1000);
                     }
@@ -113,7 +111,7 @@ public class MobaiTaskElement extends AbsTaskElement {
                     } else {
                         target = pageData.get(2).getRect();
                         target.y += OrcConfig.offsetHeight;
-                        AutoTool.execShellCmdXy(target.x, target.y);
+                        click(target);
                         status = 2;
                         Thread.sleep(1000);
                     }
@@ -122,7 +120,7 @@ public class MobaiTaskElement extends AbsTaskElement {
                         clickEmpty(moBai);
                     } else {
                         if (!doBenfuBangDan) {
-                            AutoTool.execShellCmdNotOffset(huangGongClose);
+                            click(huangGongClose);
                             Thread.sleep(1000);
                             doBenfuBangDan = true;
                             step = 1;
@@ -144,7 +142,7 @@ public class MobaiTaskElement extends AbsTaskElement {
                 resetStep();
                 return true;
             }
-            AutoTool.execShellCmdXy(540, 20);
+            click(540,20);
             Thread.sleep(200);
             return false;
         }
@@ -154,9 +152,9 @@ public class MobaiTaskElement extends AbsTaskElement {
     private void end() throws InterruptedException {
         if (!TaskState.get().isMobaiEnd()){
             Util.saveLastRefreshTime(KEY_WORK_KF_MB, ACache.getTodayEndTime());
-            AutoTool.execShellCmdNotOffset(huangGongClose);
+            click(huangGongClose);
             Thread.sleep(1200);
-            AutoTool.execShellCmdNotOffset(huangGongClose);
+            click(huangGongClose);
             Thread.sleep(800);
         }
     }
@@ -166,17 +164,17 @@ public class MobaiTaskElement extends AbsTaskElement {
     private void clickEmpty(Rect moBai) throws InterruptedException {
         int x = BaseApplication.getScreenWidth() / 2;
         if (TextUtils.isEmpty(midColor)) {
-            midColor = Util.getColor(TaskUtil.bitmap, x, moBai.y);
+            midColor = Util.getColor( x, moBai.y);
         }
         Thread.sleep(200);
-        AutoTool.execShellCmd(moBai);
+        clickMid(moBai);
         Thread.sleep(2400);
         while (true) {
             Util.getCapBitmapWithOffset();
-            if (TextUtils.equals(midColor, Util.getColor(TaskUtil.bitmap, x, moBai.y))) {
+            if (TextUtils.equals(midColor, Util.getColor( x, moBai.y))) {
                 break;
             }
-            AutoTool.execShellCmd(moBai);
+            clickMid(moBai);
             Thread.sleep(400);
         }
     }

@@ -8,8 +8,8 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 
+import com.example.administrator.opencvdemo.util.LaunchManager;
 import com.example.administrator.opencvdemo.util.Constant;
-import com.example.administrator.opencvdemo.util.LaunchApp;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.TaskElement;
 import com.example.administrator.opencvdemo.v2.TaskState;
@@ -22,7 +22,7 @@ public class WPZMGService3 extends Service implements Constant {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == 0) {
-                LaunchApp.killApp();
+                LaunchManager.killApp();
                 mTaskState.init(getApplicationContext());
                 TaskElement taskStateTask = mTaskState.getTask();
                 taskStateTask.printWorkName();

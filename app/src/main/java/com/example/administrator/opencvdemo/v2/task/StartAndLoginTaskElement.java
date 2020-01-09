@@ -2,17 +2,15 @@ package com.example.administrator.opencvdemo.v2.task;
 
 
 import com.example.administrator.opencvdemo.config.CheckName;
+import com.example.administrator.opencvdemo.util.LaunchManager;
 import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.Result;
 import com.example.administrator.opencvdemo.model.TaskModel;
 import com.example.administrator.opencvdemo.model.UserInfo;
 import com.example.administrator.opencvdemo.notroot.EventHelper;
-import com.example.administrator.opencvdemo.util.AutoTool;
-import com.example.administrator.opencvdemo.util.CmdData;
-import com.example.administrator.opencvdemo.util.LaunchApp;
+import com.example.administrator.opencvdemo.util.PointManagerV2;
 import com.example.administrator.opencvdemo.util.LogUtils;
 import com.example.administrator.opencvdemo.util.SPUtils;
-import com.example.administrator.opencvdemo.util.TaskUtil;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.AbsTaskElement;
 import com.example.administrator.opencvdemo.v2.TaskState;
@@ -20,7 +18,7 @@ import com.example.administrator.opencvdemo.v2.TaskState;
 import java.util.List;
 
 public class StartAndLoginTaskElement extends AbsTaskElement {
-    PointModel pointModel = CmdData.get(LOGIN_GAME);
+    PointModel pointModel = PointManagerV2.get(LOGIN_GAME);
 
     public StartAndLoginTaskElement(TaskModel taskModel) {
         super(taskModel);
@@ -30,7 +28,7 @@ public class StartAndLoginTaskElement extends AbsTaskElement {
     protected boolean doTask() throws Exception {
         // 检查网络 等待2秒
         while (!isNetConnected()) {
-            if (check(TaskUtil.failCount, 5)) {
+            if (check(5)) {
                 TaskState.isWorking = false;
                 return true;
             }
@@ -41,7 +39,7 @@ public class StartAndLoginTaskElement extends AbsTaskElement {
         }
 
         // 启动游戏
-        LaunchApp.launchApp();
+        LaunchManager.launchApp();
         Thread.sleep(4000);
         //获取账号
         TaskState.resetFail();
@@ -86,10 +84,10 @@ public class StartAndLoginTaskElement extends AbsTaskElement {
         Thread.sleep(800);
 
         if (Util.checkColor(pointModel)) {
-            AutoTool.execShellCmd(pointModel);
+            click(pointModel);
             LogUtils.logd("step:6 click default");
         } else {
-            AutoTool.execShellCmd(pageData.get(0).getRect()); //点击登录
+            clickMid(pageData.get(0).getRect()); //点击登录
             LogUtils.logd("step:7 click parsePage");
         }
 //        TaskUtil.sleep(1400);
@@ -97,10 +95,9 @@ public class StartAndLoginTaskElement extends AbsTaskElement {
         return true;
     }
 
-    private void killApp() throws InterruptedException {
+    private void killApp()  {
         // 退出游戏
-        AutoTool.killApp();
-
+        LaunchManager.killApp();
     }
 
     @Override

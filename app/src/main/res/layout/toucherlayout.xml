@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
@@ -8,16 +7,14 @@
     android:background="@color/grey_line"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:padding="6dp"
-    >
+    android:padding="6dp">
 
     <LinearLayout
         android:id="@+id/ll_panel"
         android:layout_width="wrap_content"
-        android:visibility="visible"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        >
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -25,38 +22,35 @@
             android:layout_gravity="center"
             android:layout_marginBottom="8dp"
             android:gravity="center"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tvTest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="visible"
                 android:padding="4dp"
                 android:text="主号"
                 android:textColor="@color/red_busy"
-                />
+                android:visibility="visible" />
 
             <TextView
                 android:id="@+id/tvStartSome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="4dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
+                android:padding="4dp"
                 android:text="开始挂机"
-                android:textColor="@color/red_busy"
-                />
+                android:textColor="@color/red_busy" />
+
             <TextView
                 android:id="@+id/tvStartOne"
                 android:layout_width="wrap_content"
-                android:visibility="visible"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
                 android:text="收菜"
                 android:textColor="@color/red_busy"
-                />
+                android:visibility="visible" />
 
         </LinearLayout>
 
@@ -64,8 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tvSetting"
@@ -75,8 +68,7 @@
                 android:layout_marginRight="4dp"
                 android:padding="4dp"
                 android:text="参数"
-                android:textColor="@color/red_busy"
-                />
+                android:textColor="@color/red_busy" />
 
             <TextView
                 android:id="@+id/tvTestSetting"
@@ -85,8 +77,7 @@
                 android:layout_marginLeft="8dp"
                 android:padding="4dp"
                 android:text="位置"
-                android:textColor="@color/red_busy"
-                />
+                android:textColor="@color/red_busy" />
 
             <TextView
                 android:id="@+id/tvOneTask"
@@ -94,9 +85,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:padding="4dp"
-                android:text="当前任务"
-                android:textColor="@color/red_busy"
-                />
+                android:text="账号管理"
+                android:textColor="@color/red_busy" />
 
         </LinearLayout>
 
@@ -104,17 +94,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tvClose"
+                android:id="@+id/tvTestDebug"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
-                android:text="关卡"
-                android:textColor="@color/red_busy"
-                />
+                android:text="调试"
+                android:textColor="@color/red_busy" />
 
             <TextView
                 android:id="@+id/tvUpgrade"
@@ -123,8 +111,7 @@
                 android:layout_marginLeft="8dp"
                 android:padding="4dp"
                 android:text="升级"
-                android:textColor="@color/red_busy"
-                />
+                android:textColor="@color/red_busy" />
 
             <TextView
                 android:id="@+id/tvLaunch"
@@ -133,31 +120,31 @@
                 android:layout_marginLeft="8dp"
                 android:padding="4dp"
                 android:text="启动游戏"
-                android:textColor="@color/red_busy"
-                />
+                android:textColor="@color/red_busy" />
 
         </LinearLayout>
 
     </LinearLayout>
+
     <TextView
         android:id="@+id/tv_limit_time"
         android:layout_width="wrap_content"
-        android:visibility="gone"
         android:layout_height="wrap_content"
-        android:textColor="@color/red_busy"
         android:text="体验倒计时"
+        android:textColor="@color/red_busy"
+        android:visibility="gone"
 
         />
+
     <TextView
         android:id="@+id/tv_show_or_hide"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="12dp"
-        android:paddingRight="12dp"
         android:paddingTop="6dp"
+        android:paddingRight="12dp"
         android:paddingBottom="6dp"
-        android:textColor="@color/red_busy"
-        android:textSize="16sp"
         android:text="隐藏"
-        />
+        android:textColor="@color/red_busy"
+        android:textSize="16sp" />
 </LinearLayout>

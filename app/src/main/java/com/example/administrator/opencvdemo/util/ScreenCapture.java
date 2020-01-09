@@ -210,7 +210,7 @@ public class ScreenCapture {
                 } else {
                     try {
                         Thread.sleep(time);
-                        mCurrentBitmap = getBitmap(image);
+                        Util.setBitmap(getBitmap(image));
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -255,7 +255,6 @@ public class ScreenCapture {
         return mImageReader != null;
     }
 
-    private Bitmap mCurrentBitmap;
 
     public class SaveTask extends AsyncTask<Image, Void, Bitmap> {
 
@@ -368,21 +367,14 @@ public class ScreenCapture {
         return out.toByteArray();
     }
 
-    public Bitmap getCurrentBitmap() {
-        return mCurrentBitmap;
-    }
-    public void setCurrentBitmap(Bitmap bitmap){
-        this.mCurrentBitmap = bitmap;
-    }
-
-    public static void getPage() {
-        OrcHelper.getInstance().executeCallAsync(WorkMode.ONLY_BITMAP, get().mCurrentBitmap, "zwp", "1", new IDiscernCallback() {
-            @Override
-            public void call(final List<OrcModel> result) {
-                Log.d(TAG, "getPage: " + result.toString());
-            }
-        });
-    }
+    // public static void getPage() {
+    //     OrcHelper.getInstance().executeCallAsync(WorkMode.ONLY_BITMAP,  Util.getBitmap() , "zwp", "1", new IDiscernCallback() {
+    //         @Override
+    //         public void call(final List<OrcModel> result) {
+    //             Log.d(TAG, "getPage: " + result.toString());
+    //         }
+    //     });
+    // }
 
     public static String getAppPath(Context context) {
 

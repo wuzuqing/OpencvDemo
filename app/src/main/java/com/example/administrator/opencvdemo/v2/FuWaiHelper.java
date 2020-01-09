@@ -3,11 +3,10 @@ package com.example.administrator.opencvdemo.v2;
 import com.example.administrator.opencvdemo.config.CheckName;
 import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.Result;
-import com.example.administrator.opencvdemo.util.CmdData;
+import com.example.administrator.opencvdemo.util.PointManagerV2;
 import com.example.administrator.opencvdemo.util.Constant;
 import com.example.administrator.opencvdemo.util.JsonUtils;
 import com.example.administrator.opencvdemo.util.SPUtils;
-import com.example.administrator.opencvdemo.util.ScreenCapture;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.youtu.ImageParse;
 
@@ -16,14 +15,14 @@ import java.util.List;
 import static com.example.administrator.opencvdemo.util.Constant.COORDINATE_KEY;
 
 public class FuWaiHelper {
-    public static PointModel shuYuan = CmdData.get(Constant.ACADEMY);
-    public static PointModel huangGong = CmdData.get(Constant.HUANG_GONG);
-    public static PointModel guoJia= CmdData.get(Constant.GUO_JIA);
-    public static PointModel paiHangBang= CmdData.get(Constant.PAI_HANG_BANG);
-    public static PointModel laoFang= CmdData.get(Constant.LAO_FANG_MAP);
-    public static PointModel lianMeng= CmdData.get(Constant.LIAN_MENG);
-    public static PointModel yaMen= CmdData.get(Constant.YA_MEN_MAP);
-    public static PointModel youJian= CmdData.get(Constant.EMAIL_RED);
+    public static PointModel shuYuan = PointManagerV2.get(Constant.ACADEMY);
+    public static PointModel huangGong = PointManagerV2.get(Constant.HUANG_GONG);
+    public static PointModel guoJia= PointManagerV2.get(Constant.GUO_JIA);
+    public static PointModel paiHangBang= PointManagerV2.get(Constant.PAI_HANG_BANG);
+    public static PointModel laoFang= PointManagerV2.get(Constant.LAO_FANG_MAP);
+    public static PointModel lianMeng= PointManagerV2.get(Constant.LIAN_MENG);
+    public static PointModel yaMen= PointManagerV2.get(Constant.YA_MEN_MAP);
+    public static PointModel youJian= PointManagerV2.get(Constant.EMAIL_RED);
 
     public static boolean isIniting;
 
@@ -58,7 +57,7 @@ public class FuWaiHelper {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        ImageParse.getSyncData(ScreenCapture.get().getCurrentBitmap(), new ImageParse.Call() {
+        ImageParse.getSyncData(  new ImageParse.Call() {
             @Override
             public void call(List<Result.ItemsBean> result) {
                 if (result == null || result.size() == 0) return;
@@ -106,17 +105,14 @@ public class FuWaiHelper {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                save();
+                PointManagerV2.saveCoordinate();
 
                 isIniting = false;
             }
         });
     }
 
-    public static void save() {
-        String jsonList = JsonUtils.toJson(CmdData.coordinateList);
-        SPUtils.setString(COORDINATE_KEY, jsonList);
-    }
+
 
     public static void resetInit() {
         isIniting = false;

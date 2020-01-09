@@ -9,8 +9,7 @@ import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.Result;
 import com.example.administrator.opencvdemo.model.TaskModel;
 import com.example.administrator.opencvdemo.util.ACache;
-import com.example.administrator.opencvdemo.util.AutoTool;
-import com.example.administrator.opencvdemo.util.CmdData;
+import com.example.administrator.opencvdemo.util.PointManagerV2;
 import com.example.administrator.opencvdemo.util.Constant;
 import com.example.administrator.opencvdemo.util.SPUtils;
 import com.example.administrator.opencvdemo.util.Util;
@@ -23,8 +22,8 @@ import java.util.List;
 
 public class ShuyuanTaskElement extends AbsTaskElement {
 
-    private PointModel oneKey = CmdData.get(Constant.ACADEMY_ONE_KEY);
-    PointModel academyGetOk = CmdData.get(ACADEMY_GET_OK);
+    private PointModel oneKey = PointManagerV2.get(Constant.ACADEMY_ONE_KEY);
+    PointModel academyGetOk = PointManagerV2.get(ACADEMY_GET_OK);
     private List<PointModel> shuYuans;
     private int offsetY;
 
@@ -48,14 +47,14 @@ public class ShuyuanTaskElement extends AbsTaskElement {
             pageData = Util.getBitmapAndPageData();
             if (checkExp(netPoint, "当前网络异常")) continue;//检查网络环境
             if (checkPage("府内")) {
-                AutoTool.execShellCmdChuFu();
+                PointManagerV2.execShellCmdChuFu();
                 Thread.sleep(1200);
                 continue;
             } else if (checkPage("府外")) {
                 FuWaiHelper.init();
                 if (!Util.checkColorAndClick(FuWaiHelper.shuYuan)) {
                     if (pageData.size() > 0) {
-                        AutoTool.execShellCmd(pageData.get(0).getRect());
+                        clickMid(pageData.get(0).getRect());
                         isInShuYuan = true;
                         break;
                     }
@@ -80,23 +79,23 @@ public class ShuyuanTaskElement extends AbsTaskElement {
                 Thread.sleep(1000);
                 Util.checkColorAndClick(oneKey);
                 Thread.sleep(1000);
-                AutoTool.execShellCmd(academyGetOk);
+                click(academyGetOk);
                 Thread.sleep(200);
             } else {
                 for (PointModel model : shuYuans) {
                     if (Util.checkSubColor(model)){
-                        AutoTool.execShellCmd(model);
+                        click(model);
                         Thread.sleep(2000);
-                        AutoTool.execShellCmd(model);
+                        click(model);
                         Thread.sleep(700);
-                        AutoTool.execShellCmd(academyGetOk);
+                        click(academyGetOk);
                         Thread.sleep(800);
                     }
                 }
             }
-            AutoTool.execShellCmdClose();
+            PointManagerV2.execShellCmdClose();
             Thread.sleep(600);
-            AutoTool.execShellCmdChuFu();
+            PointManagerV2.execShellCmdChuFu();
             Thread.sleep(600);
             Util.saveLastRefreshTime(KEY_SHU_YUAN, ACache.TIME_HOUR * 3);
             break;

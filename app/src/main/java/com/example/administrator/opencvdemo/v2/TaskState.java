@@ -2,8 +2,9 @@ package com.example.administrator.opencvdemo.v2;
 
 import android.content.Context;
 
+import com.example.administrator.opencvdemo.util.LaunchManager;
 import com.example.administrator.opencvdemo.model.UserInfo;
-import com.example.administrator.opencvdemo.util.AutoTool;
+import com.example.administrator.opencvdemo.util.AccountManager;
 import com.example.administrator.opencvdemo.util.Constant;
 import com.example.administrator.opencvdemo.util.LogUtils;
 import com.example.administrator.opencvdemo.util.SPUtils;
@@ -44,12 +45,11 @@ public class TaskState implements Constant {
 
     public void init(Context context) {
         SPUtils.init(context);
-//        currentTaskIndex = SPUtils.getInt(CURRENT_TASK_STEP);
-        mCurrentAccountIndex = Util.getUserIndex();
-        mUserInfoList = Util.getUserInfo();
+        mCurrentAccountIndex = AccountManager.getUserIndex();
+        mUserInfoList = AccountManager.getUserInfo();
         mTaskModelList = Util.getTaskElement();
 
-        LogUtils.logd("isMobaiEnd:"+Util.isMobaiEnd);
+        LogUtils.logd("isMoBaiEnd:"+Util.isMoBaiEnd);
         mCurrentAccountIndex = mCurrentAccountIndex % mUserInfoList.size();
     }
 
@@ -71,10 +71,10 @@ public class TaskState implements Constant {
         mCurrentAccountIndex++;
         if (mCurrentAccountIndex == mUserInfoList.size()-1){
             isWorking = false;
-            AutoTool.killApp();
+            LaunchManager.killApp();
         }
 //        mCurrentAccountIndex = mCurrentAccountIndex % mUserInfoList.size();
-        Util.saveUserInfoIndex(mCurrentAccountIndex);
+        AccountManager.saveUserInfoIndex(mCurrentAccountIndex);
 //        SPUtils.setInt(CURRENT_USER_INFO, mCurrentAccountIndex);
     }
 
@@ -103,7 +103,7 @@ public class TaskState implements Constant {
     }
 
     public boolean isMobaiEnd() {
-        return Util.isMobaiEnd;
+        return Util.isMoBaiEnd;
     }
 
     public static int failCount = 0;
@@ -115,7 +115,7 @@ public class TaskState implements Constant {
     }
 
     public static void resetUserInfo(){
-        mUserInfoList = Util.getUserInfo();
+        mUserInfoList = AccountManager.getUserInfo();
 
     }
 

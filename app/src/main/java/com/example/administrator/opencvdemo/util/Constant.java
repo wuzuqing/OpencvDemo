@@ -11,27 +11,7 @@ package com.example.administrator.opencvdemo.util;
  */
 
 public interface Constant {
-    int ONE = 1;//收菜
-    int TASK_ZHENG_WU = 2;//政务
-    int TASK_MO_BAI = 3;//膜拜
-    int TASK_FENG_LU = 4;//俸禄
-    int TASK_REN_WU_JIANG_LU = 5;//任务奖励
-    int TASK_GUAN_KA = 6;//关卡
-    int TASK_SHU_YUAN = 7;//书院
-    //    int TASK_YAN_HUI = 8;//宴会
-    int TASK_CHEGN_JIU = 9;//成就
-    int TASK_REGISTER = 10;//注册
-    int TIME_LIMIT_REWARD = 11;//限时奖励
-    int EMAIL = 12;//邮件
-    //    int XUN_FANG = 13;//寻访
-    int SUI_JI_ZHAO_HUAN = 14;//随机召唤
-    int LIAN_MENG_GAO_JIAN = 15;//联盟高建
-    int GUAN_YAN = 16;//官宴
-    int TASK_LIAN_MENG_FU_BEN = 17;//联盟副本
-    int TASK_KUA_FU_JIANG_LI = 18;//跨服奖励
-    int TASK_ZHEGN_LIU = 19;//正九
-    int TASK_LAO_FANG = 20;//牢房
-    int TASK_YA_MEN = 21;//牢房
+
 
     String KEY_LAO_FANG = "KEY_LAO_FANG";
     String KEY_MO_BAI_KUA_FU = "KEY_MO_BAI_KUA_FU";
@@ -71,25 +51,25 @@ public interface Constant {
 
 
     String SCREEN_CLOSE = "SCREEN_CLOSE";
+    String CHU_FU = "CHU_FU";
+
     String NET_CLOSE = "NET_CLOSE";
-    String BUSINESS = "BUSINESS";//商产
-    String AGRICULTURAL = "AGRICULTURAL";//农产
-    String SOLDIERS = "SOLDIERS";    //士兵
-    String ZHENG_SHOU = "ZHENG_SHOU";    //征收
+    String JYZC_SY = "JYZC_SY";//商产
+    String JYZC_NY = "JYZC_NY";//农产
+    String JYZC_SB = "JYZC_SB";    //士兵
+    String JYZC_ZS = "JYZC_ZS";    //征收
 
 
     String UPGRADE = "UPGRADE";    //升级
     String LOGIN_GAME = "LOGIN_GAME"; //登陆游戏
     String START_GAME = "START_GAME"; //进入游戏
-    String LOGIN_DIALOG_CLOSE = "LOGIN_DIALOG_CLOSE";
-    String DIALOG_CLOSE2 = "DIALOG_CLOSE2";
-    String DIALOG_CLOSE3 = "DIALOG_CLOSE3";
-    String HUA_AN = "HUA_AN";
+    String GAME_NOTICE_DIALOG_CLOSE = "GAME_NOTICE_DIALOG_CLOSE";
     String GEN_XIN = "GEN_XIN";
+    String HUA_AN = "HUA_AN";
 
 
-    String ZHENG_JI_BG = "ZHENG_JI_BG";               //政绩
-    String ZHENG_JI_GET = "ZHENG_JI_GET";               //政绩
+    String CLZW_BG = "CLZW_BG";               //政绩
+    String CLZW_GET = "CLZW_GET";               //政绩
     String SHI_YE = "SHI_YE";                   //师爷
 
     String HUANG_GONG = "HUANG_GONG";       //皇宫

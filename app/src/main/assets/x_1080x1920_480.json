@@ -7,20 +7,6 @@
     "y": 170
   },
   {
-    "key": "HUANG_GONG_CLOSE",
-    "name": "皇宫退朝",
-    "normalColor": "#EFE2B8",
-    "x": 933,
-    "y": 77
-  },
-  {
-    "key": "LOGIN_DIALOG_CLOSE",
-    "name": "登录对话框关闭",
-    "normalColor": "#FFFFFF",
-    "x": 216,
-    "y": 568
-  },
-  {
     "key": "LOGIN_GAME",
     "name": "登录",
     "normalColor": "#CC275F",
@@ -42,7 +28,7 @@
     "y": 596
   },
   {
-    "key": "DIALOG_CLOSE2",
+    "key": "GAME_NOTICE_DIALOG_CLOSE",
     "name": "通告对话框关闭",
     "normalColor": "#D6B177",
     "x": 964,
@@ -70,35 +56,35 @@
     "y": 1061
   },
   {
-    "key": "DIALOG_CLOSE3",
+    "key": "PROP_DIALOG_CLOSE",
     "name": "道具对话框关闭",
     "normalColor": "#1D2738",
     "x": 1006,
     "y": 600
   },
   {
-    "key": "ZHENG_SHOU",
+    "key": "JYZC_ZS",
     "name": "征收",
     "normalColor": "#A47442",
     "x": 87,
     "y": 1836
   },
   {
-    "key": "BUSINESS",
+    "key": "JYZC_SY",
     "name": "商业",
     "normalColor": "#6E3818",
     "x": 890,
     "y": 753
   },
   {
-    "key": "AGRICULTURAL",
+    "key": "JYZC_NY",
     "name": "农业",
     "normalColor": "#834318",
     "x": 889,
     "y": 1249
   },
   {
-    "key": "SOLDIERS",
+    "key": "JYZC_SB",
     "name": "士兵",
     "normalColor": "#9E511D",
     "x": 897,
@@ -112,14 +98,14 @@
     "y": 1058
   },
   {
-    "key": "ZHENG_JI_GET",
+    "key": "CLZW_GET",
     "name": "领取政绩",
     "normalColor": "#212B3C",
     "x": 701,
     "y": 1633
   },
   {
-    "key": "ZHENG_JI_BG",
+    "key": "CLZW_BG",
     "name": "政绩背景",
     "normalColor": "#4D5DA4",
     "x": 540,
@@ -145,6 +131,13 @@
     "normalColor": "#D32C00",
     "x": 921,
     "y": 1864
+  },
+  {
+    "key": "HUANG_GONG_CLOSE",
+    "name": "皇宫退朝",
+    "normalColor": "#EFE2B8",
+    "x": 933,
+    "y": 77
   },
   {
     "key": "PAI_HANG_BANG",

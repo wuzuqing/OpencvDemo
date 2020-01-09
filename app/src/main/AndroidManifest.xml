@@ -39,12 +39,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".old.SecondActivity">
-
-        </activity>
-        <activity android:name=".old.ChooseImageActivity">
-
-        </activity>
 
 
         <provider
@@ -63,9 +57,7 @@
         <service
             android:name=".floatservice.MainService"
             />
-        <service
-            android:name=".notroot.WPZMGService2"
-            />
+
         <service
             android:name=".notroot.WPZMGService3"
             />

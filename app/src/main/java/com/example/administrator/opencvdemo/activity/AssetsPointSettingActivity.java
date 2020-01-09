@@ -13,13 +13,12 @@ import com.example.administrator.opencvdemo.BaseApplication;
 import com.example.administrator.opencvdemo.R;
 import com.example.administrator.opencvdemo.dialog.SelectPropDialog;
 import com.example.administrator.opencvdemo.model.PointModel;
-import com.example.administrator.opencvdemo.util.CmdData;
+import com.example.administrator.opencvdemo.util.PointManagerV2;
 import com.example.administrator.opencvdemo.util.Constant;
 import com.example.administrator.opencvdemo.util.HandlerUtil;
 import com.example.administrator.opencvdemo.util.JsonUtils;
 import com.example.administrator.opencvdemo.util.LogUtils;
 import com.example.administrator.opencvdemo.util.SPUtils;
-import com.example.administrator.opencvdemo.util.TaskUtil;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.TaskState;
 
@@ -48,10 +47,8 @@ public class AssetsPointSettingActivity extends NoAnimatorActivity implements Co
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String jsonList = JsonUtils.toJson(CmdData.coordinateList);
-                SPUtils.setString(COORDINATE_KEY,jsonList);
+                PointManagerV2.saveCoordinate();
                 TaskState.get().init(BaseApplication.getAppContext());
-                LogUtils.logd("coordinateList:"+jsonList);
                 finish();
             }
         });
@@ -72,7 +69,7 @@ public class AssetsPointSettingActivity extends NoAnimatorActivity implements Co
                         }
                     });
                 }
-                mSelectPropDialog.setData(CmdData.coordinateList);
+                mSelectPropDialog.setData(PointManagerV2.coordinateList);
                 mSelectPropDialog.show();
             }
         });
@@ -86,16 +83,13 @@ public class AssetsPointSettingActivity extends NoAnimatorActivity implements Co
     public boolean onTouchEvent(final MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-//                if (mPointModel == null) {
-//                    return false;
-//                }
                 HandlerUtil.async(new Runnable() {
                     @Override
                     public void run() {
                         final int x = (int) event.getRawX();
                         final int y = (int) event.getRawY();
                         Util.getCapBitmapNew();
-                        color = Util.getColor(TaskUtil.bitmap, x, y);
+                        color = Util.getColor( x, y);
                         LogUtils.logd("color:" + color + " x:" + x + " Y:" + y);
                         if (TextUtils.isEmpty(color)) return;
                         if (mPointModel!=null){

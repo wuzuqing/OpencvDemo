@@ -1,18 +1,14 @@
 package com.example.administrator.opencvdemo.util;
 
-import android.os.Build;
-
-import com.example.administrator.opencvdemo.BaseApplication;
-import com.example.administrator.opencvdemo.model.PointModel;
-import com.example.administrator.opencvdemo.notroot.EventHelper;
-import com.example.module_orc.OrcConfig;
-
-import org.opencv.core.Rect;
-
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.OutputStream;
 import java.util.Locale;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
+import android.telephony.TelephonyManager;
 
 /**
  * 自动化工具类
@@ -20,6 +16,36 @@ import java.util.Locale;
  * @author 詹子聪
  */
 public class AutoTool {
+
+
+    private static Boolean isEmulator;
+
+    public static boolean isEmulator(Context mContext) {
+        if (isEmulator!=null){
+            return isEmulator;
+        }
+        String url = "tel:" + "123456";
+        Intent intent = new Intent();
+        intent.setData(Uri.parse(url));
+        intent.setAction(Intent.ACTION_DIAL);
+        // 是否可以处理跳转到拨号的 Intent
+        boolean canResolveIntent = intent.resolveActivity(mContext.getPackageManager()) != null;
+        isEmulator = Build.FINGERPRINT.startsWith("generic")
+            || Build.FINGERPRINT.toLowerCase().contains("vbox")
+            || Build.FINGERPRINT.toLowerCase().contains("test-keys")
+            || Build.MODEL.contains("google_sdk")
+            || Build.MODEL.contains("Emulator")
+            || Build.SERIAL.equalsIgnoreCase("unknown")
+            || Build.SERIAL.equalsIgnoreCase("android")
+            || Build.MODEL.contains("Android SDK built for x86")
+            || Build.MANUFACTURER.contains("Genymotion")
+            || (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
+            || "google_sdk".equals(Build.PRODUCT)
+            || ((TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE))
+            .getNetworkOperatorName().toLowerCase().equals("android")
+            || !canResolveIntent;
+        return isEmulator;
+    }
 
     /**
      * 判断当前手机是否有ROOT权限
@@ -62,97 +88,7 @@ public class AutoTool {
     }
 
     public static void keyEvent(int code) {
-        if (isNewApi) {
-            EventHelper.keyBack();
-        } else {
-            execShellCmd(formatCmd("input keyevent  %d", code));
-        }
-    }
-
-    private static Boolean isNewApi;
-
-    private static boolean isNewApi() {
-        return Build.VERSION.SDK_INT >= 24;
-    }
-
-    private static boolean usedFloatRatio = false;
-
-    public static void execShellCmd(PointModel model) {
-        if (usedFloatRatio) {
-            //            execShellCmd(CmdData.click(model.getFloatX(), model.getFloatY()));
-        } else {
-            execShellCmdXy(model.getX(),model.getY());
-        }
-    }
-    public static void execShellCmdNotOffset(PointModel model) {
-        if (usedFloatRatio) {
-            //            execShellCmd(CmdData.click(model.getFloatX(), model.getFloatY()));
-        } else {
-            execShellCmdXy(model.getX(),model.getY()+OrcConfig.offsetHeight);
-        }
-    }
-
-    public static void execShellCmd(Rect model) {
-        execShellCmdXy(model.x + model.width / 2, model.y + model.height / 2);
-    }
-
-    public static void execShellCmdXy(int x, int y) {
-        if (usedFloatRatio) {
-            //            execShellCmd(CmdData.click(model.getFloatX(), model.getFloatY()));
-        } else {
-            if (isNewApi) {
-                EventHelper.click(x, y);
-            } else {
-                execShellCmd(CmdData.clickInt(x, y));
-            }
-        }
-    }
-
-    public static void execShellCmdClose() {
-        PointModel pointModel = CmdData.get(Constant.SCREEN_CLOSE);
-        execShellCmdXy(pointModel.getX(), pointModel.getY());
-    }
-
-    private static PointModel chuFUPointModel;
-
-    public static void execShellCmdChuFu() {
-        if (chuFUPointModel == null) {
-            chuFUPointModel = CmdData.get("CHU_FU");
-        }
-        execShellCmd(chuFUPointModel);
-    }
-    public static void execShellCmdChuFuV2() {
-        if (chuFUPointModel == null) {
-            chuFUPointModel = CmdData.get("CHU_FU");
-        }
-        execShellCmdNotOffset(chuFUPointModel);
-    }
-
-    public static void execShellCmd(int length, int key) throws InterruptedException {
-        for (int i = 0; i < length; i++) {
-            Thread.sleep(200);
-            if (isNewApi) {
-                EventHelper.keyBack();
-            } else {
-                AutoTool.execShellCmd("input keyevent " + key); //
-            }
-        }
-    }
-
-    public static String clickFloat(Rect rect) {
-        return clickFloat((rect.x + rect.width / 2) * 1f / 360, (rect.y + rect.height / 2) * 1f / 640);
-    }
-
-    public static String clickFloat(float x, float y) {
-        return String.format(Locale.getDefault(), "input tap %d %d", getXRatio(x), getYRatio(y));
-    }
-
-    public static int getXRatio(float ratio) {
-        return (int) (BaseApplication.getScreenWidth() * ratio);
-    }
-
-    public static int getYRatio(float ratio) {
-        return (int) (BaseApplication.getScreenHeight() * ratio);
+        execShellCmd(formatCmd("input keyevent  %d", code));
     }
 
     /**
@@ -160,23 +96,6 @@ public class AutoTool {
      */
     private static String formatCmd(String format, Object... args) {
         return String.format(Locale.CHINA, format, args);
-    }
-
-    public static void init() {
-        isNewApi = isNewApi();
-    }
-
-    public static void killApp() {
-        try {
-            AutoTool.keyEvent(4);
-            Thread.sleep(800);
-            AutoTool.execShellCmdXy(899, 1117 + OrcConfig.offsetHeight);
-            Thread.sleep(1200);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        //
     }
 }
 

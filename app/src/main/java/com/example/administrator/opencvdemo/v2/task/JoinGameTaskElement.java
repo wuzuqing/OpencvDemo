@@ -2,14 +2,13 @@ package com.example.administrator.opencvdemo.v2.task;
 
 import com.example.administrator.opencvdemo.BaseApplication;
 import com.example.administrator.opencvdemo.config.CheckName;
+import com.example.administrator.opencvdemo.util.LaunchManager;
 import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.Result;
 import com.example.administrator.opencvdemo.model.TaskModel;
-import com.example.administrator.opencvdemo.util.AutoTool;
-import com.example.administrator.opencvdemo.util.CmdData;
+import com.example.administrator.opencvdemo.util.PointManagerV2;
 import com.example.administrator.opencvdemo.util.LogUtils;
 import com.example.administrator.opencvdemo.util.SPUtils;
-import com.example.administrator.opencvdemo.util.TaskUtil;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.AbsTaskElement;
 import com.example.administrator.opencvdemo.v2.FuNeiHelper;
@@ -21,8 +20,8 @@ import static com.example.administrator.opencvdemo.config.CheckName.GAME_NOTICE_
 
 
 public class JoinGameTaskElement extends AbsTaskElement {
-    private PointModel startPoint = CmdData.get(START_GAME);
-    private PointModel gameNoticePoint = CmdData.get(DIALOG_CLOSE2);
+    private PointModel startPoint = PointManagerV2.get(START_GAME);
+    private PointModel gameNoticePoint = PointManagerV2.get(GAME_NOTICE_DIALOG_CLOSE);
     public JoinGameTaskElement(TaskModel taskModel) {
         super(taskModel);
     }
@@ -30,50 +29,50 @@ public class JoinGameTaskElement extends AbsTaskElement {
     @Override
     protected boolean doTask() throws Exception {
         // 检查是否有更新
-        PointModel pointModel = CmdData.get(LOGIN_GAME);
+        PointModel pointModel = PointManagerV2.get(LOGIN_GAME);
         Thread.sleep(1400);
         while (TaskState.isWorking) {
             LogUtils.logd("step:1 capScreen");
             Util.getCapBitmapWithOffset();
             if (Util.checkColorAndOffset(startPoint)){
                 LogUtils.logd("step:2 click default");
-                AutoTool.execShellCmdNotOffset(startPoint);
+                click(startPoint);
                 break;
             }
             pageData = Util.getPageData();
             if (checkPage("进入游戏")) {
                 setNewCoord(startPoint,pageData.get(0).getRect());
-                AutoTool.execShellCmd(pageData.get(0).getRect());  //进入游戏
+                click(pageData.get(0).getRect());  //进入游戏
                 LogUtils.logd("step:3 click parse page");
                 break;
             }else if (Util.checkColor(pointModel)){
                 LogUtils.logd("step:4 click login default");
-                AutoTool.execShellCmd(pointModel); //点击登录
+                click(pointModel); //点击登录
                 Thread.sleep(1200);
             }else  if (checkPage("登录")) {
                 LogUtils.logd("step:4 click login  parse page");
-                AutoTool.execShellCmd(pageData.get(0).getRect()); //点击登录
+                clickMid(pageData.get(0).getRect()); //点击登录
                 Thread.sleep(1200);
                 break;
             }else if (check(8)) {
-                AutoTool.killApp();
+                LaunchManager.killApp();
                 resetStep();
                 return true;
             }else{
                 boolean isInit = SPUtils.getBoolean(CheckName.START_BTN_VERSION, false);
                 if (!isInit){
-                    TaskUtil.sleep(400);
+                    Util.sleep(400);
 //                    SPUtils.getBoolean(CheckName.START_BTN_VERSION, true);
                     initPage();
                 }
             }
-            TaskUtil.sleep(400);
+            Util.sleep(400);
         }
         Thread.sleep(2000);
         while (TaskState.isWorking) {
             Util.getCapBitmapWithOffset();
             if (Util.checkColorAndOffset(gameNoticePoint)){
-                AutoTool.execShellCmdNotOffset(gameNoticePoint);
+                click(gameNoticePoint);
                 break;
             }
             //检查 通告对话框的环境
@@ -84,9 +83,9 @@ public class JoinGameTaskElement extends AbsTaskElement {
                     initPage();
                 }
                 if (Util.checkColor(gameNoticePoint)){
-                    AutoTool.execShellCmd(gameNoticePoint);
+                    click(gameNoticePoint);
                 }else{
-                    AutoTool.execShellCmdXy(pageData.get(0).getRect().x,pageData.get(0).getRect().y );  //关闭通告对话框
+                    clickMid(pageData.get(0).getRect());
                 }
                 break;
             } else if (check(8)) {
@@ -100,13 +99,13 @@ public class JoinGameTaskElement extends AbsTaskElement {
 //                }
             }
         }
-        TaskUtil.sleep(1200);
+        Util.sleep(1200);
         while (TaskState.isWorking){
             Util.getCapBitmapNew();
             if (FuNeiHelper.huaAn!=null && Util.checkColor(FuNeiHelper.huaAn)){
                 break;
             }else if (check(8)){
-                AutoTool.killApp();
+                LaunchManager.killApp();
                 resetStep();
                 return true;
             }else{

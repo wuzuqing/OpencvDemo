@@ -4,8 +4,7 @@ import com.example.administrator.opencvdemo.config.CheckName;
 import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.TaskModel;
 import com.example.administrator.opencvdemo.util.ACache;
-import com.example.administrator.opencvdemo.util.AutoTool;
-import com.example.administrator.opencvdemo.util.CmdData;
+import com.example.administrator.opencvdemo.util.PointManagerV2;
 import com.example.administrator.opencvdemo.util.Constant;
 import com.example.administrator.opencvdemo.util.LogUtils;
 import com.example.administrator.opencvdemo.util.SPUtils;
@@ -17,8 +16,8 @@ import com.example.module_orc.OrcModel;
 
 
 public class ClzwTaskElement extends AbsTaskElement {
-    public static PointModel beiJing = CmdData.get(Constant.ZHENG_JI_BG);
-    public static PointModel getZhengJi = CmdData.get(Constant.ZHENG_JI_GET);
+    public static PointModel beiJing = PointManagerV2.get(Constant.CLZW_BG);
+    public static PointModel getZhengJi = PointManagerV2.get(Constant.CLZW_GET);
 
     public ClzwTaskElement(TaskModel taskModel) {
         super(taskModel);
@@ -40,7 +39,7 @@ public class ClzwTaskElement extends AbsTaskElement {
         while (TaskState.isWorking && !isJoinClzw) {
             Util.getCapBitmapWithOffset();
             if (FuNeiHelper.shiYe != null && Util.checkColor(FuNeiHelper.shiYe)) {
-                AutoTool.execShellCmd(FuNeiHelper.shiYe);
+                click(FuNeiHelper.shiYe);
                 isJoinClzw = true;
                 break;
             }
@@ -51,7 +50,7 @@ public class ClzwTaskElement extends AbsTaskElement {
             if (checkPage("府外")) {
 
             } else if (checkPage("府内")) {
-                AutoTool.execShellCmd(pageData.get(1).getRect());
+                clickMid(pageData.get(1).getRect());
                 isJoinClzw = true;
                 break;
             } else if (!checkPage("处理公务")) {
@@ -73,7 +72,7 @@ public class ClzwTaskElement extends AbsTaskElement {
                 Thread.sleep(800);
                 break;
             } else if (checkPage("道具使用")) {
-                AutoTool.execShellCmd(pageData.get(0).getRect());
+                clickMid(pageData.get(0).getRect());
                 Thread.sleep(800);
                 continue;
             }else if (checkExp(netPoint, "当前网络异常")) {
@@ -81,13 +80,13 @@ public class ClzwTaskElement extends AbsTaskElement {
             }
             boolean hasGet = false;
             if (Util.checkColorAndOffset(getZhengJi)) {
-                AutoTool.execShellCmd(getZhengJi);
+                click(getZhengJi);
                 hasGet = true;
             } else {
                 pageData = Util.getPageData();
                 for (OrcModel model : pageData) {
                     if (model.getResult().startsWith("获得")) {
-                        AutoTool.execShellCmd(model.getRect());
+                        clickMid(model.getRect());
                         hasGet = true;
                         break;
                     }

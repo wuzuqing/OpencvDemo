@@ -2,7 +2,6 @@ package com.example.administrator.opencvdemo.floatservice;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,12 +14,11 @@ import com.example.administrator.opencvdemo.R;
 import com.example.administrator.opencvdemo.activity.AccountManagerActivity;
 import com.example.administrator.opencvdemo.activity.AssetsPointSettingActivity;
 import com.example.administrator.opencvdemo.activity.DialogActivity;
+import com.example.administrator.opencvdemo.util.LaunchManager;
 import com.example.administrator.opencvdemo.model.TaskModel;
 import com.example.administrator.opencvdemo.notroot.ServiceHelper;
 import com.example.administrator.opencvdemo.notroot.WPZMGService3;
 import com.example.administrator.opencvdemo.util.HandlerUtil;
-import com.example.administrator.opencvdemo.util.LaunchApp;
-import com.example.administrator.opencvdemo.util.Test;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.TaskState;
 import com.example.administrator.opencvdemo.v2.task.ShuyuanTaskElement;
@@ -83,7 +81,7 @@ public class GameFloatView extends BaseFloatView {
             @Override
             public void onClick(View v) {
                 if (!ServiceHelper.getInstance().goAccess()){
-                    xiaoHao(true);
+                    xiaoHao();
                     ((TextView) v).setText(Util.isWPZMGServiceRunning ? "取消挂机" : "开始挂机");
                     hidePanel1();
                 }
@@ -105,18 +103,16 @@ public class GameFloatView extends BaseFloatView {
                 HandlerUtil.async(new Runnable() {
                     @Override
                     public void run() {
-                        Bitmap bitmap = Util.getCapBitmapNew();
 
-                        Test.test(bitmap);
+                        // Test.test(bitmap);
                     }
                 });
-                Test.testWork();
             }
         });
         findViewById(R.id.tvLaunch).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LaunchApp.launchapp(getContext());
+                LaunchManager.launchapp(getContext());
 
             }
         });
@@ -124,7 +120,6 @@ public class GameFloatView extends BaseFloatView {
             @Override
             public void onClick(View v) {
                 hidePanel1();
-                Test.testWork();
 
             }
         });
@@ -137,10 +132,10 @@ public class GameFloatView extends BaseFloatView {
             }
         });
 
-        findViewById(R.id.tvClose).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.tvTestDebug).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+            //调试专用
             }
         });
         findViewById(R.id.tvTest).setOnClickListener(new View.OnClickListener() {
@@ -161,7 +156,7 @@ public class GameFloatView extends BaseFloatView {
         tvShowOrHide.setText("显示");
     }
 
-    private void xiaoHao(boolean some) {
+    private void xiaoHao() {
         Util.isWPZMGServiceRunning = !Util.isWPZMGServiceRunning;
         Intent intent2 = new Intent(getContext(), WPZMGService3.class);
         if (!Util.isWPZMGServiceRunning) {

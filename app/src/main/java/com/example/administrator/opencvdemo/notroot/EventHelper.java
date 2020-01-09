@@ -21,7 +21,6 @@ import com.example.administrator.opencvdemo.util.LogUtils;
 @TargetApi(24)
 public class EventHelper {
 
-    private static final String TAG = "EventHelper";
     public static boolean isServiceRunning = false;
     public static String currentPackageName;
 
@@ -76,8 +75,8 @@ public class EventHelper {
      * @param endY y结束坐标
      */
     public static void swipe(AccessibilityService service, int startX, int startY, int endX, int endY) {
-        GestureDescription.StrokeDescription swipeSd = getSwipeSd(startX, startY, endX, endY);
         if (service != null && isServiceRunning) {
+            GestureDescription.StrokeDescription swipeSd = getSwipeSd(startX, startY, endX, endY);
             service.dispatchGesture(getGd(swipeSd), null, null);
         }
     }
@@ -85,36 +84,25 @@ public class EventHelper {
     /**
      * 横向滑动
      *
-     * @param service 辅助服务
      * @param startX x开始坐标
      * @param y y坐标
      * @param endX x结束坐标
      */
-    public static void swipeHor(AccessibilityService service, int startX, int endX, int y) {
-        swipe(service, startX, y, endX, y);
-    }
-    /**
-     * 横向滑动
-     *
-     * @param startX x开始坐标
-     * @param y y坐标
-     * @param endX x结束坐标
-     */
-    public static void swipeHor( int startX, int endX, int y) {
-        swipe(mService, startX, y, endX, y);
+    public static void swipeHor(int startX, int endX, int y) {
+        swipe(startX, y, endX, y);
     }
 
     /**
-     * 纵向滑动
-     *
-     * @param service 辅助服务
-     * @param startY y开始坐标
-     * @param x x坐标
-     * @param endY y结束坐标
+     * @param startX x开始坐标
+     * @param startY y坐标
+     * @param endX x结束坐标
+     * @param  endY y结束坐标
      */
-    public static void swipeVer(AccessibilityService service, int startY, int endY, int x) {
-        swipe(service, x, startY, x, endY);
+    public static void swipe(int startX, int startY, int endX, int endY) {
+        swipe(mService, startX, startY, endX, endY);
     }
+
+
 
     public static void log(String msg) {
         LogUtils.logd(msg);
@@ -125,7 +113,6 @@ public class EventHelper {
     public static void setCurrentEvent(AccessibilityEvent event) {
         accessibilityEvent = event;
         currentPackageName = event.getPackageName().toString();
-//        LogUtils.logd("setCurrentEvent:" + currentPackageName + ":" + event.getAction());
     }
 
     private static TaskAccessibilityService mService;
@@ -166,15 +153,9 @@ public class EventHelper {
         }
     }
 
-    public static void keyBack(int key) {
-        if (mService != null) {
-            //            mService.per(key);
-        }
-    }
-
 
     public static void inputUserInfo(String userInfoName) {
-        if (accessibilityEvent == null || mService==null) {
+        if (accessibilityEvent == null || mService == null) {
             return;
         }
         if (isGame()) {

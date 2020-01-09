@@ -4,19 +4,18 @@ import android.os.Handler;
 import android.text.TextUtils;
 
 import com.example.administrator.opencvdemo.BaseApplication;
+import com.example.administrator.opencvdemo.event.IInputClickHeavyLoad;
+import com.example.administrator.opencvdemo.event.InputEventManager;
 import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.Result;
 import com.example.administrator.opencvdemo.model.TaskModel;
 import com.example.administrator.opencvdemo.notroot.EventHelper;
-import com.example.administrator.opencvdemo.util.AutoTool;
-import com.example.administrator.opencvdemo.util.CmdData;
+import com.example.administrator.opencvdemo.util.PointManagerV2;
 import com.example.administrator.opencvdemo.util.Constant;
 import com.example.administrator.opencvdemo.util.JsonUtils;
 import com.example.administrator.opencvdemo.util.LogUtils;
 import com.example.administrator.opencvdemo.util.NetWorkUtils;
 import com.example.administrator.opencvdemo.util.SPUtils;
-import com.example.administrator.opencvdemo.util.ScreenCapture;
-import com.example.administrator.opencvdemo.util.TaskUtil;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.youtu.ImageParse;
 import com.example.module_orc.OrcConfig;
@@ -26,7 +25,7 @@ import org.opencv.core.Rect;
 
 import java.util.List;
 
-public abstract class AbsTaskElement implements TaskElement, Constant {
+public abstract class AbsTaskElement implements TaskElement, Constant , IInputClickHeavyLoad {
     public static final String TAG = "TaskElement";
 
     public AbsTaskElement() {
@@ -40,7 +39,7 @@ public abstract class AbsTaskElement implements TaskElement, Constant {
 
     protected TaskModel mTaskModel;
     protected List<OrcModel> pageData = null;
-    protected PointModel netPoint = CmdData.get(Constant.NET_CLOSE);
+    protected PointModel netPoint = PointManagerV2.get(Constant.NET_CLOSE);
 
     protected boolean needSaveCoord;
 
@@ -77,8 +76,7 @@ public abstract class AbsTaskElement implements TaskElement, Constant {
             }
         }
         if (needSaveCoord) {
-            String jsonList = JsonUtils.toJson(CmdData.coordinateList);
-            SPUtils.setString(COORDINATE_KEY, jsonList);
+            PointManagerV2.saveCoordinate();
             needSaveCoord = false;
         }
         if (TaskState.isWorking) {
@@ -86,7 +84,7 @@ public abstract class AbsTaskElement implements TaskElement, Constant {
                 TaskState.isWorking = false;
                 return;
             }
-            if (taskHandler != null ) {
+            if (taskHandler != null) {
                 TaskState.get().saveNextTask();
                 taskHandler.sendEmptyMessage(0);
             }
@@ -97,13 +95,6 @@ public abstract class AbsTaskElement implements TaskElement, Constant {
         return true;
     }
 
-    private void sleep(long tile) {
-        try {
-            Thread.sleep(tile);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
 
     protected abstract boolean doTask() throws Exception;
 
@@ -127,18 +118,40 @@ public abstract class AbsTaskElement implements TaskElement, Constant {
         TaskState.get().resetStep();
     }
 
-    public static boolean checkExp(PointModel model, String msg) throws InterruptedException {
-        if (TaskUtil.bitmap == null || TaskUtil.bitmap.isRecycled()) return true;
-        if (Util.getColor(TaskUtil.bitmap, model.getX(), model.getY() + OrcConfig.offsetHeight).equals(model.getNormalColor())) { //检查网络环境
-            AutoTool.execShellCmd(model);
+    public  boolean checkExp(PointModel model, String msg) throws InterruptedException {
+        if (Util.isRecycled()) {
+            return true;
+        }
+        if (Util.getColor(model.getX(), model.getY() + OrcConfig.offsetHeight).equals(model.getNormalColor())) { //检查网络环境
+            click(model);
             Thread.sleep(600);
             return true;
         }
         return false;
     }
 
+    @Override
+    public void clickMid(Rect rect) {
+        InputEventManager.getInstance().clickMid(rect);
+    }
+
+    @Override
+    public void click(PointModel model) {
+        InputEventManager.getInstance().click(model);
+    }
+
+    @Override
+    public void click(int x, int y) {
+        InputEventManager.getInstance().click(x, y);
+    }
+
+    @Override
+    public void click(Rect rect) {
+        InputEventManager.getInstance().click(rect);
+    }
+
     protected void clickClose() {
-        AutoTool.execShellCmdClose();
+        PointManagerV2.execShellCmdClose();
     }
 
     public boolean checkTime(String type, int saveTime) {
@@ -159,7 +172,7 @@ public abstract class AbsTaskElement implements TaskElement, Constant {
     }
 
     public void initPage() {
-        ImageParse.getSyncData(ScreenCapture.get().getCurrentBitmap(), new ImageParse.Call() {
+        ImageParse.getSyncData(new ImageParse.Call() {
             @Override
             public void call(List<Result.ItemsBean> result) {
                 if (result == null || result.size() == 0) {
@@ -198,12 +211,25 @@ public abstract class AbsTaskElement implements TaskElement, Constant {
         model.setNormalColor(Util.getColor(model));
         if (offsetY != 0) {
             model.setSubY(model.getY() + offsetY);
-            int height = TaskUtil.bitmap.getHeight();
+            int height = Util.getBitmapHeight();
             if (model.getSubY() > height) {
                 model.setSubY(height - 10);
             }
-            model.setSubColor(Util.getColor(TaskUtil.bitmap, model.getX(), model.getSubY()));
-            LogUtils.logd("oldX:" + oldX + " newX:" + model.getX() + "oldY:" + oldY + " newY:" + model.getY() + "oldColor:" + oldColor + " newColor:" + model.getNormalColor() + " SubColor:" + model.getSubColor());
+            model.setSubColor(Util.getColor(model.getX(), model.getSubY()));
+            LogUtils.logd("oldX:"
+                + oldX
+                + " newX:"
+                + model.getX()
+                + "oldY:"
+                + oldY
+                + " newY:"
+                + model.getY()
+                + "oldColor:"
+                + oldColor
+                + " newColor:"
+                + model.getNormalColor()
+                + " SubColor:"
+                + model.getSubColor());
         } else {
             LogUtils.logd("oldX:" + oldX + " newX:" + model.getX() + "oldY:" + oldY + " newY:" + model.getY() + "oldColor:" + oldColor + " newColor:" + model.getNormalColor());
         }

@@ -4,8 +4,7 @@ package com.example.administrator.opencvdemo.v2.task;
 import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.TaskModel;
 import com.example.administrator.opencvdemo.util.ACache;
-import com.example.administrator.opencvdemo.util.AutoTool;
-import com.example.administrator.opencvdemo.util.CmdData;
+import com.example.administrator.opencvdemo.util.PointManagerV2;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.AbsTaskElement;
 import com.example.administrator.opencvdemo.v2.FuWaiHelper;
@@ -15,9 +14,9 @@ public class FengluTaskElement extends AbsTaskElement {
         super(taskModel);
     }
 
-    PointModel getFengLu = CmdData.get(HUANG_GONG_GET);
-    PointModel wang = CmdData.get(HUANG_GONG_WANG);
-    PointModel huangGongClose = CmdData.get(HUANG_GONG_CLOSE);
+    PointModel getFengLu = PointManagerV2.get(HUANG_GONG_GET);
+    PointModel wang = PointManagerV2.get(HUANG_GONG_WANG);
+    PointModel huangGongClose = PointManagerV2.get(HUANG_GONG_CLOSE);
 
     @Override
     protected boolean doTaskBefore() {
@@ -34,20 +33,20 @@ public class FengluTaskElement extends AbsTaskElement {
         if (checkExp(netPoint, "当前网络异常")) return false;//检查网络环境
 
         if (checkPage("府内")) {
-            AutoTool.execShellCmdChuFuV2();
+            PointManagerV2.execShellCmdChuFuV2();
             Thread.sleep(1800);
             return false;
         } else if (checkPage("府外")) {
             FuWaiHelper.init();
             if (!Util.checkColorAndClick(FuWaiHelper.huangGong)) {
-                AutoTool.execShellCmd(pageData.get(0).getRect());
+                clickMid(pageData.get(0).getRect());
             }
             Thread.sleep(800);
-            AutoTool.execShellCmd(wang);
+            click(wang);
             Thread.sleep(800);
             return false;
         } else if (checkPage("皇宫")) {
-            AutoTool.execShellCmd(pageData.get(0).getRect());
+            clickMid(pageData.get(0).getRect());
             Thread.sleep(800);
         } else if (!checkPage("皇宫俸禄")) {
             if (check(12)) {
@@ -57,11 +56,11 @@ public class FengluTaskElement extends AbsTaskElement {
             Thread.sleep(200);
             return false;
         }
-        AutoTool.execShellCmdNotOffset(getFengLu);
+        click(getFengLu);
         Thread.sleep(600);
-        AutoTool.execShellCmdNotOffset(huangGongClose);
+        click(huangGongClose);
         Thread.sleep(200);
-        AutoTool.execShellCmdNotOffset(huangGongClose);
+        click(huangGongClose);
         Thread.sleep(1200);
         Util.saveLastRefreshTime(KEY_WORK_FL, ACache.getTodayEndTime());
         return true;

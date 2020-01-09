@@ -6,12 +6,10 @@ import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.Result;
 import com.example.administrator.opencvdemo.model.TaskModel;
 import com.example.administrator.opencvdemo.notroot.EventHelper;
-import com.example.administrator.opencvdemo.util.AutoTool;
-import com.example.administrator.opencvdemo.util.CmdData;
+import com.example.administrator.opencvdemo.util.PointManagerV2;
 import com.example.administrator.opencvdemo.util.JsonUtils;
 import com.example.administrator.opencvdemo.util.LogUtils;
 import com.example.administrator.opencvdemo.util.SPUtils;
-import com.example.administrator.opencvdemo.util.ScreenCapture;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.AbsTaskElement;
 import com.example.administrator.opencvdemo.v2.FuNeiHelper;
@@ -19,8 +17,6 @@ import com.example.administrator.opencvdemo.v2.TaskState;
 import com.example.module_orc.OrcModel;
 import com.example.module_orc.util.GsonUtils;
 import com.google.gson.reflect.TypeToken;
-
-import org.opencv.core.Rect;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +62,7 @@ public class JyzcTaskElement extends AbsTaskElement {
             LogUtils.logd("step:1 cap screen");
             Util.getCapBitmapWithOffset();
             if (FuNeiHelper.huaAn != null && Util.checkColor(FuNeiHelper.huaAn)) {
-                AutoTool.execShellCmd(FuNeiHelper.huaAn);
+                click(FuNeiHelper.huaAn);
                 LogUtils.logd("step:2 click huaAn net");
                 isEnd = false;
                 isInJycz = true;
@@ -75,7 +71,7 @@ public class JyzcTaskElement extends AbsTaskElement {
             pageData = Util.getPageData();
             if (checkPage("府内")) {
                 LogUtils.logd("step:2 click huaAn parse page");
-                AutoTool.execShellCmd(pageData.get(0).getRect());
+                clickMid(pageData.get(0).getRect());
                 isEnd = false;
                 isInJycz = true;
             } else if (check(12)) {
@@ -90,12 +86,12 @@ public class JyzcTaskElement extends AbsTaskElement {
             pageData = Util.getPageData();
             if (checkPage("道具使用")) {
                 LogUtils.logd("step:4 click daoju");
-                AutoTool.execShellCmd(pageData.get(0).getRect());
+                clickMid(pageData.get(0).getRect());
                 Thread.sleep(800);
                 continue;
             }
             if (needClickZhengshou) {
-                AutoTool.execShellCmd(CmdData.get(ZHENG_SHOU));
+                click(PointManagerV2.get(JYZC_ZS));
                 Thread.sleep(800);
                 needClickZhengshou = false;
                 continue;
@@ -117,7 +113,7 @@ public class JyzcTaskElement extends AbsTaskElement {
             if (usedDefault) {
                 for (PointModel model : data) {
                     if (Util.checkColorAndOffset(model)) {
-                        AutoTool.execShellCmdNotOffset(model);
+                        click(model);
                         count++;
                         Thread.sleep(240);
                     }
@@ -140,8 +136,7 @@ public class JyzcTaskElement extends AbsTaskElement {
                     LogUtils.logd("step:6  click get parse page");
                     for (OrcModel orcModel : pageData) {
                         if (TextUtils.equals("经营", orcModel.getResult())) {
-                            Rect rect = orcModel.getRect();
-                            AutoTool.execShellCmdXy(rect.x, rect.y);
+                            click(orcModel.getRect());
                             Thread.sleep(240);
                             count++;
                         }
@@ -168,7 +163,7 @@ public class JyzcTaskElement extends AbsTaskElement {
                 PointModel model = new PointModel(String.valueOf(index), "经营");
                 model.setX(itemsBean.getItemcoord().getX() + itemsBean.getItemcoord().getWidth() / 2);
                 model.setY(itemsBean.getItemcoord().getY() + itemsBean.getItemcoord().getHeight() / 2);
-                model.setNormalColor(Util.getColor(ScreenCapture.get().getCurrentBitmap(), model.getX(), model.getY()));
+                model.setNormalColor(Util.getColor( model.getX(), model.getY()));
                 jyzcModel.add(model);
                 index++;
             }

@@ -2,11 +2,10 @@ package com.example.administrator.opencvdemo.youtu;
 
 import com.example.administrator.opencvdemo.BaseApplication;
 import com.example.administrator.opencvdemo.model.Result;
-import com.example.administrator.opencvdemo.util.CmdData;
+import com.example.administrator.opencvdemo.util.PointManagerV2;
 import com.example.administrator.opencvdemo.util.HandlerUtil;
 import com.example.administrator.opencvdemo.util.LogUtils;
 import com.example.administrator.opencvdemo.util.ScreenCapture;
-import com.example.administrator.opencvdemo.util.TaskUtil;
 import com.example.administrator.opencvdemo.util.Util;
 
 import org.json.JSONException;
@@ -47,12 +46,7 @@ public class ImageParse {
     }
     public static void getSyncData(Call call) {
         LogUtils.logd("start");
-        Util.getCapBitmapNew();
-        Bitmap bitmap = TaskUtil.bitmap;
-        if (bitmap==null){
-            bitmap = ScreenCapture.get().getCurrentBitmap();
-        }
-        getSyncData(bitmap,call);
+        getSyncData(Util.getBitmap(),call);
     }
     public static void getSyncData(Bitmap bitmap,Call call) {
         JSONObject respose = null;
@@ -82,8 +76,8 @@ public class ImageParse {
         LogUtils.logd("start");
         JSONObject respose = null;
         try {
-            File file = isOnePax ? Luban.get(BaseApplication.getAppContext()).firstCompress(CmdData.saveFilePath) : Luban.get(BaseApplication.getAppContext()).thirdCompress
-                    (CmdData.saveFilePath);
+            File file = isOnePax ? Luban.get(BaseApplication.getAppContext()).firstCompress(PointManagerV2.saveFilePath) : Luban.get(BaseApplication.getAppContext()).thirdCompress
+                    (PointManagerV2.saveFilePath);
              respose = StaticVal.getYoutu().GeneralOcr(file.getAbsolutePath());
             Result res = StaticVal.getGson().fromJson(respose.toString(), Result.class);
             if (call != null) {
