@@ -8,9 +8,11 @@ import com.example.administrator.opencvdemo.config.CheckName;
 import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.TaskModel;
 import com.example.administrator.opencvdemo.util.ACache;
+import com.example.administrator.opencvdemo.util.LaunchManager;
 import com.example.administrator.opencvdemo.util.PointManagerV2;
 import com.example.administrator.opencvdemo.util.SPUtils;
 import com.example.administrator.opencvdemo.util.Util;
+import com.example.administrator.opencvdemo.util.http.HttpManager;
 import com.example.administrator.opencvdemo.v2.AbsTaskElement;
 import com.example.administrator.opencvdemo.v2.FuWaiHelper;
 import com.example.administrator.opencvdemo.v2.TaskState;
@@ -119,7 +121,10 @@ public class MobaiTaskElement extends AbsTaskElement {
                     if (checkMobai(moBai, target)) {
                         clickEmpty(moBai);
                     } else {
-                        if (!doBenfuBangDan) {
+                        if (TaskState.get().isMobaiEnd()){
+                            over();
+                            return true;
+                        }else if (!doBenfuBangDan) {
                             click(huangGongClose);
                             Thread.sleep(1000);
                             doBenfuBangDan = true;
@@ -150,13 +155,18 @@ public class MobaiTaskElement extends AbsTaskElement {
     }
 
     private void end() throws InterruptedException {
-        if (!TaskState.get().isMobaiEnd()){
-            Util.saveLastRefreshTime(KEY_WORK_KF_MB, ACache.getTodayEndTime());
-            click(huangGongClose);
-            Thread.sleep(1200);
-            click(huangGongClose);
-            Thread.sleep(800);
-        }
+
+        Util.saveLastRefreshTime(KEY_WORK_KF_MB, ACache.getTodayEndTime());
+        click(huangGongClose);
+        Thread.sleep(1200);
+        click(huangGongClose);
+        Thread.sleep(800);
+    }
+
+    private void over(){
+        Util.saveLastRefreshTime(KEY_WORK_KF_MB, ACache.getTodayEndTime());
+        HttpManager.updateTask("mb_fl");
+        LaunchManager.killApp();
     }
 
     private String midColor;

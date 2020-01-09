@@ -1,10 +1,12 @@
 package com.example.administrator.opencvdemo.util;
 
-import java.util.ArrayList;
-import java.util.List;
 import android.text.TextUtils;
+
 import com.example.administrator.opencvdemo.model.UserInfo;
 import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 作者：士元
@@ -62,6 +64,7 @@ public class AccountManager {
 
     public static void saveUserInfo(List<UserInfo> userInfos) {
         Util.setFileStrAndSp(KEY_USER_INFO, JsonUtils.toJson(userInfos));
+        saveUserInfoIndex(0);
     }
 
     public static synchronized void saveUserInfoIndex(int index) {

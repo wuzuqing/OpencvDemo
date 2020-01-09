@@ -19,6 +19,7 @@ import com.example.administrator.opencvdemo.util.PointManagerV2;
 import com.example.administrator.opencvdemo.util.LogUtils;
 import com.example.administrator.opencvdemo.util.SPUtils;
 import com.example.administrator.opencvdemo.util.Util;
+import com.example.administrator.opencvdemo.util.http.HttpManager;
 import com.example.administrator.opencvdemo.youtu.StaticVal;
 import com.example.module_orc.OrcHelper;
 
@@ -73,6 +74,7 @@ public class BaseApplication extends Application {
         PointManagerV2.init();
         Util.init();
         AccountManager.init();
+        HttpManager.init(this);
         StaticVal.init();
         ChengJiuArray.init();
     }

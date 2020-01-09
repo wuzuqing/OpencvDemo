@@ -149,7 +149,6 @@ public class DialogActivity extends NoAnimatorActivity implements Constant {
             SPUtils.setBoolean(KEY_LAO_FANG, cbLf.isChecked());
         }
         Util.resetTaskModel();
-        SPUtils.setInt(CURRENT_USER_INFO,0);
     }
 
 

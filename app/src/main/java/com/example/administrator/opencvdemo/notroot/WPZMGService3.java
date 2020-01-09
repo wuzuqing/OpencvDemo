@@ -8,11 +8,20 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 
-import com.example.administrator.opencvdemo.util.LaunchManager;
+import com.example.administrator.opencvdemo.model.TaskRecordModel;
 import com.example.administrator.opencvdemo.util.Constant;
 import com.example.administrator.opencvdemo.util.Util;
+import com.example.administrator.opencvdemo.util.http.GsonObjectCallback;
+import com.example.administrator.opencvdemo.util.http.HttpManager;
 import com.example.administrator.opencvdemo.v2.TaskElement;
 import com.example.administrator.opencvdemo.v2.TaskState;
+import com.example.administrator.opencvdemo.v2.task.StartAndLoginTaskElement;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.Call;
 
 
 public class WPZMGService3 extends Service implements Constant {
@@ -23,11 +32,18 @@ public class WPZMGService3 extends Service implements Constant {
         public void handleMessage(Message msg) {
             if (msg.what == 0) {
                 TaskElement taskStateTask = mTaskState.getTask();
+                if (taskStateTask instanceof StartAndLoginTaskElement){
+                    for (TaskRecordModel.DataBean bean : mDataBeans) {
+                        if (bean.getAccount().equals(mTaskState.getUserInfo().getName())){
+                            mTaskState.saveNextUserInfo();
+                            sendEmptyMessage(0);
+                            return;
+                        }
+                    }
+                }
                 taskStateTask.printWorkName();
                 taskStateTask.bindHandler(this);
                 AsyncTask.THREAD_POOL_EXECUTOR.execute(taskStateTask);
-            } else if (msg.what == 1) {
-
             }
         }
     };
@@ -44,11 +60,29 @@ public class WPZMGService3 extends Service implements Constant {
         return null;
     }
 
+    private List<TaskRecordModel.DataBean> mDataBeans;
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Util.refreshNextDayTime();
-        TaskState.isWorking = true;
-        mMainHandler.sendEmptyMessage(0);
+        HttpManager.getTaskRecord(new GsonObjectCallback<TaskRecordModel>() {
+            @Override
+            public void onUi(TaskRecordModel result) {
+                if (result != null ) {
+                    mDataBeans = result.getData();
+                }else {
+                    mDataBeans = new ArrayList<>();
+                }
+                TaskState.isWorking = true;
+                mMainHandler.sendEmptyMessage(0);
+            }
+
+            @Override
+            public void onFailed(Call call, IOException e) {
+
+            }
+        });
+
         return super.onStartCommand(intent, flags, startId);
     }
 }
