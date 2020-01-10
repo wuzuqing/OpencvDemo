@@ -8,7 +8,9 @@ import com.example.administrator.opencvdemo.util.Constant;
 import com.example.administrator.opencvdemo.util.JsonUtils;
 import com.example.administrator.opencvdemo.util.SPUtils;
 import com.example.administrator.opencvdemo.util.Util;
+import com.example.administrator.opencvdemo.util.http.HttpManager;
 import com.example.administrator.opencvdemo.youtu.ImageParse;
+import com.example.module_orc.util.GsonUtils;
 
 import java.util.List;
 
@@ -25,9 +27,10 @@ public class FuWaiHelper {
     public static PointModel youJian= PointManagerV2.get(Constant.EMAIL_RED);
 
     public static boolean isIniting;
-
+    private static boolean hasChange;
     protected static void setNewCoord(PointModel model, Result.ItemsBean.ItemcoordBean coord) {
         Util.setNewCoord(model,coord);
+        hasChange = true;
     }
     public static void init() {
         if (isIniting) {
@@ -39,7 +42,7 @@ public class FuWaiHelper {
         }
         isIniting = true;
         SPUtils.setBoolean(CheckName.FU_WAI, true);
-        reqNet();
+        reqNet("fu_wai_center");
     }
 
     public static void paiHangBangInit(){
@@ -48,59 +51,30 @@ public class FuWaiHelper {
             return;
         }
         SPUtils.setBoolean(CheckName.FU_WAI_PAI_HANG_BANG, true);
-        reqNet();
+        reqNet("fu_wai_right");
     }
 
-    private static void reqNet() {
+    private static void reqNet(final String page) {
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+        hasChange = false;
+        List<Result.ItemsBean> itemCoord = HttpManager.getItemCoord(page);
+        if (itemCoord!=null && itemCoord.size()>0){
+            forCoordList(itemCoord);
+            isIniting = false;
+            return;
         }
         ImageParse.getSyncData(  new ImageParse.Call() {
             @Override
             public void call(List<Result.ItemsBean> result) {
                 if (result == null || result.size() == 0) return;
                 try {
-                    for (Result.ItemsBean itemsBean : result) {
-                        switch (itemsBean.getItemstring()) {
-                            case "院":
-                            case "广院":
-                            case "书":
-
-                                setNewCoord(shuYuan, itemsBean.getItemcoord());
-                                Result.ItemsBean.ItemcoordBean itemcoord = itemsBean.getItemcoord();
-                                itemcoord.setY(itemcoord.getY()-140);
-                                setNewCoord(huangGong, itemcoord);
-                                break;
-                            case "国":
-                            case "家上":
-                            case "家":
-                                setNewCoord(guoJia, itemsBean.getItemcoord());
-                                break;
-                            case "皇":
-                                setNewCoord(huangGong, itemsBean.getItemcoord());
-                                break;
-                            case "排":
-                            case "行":
-                                setNewCoord(paiHangBang, itemsBean.getItemcoord());
-                                break;
-                            case "联":
-                            case "盟":
-                                setNewCoord(lianMeng, itemsBean.getItemcoord());
-                                break;
-                            case "牢":
-                                setNewCoord(laoFang, itemsBean.getItemcoord());
-                                break;
-                            case "邮":
-                            case "件":
-                                setNewCoord(youJian, itemsBean.getItemcoord());
-                                break;
-                            case "衙":
-                            case "街":
-                                setNewCoord(yaMen, itemsBean.getItemcoord());
-                                break;
-                        }
+                    forCoordList(result);
+                    if (hasChange){
+                        HttpManager.updatePageData(page, GsonUtils.toJson(result));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -112,7 +86,48 @@ public class FuWaiHelper {
         });
     }
 
+    private static void forCoordList(List<Result.ItemsBean> result) {
+        for (Result.ItemsBean itemsBean : result) {
+            switch (itemsBean.getItemstring()) {
+                case "院":
+                case "广院":
+                case "书":
 
+                    setNewCoord(shuYuan, itemsBean.getItemcoord());
+                    Result.ItemsBean.ItemcoordBean itemcoord = itemsBean.getItemcoord();
+                    itemcoord.setY(itemcoord.getY()-140);
+                    setNewCoord(huangGong, itemcoord);
+                    break;
+                case "国":
+                case "家上":
+                case "家":
+                    setNewCoord(guoJia, itemsBean.getItemcoord());
+                    break;
+                case "皇":
+                    setNewCoord(huangGong, itemsBean.getItemcoord());
+                    break;
+                case "排":
+                case "行":
+                    setNewCoord(paiHangBang, itemsBean.getItemcoord());
+                    break;
+                case "联":
+                case "盟":
+                    setNewCoord(lianMeng, itemsBean.getItemcoord());
+                    break;
+                case "牢":
+                    setNewCoord(laoFang, itemsBean.getItemcoord());
+                    break;
+                case "邮":
+                case "件":
+                    setNewCoord(youJian, itemsBean.getItemcoord());
+                    break;
+                case "衙":
+                case "街":
+                    setNewCoord(yaMen, itemsBean.getItemcoord());
+                    break;
+            }
+        }
+    }
 
     public static void resetInit() {
         isIniting = false;

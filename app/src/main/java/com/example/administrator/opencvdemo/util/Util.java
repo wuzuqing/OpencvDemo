@@ -334,6 +334,9 @@ public class Util implements Constant {
         LogUtils.logd("color:" + color + " pointModel:" + pointModel.toString());
         return color.equals(pointModel.getNormalColor()) || likeColor(color, pointModel.getNormalColor());
     }
+    public static boolean checkColor(String  firstColor,String secondColor) {
+        return firstColor.equals(secondColor) || likeColor(firstColor,secondColor);
+    }
 
     public static boolean checkSubColor(PointModel pointModel) {
         if (bitmap == null || pointModel == null || TextUtils.isEmpty(pointModel.getSubColor())) {

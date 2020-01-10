@@ -2,6 +2,7 @@ package com.example.administrator.opencvdemo.util;
 
 import android.os.Environment;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 
 import com.example.administrator.opencvdemo.BaseApplication;
 import com.example.administrator.opencvdemo.event.InputEventManager;
@@ -51,16 +52,42 @@ public class PointManagerV2 implements Constant {
         if (coordinateList == null || coordinateList.size() == 0) {
             return;
         }
+        DisplayMetrics metrics = BaseApplication.getAppContext().getResources().getDisplayMetrics();
+        int selfWidth = metrics.widthPixels;
+        int selfHeight = metrics.heightPixels;
+        int tempHeight = (int) (selfWidth * originalHeight / originalWidth);
+        int tempTop = (selfHeight - tempHeight) / 2;
+        float radioX = selfWidth / originalWidth;
+        float radioY = tempHeight / originalHeight;
         for (PointModel pointModel : coordinateList) {
+            //没有重置或者尺寸与原始不一致则需要计算新的x y坐标
+            if (!pointModel.isReset() && (originalWidth != selfWidth || originalHeight != selfHeight)
+            ) {
+                //重新计算坐标
+                compute(pointModel, selfHeight, tempTop, radioX, radioY);
+            }
             coordinateMap.put(pointModel.getKey(), pointModel);
         }
+    }
+
+    private static final float originalWidth = 1080f;
+    private static final float originalHeight = 1920f;
+
+    private static void compute(PointModel pointModel,
+        int selfHeight, int tempTop, float radioX, float radioY) {
+        if (selfHeight < originalHeight) {
+            return;
+        }
+        int realX = (int) (pointModel.getX() * radioX);
+        int realY = (int) (pointModel.getY() * radioY) + tempTop;
+        pointModel.setX(realX);
+        pointModel.setY(realY);
     }
 
     public static void init() {
         screenCap = "screencap -p " + saveFilePath.getPath();
         initCoordinate();
     }
-
 
     public static List<PointModel> getChengJiuGet() {
         List<PointModel> result = new ArrayList<>();
@@ -110,7 +137,6 @@ public class PointManagerV2 implements Constant {
         return findGuanYanPoints;
     }
 
-
     private static PointModel chuFUPointModel;
 
     public static void execShellCmdClose() {
@@ -134,7 +160,7 @@ public class PointManagerV2 implements Constant {
 
     public static void saveCoordinate() {
         String jsonList = JsonUtils.toJson(PointManagerV2.coordinateList);
-        Util.setFileStrAndSp(COORDINATE_KEY,jsonList);
-        HttpManager.updatePoint("total",jsonList);
+        Util.setFileStrAndSp(COORDINATE_KEY, jsonList);
+        HttpManager.updatePoint("total", jsonList);
     }
 }

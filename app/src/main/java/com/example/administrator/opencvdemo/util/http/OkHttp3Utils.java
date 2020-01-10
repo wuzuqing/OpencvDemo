@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.example.administrator.opencvdemo.BaseApplication;
@@ -139,6 +140,20 @@ public class OkHttp3Utils {
      */
 
     public static <T> T doGetSync(String url, Class<T> clz) {
+        String resultStr = doGetSync(url);
+        if (TextUtils.isEmpty(resultStr)){
+            return null;
+        }else{
+            return (T) JsonUtils.fromJson(resultStr, clz);
+        }
+    }
+    /**
+     * get请求
+     * 参数1 url
+     * 参数2 回调Callback
+     */
+
+    public static String doGetSync(String url) {
 
         //创建OkHttpClient请求对象
         OkHttpClient okHttpClient = getOkHttpClient();
@@ -150,11 +165,11 @@ public class OkHttp3Utils {
         try {
             Response execute = call.execute();
             String json = execute.body().string();
-            return (T) JsonUtils.fromJson(json, clz);
+            return json;
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return "";
     }
 
     /**

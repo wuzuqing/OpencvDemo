@@ -1,5 +1,8 @@
 package com.example.administrator.opencvdemo;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
@@ -20,7 +23,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.example.administrator.opencvdemo.floatservice.RequestPermissionsActivity;
 import com.example.administrator.opencvdemo.util.ToastUitl;
@@ -32,18 +34,14 @@ import com.example.module_orc.OrcModel;
 import com.xiaosu.lib.permission.OnRequestPermissionsCallBack;
 import com.xiaosu.lib.permission.PermissionCompat;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 import static com.example.module_orc.WorkMode.ONLY_BITMAP;
 
 public class MainActivity extends AppCompatActivity {
 
     private ImageView img, ivCrop;
     private Button btn;
-    private int[] resIds = {R.mipmap.chufu, R.mipmap.chuligongwu, R.mipmap.zisi, R.mipmap.zican, R.mipmap.hongyanzhiji, R.mipmap.wzq1};
-    private String[] resNames = {"main", "clgw", "wdzs", "jyzc", "hyzj", "sfz"};
+    private int[] resIds = { R.mipmap.chufu, R.mipmap.chuligongwu, R.mipmap.zisi, R.mipmap.zican, R.mipmap.hongyanzhiji, R.mipmap.wzq1 };
+    private String[] resNames = { "main", "clgw", "wdzs", "jyzc", "hyzj", "sfz" };
     //    private int[] resIds = {R.mipmap.wzq1,R.mipmap.wzq, R.mipmap.wxb, R.mipmap.yl, R.mipmap.wzq1};
 
     private int currentIndex = 0;
@@ -87,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                startActivityForResult(new Intent(getSelf(), RequestPermissionsActivity.class),100);
+                startActivityForResult(new Intent(getSelf(), RequestPermissionsActivity.class), 100);
                 // finish();
             }
         });
@@ -120,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                 if (!TextUtils.isEmpty(string)) {
                     OrcConfig.method = Integer.valueOf(string);
                 }
-//                Test.test(bitmap);
+                //                Test.test(bitmap);
                 OrcHelper.getInstance().executeCallAsync(ONLY_BITMAP, bitmap, langName, pageName, new IDiscernCallback() {
                     @Override
                     public void call(final List<OrcModel> result) {
@@ -212,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==100 && resultCode == Activity.RESULT_OK){
+        if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
             finish();
         }
     }
@@ -228,28 +226,27 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         PermissionCompat.create(this)
-                .permissions(Manifest.permission.READ_PHONE_STATE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                )
-                .explain("程序需要此权限，拒绝可能会导致您无法接收订单消息", "我们需要储存权限，拒绝可能会导致应用无法正常运行")
-                // .retry(true)
-                .callBack(new OnRequestPermissionsCallBack() {
-                    @Override
-                    public void onGrant() {
-                        // todo 权限授权成功回调
-                        permissionSuccess = true;
-                    }
+            .permissions(Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
+            .explain("程序需要此权限，拒绝可能会导致您无法接收订单消息", "我们需要储存权限，拒绝可能会导致应用无法正常运行")
+            // .retry(true)
+            .callBack(new OnRequestPermissionsCallBack() {
+                @Override
+                public void onGrant() {
+                    // todo 权限授权成功回调
+                    permissionSuccess = true;
+                }
 
-                    @Override
-                    public void onDenied(String permission, boolean retry) {
-                        // todo 权限授权失败回调
-                        permissionSuccess = false;
-                        ToastUitl.showShort("权限授权失败,无法正常使用小官");
-//                        finish();
-                    }
-                })
-                .build()
-                .request();
+                @Override
+                public void onDenied(String permission, boolean retry) {
+                    // todo 权限授权失败回调
+                    permissionSuccess = false;
+                    ToastUitl.showShort("权限授权失败,无法正常使用小官");
+                    //                        finish();
+                }
+            })
+            .build()
+            .request();
     }
-
 }

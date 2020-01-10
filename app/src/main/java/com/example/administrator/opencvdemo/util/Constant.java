@@ -83,6 +83,7 @@ public interface Constant {
     String BANG_DAN_GUAN_KA = "BANG_DAN_GUAN_KA";//跨服关卡
     String BANG_DAN_QIN_MI = "BANG_DAN_QIN_MI";//跨服亲密
     String BANG_DAN_GET = "BANG_DAN_GET";//膜拜
+    String BANG_DAN_KF_GET = "BANG_DAN_KF_GET";//膜拜
 
 
     String TAB_TASK = "TAB_TASK";//任务

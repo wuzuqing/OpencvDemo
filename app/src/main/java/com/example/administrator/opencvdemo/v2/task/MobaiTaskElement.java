@@ -29,6 +29,8 @@ public class MobaiTaskElement extends AbsTaskElement {
     PointModel paiHang = PointManagerV2.get(PAI_HANG_BANG);
     PointModel bangDanSelf = PointManagerV2.get(BANG_DAN_SELF);
     PointModel bangDanKuaFu = PointManagerV2.get(BANG_DAN_CROSS);
+    PointModel moBaiBtn = PointManagerV2.get(BANG_DAN_GET);
+    PointModel moBaiKfBtn = PointManagerV2.get(BANG_DAN_KF_GET);
     private boolean doBenfuBangDan;
     PointModel huangGongClose = PointManagerV2.get(HUANG_GONG_CLOSE);
     private int status;
@@ -98,7 +100,9 @@ public class MobaiTaskElement extends AbsTaskElement {
             while (true) {
                 target = pageData.get(0).getRect();   // 膜拜
                 if (status == 0) {
-                    if (checkMobai(moBai, target)) {
+                    if (checkMobaiColor()){
+
+                    }else if (checkMobai(moBai, target)) {
                         clickEmpty(moBai);
                     } else {
                         target = pageData.get(1).getRect().clone();
@@ -108,6 +112,9 @@ public class MobaiTaskElement extends AbsTaskElement {
                         Thread.sleep(1000);
                     }
                 } else if (status == 1) {
+                    if (checkMobaiColor()){
+
+                    }else
                     if (checkMobai(moBai, target)) {
                         clickEmpty(moBai);
                     } else {
@@ -118,6 +125,9 @@ public class MobaiTaskElement extends AbsTaskElement {
                         Thread.sleep(1000);
                     }
                 } else if (status == 2) {
+                    if (checkMobaiColor()){
+
+                    }else
                     if (checkMobai(moBai, target)) {
                         clickEmpty(moBai);
                     } else {
@@ -154,6 +164,11 @@ public class MobaiTaskElement extends AbsTaskElement {
         return false;
     }
 
+    private boolean checkMobaiColor() {
+        return (!doBenfuBangDan && Util.checkColorAndClick(moBaiBtn))
+            || (doBenfuBangDan && Util.checkColorAndClick(moBaiKfBtn));
+    }
+
     private void end() throws InterruptedException {
 
         Util.saveLastRefreshTime(KEY_WORK_KF_MB, ACache.getTodayEndTime());
@@ -166,7 +181,6 @@ public class MobaiTaskElement extends AbsTaskElement {
     private void over(){
         Util.saveLastRefreshTime(KEY_WORK_KF_MB, ACache.getTodayEndTime());
         HttpManager.updateTask("mb_fl");
-        LaunchManager.killApp();
     }
 
     private String midColor;
