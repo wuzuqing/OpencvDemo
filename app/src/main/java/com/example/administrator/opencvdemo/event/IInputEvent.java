@@ -16,4 +16,6 @@ public interface IInputEvent {
     void input(String text);
 
     void screenshots();
+
+    void killApp();
 }

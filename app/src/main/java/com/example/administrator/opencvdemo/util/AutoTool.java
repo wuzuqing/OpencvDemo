@@ -73,7 +73,7 @@ public class AutoTool {
             // 申请获取root权限，这一步很重要，不然会没有作用
             boolean root = isRoot();
 
-            Process process = Runtime.getRuntime().exec("sh");
+            Process process = Runtime.getRuntime().exec("su");
             // 获取输出流
             OutputStream outputStream = process.getOutputStream();
             DataOutputStream dataOutputStream = new DataOutputStream(outputStream);

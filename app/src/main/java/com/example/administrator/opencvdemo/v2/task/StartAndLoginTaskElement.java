@@ -1,7 +1,9 @@
 package com.example.administrator.opencvdemo.v2.task;
 
 
+import com.example.administrator.opencvdemo.BaseApplication;
 import com.example.administrator.opencvdemo.config.CheckName;
+import com.example.administrator.opencvdemo.util.AutoTool;
 import com.example.administrator.opencvdemo.util.LaunchManager;
 import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.Result;
@@ -14,6 +16,7 @@ import com.example.administrator.opencvdemo.util.SPUtils;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.AbsTaskElement;
 import com.example.administrator.opencvdemo.v2.TaskState;
+import org.opencv.core.Point;
 
 import java.util.List;
 
@@ -47,11 +50,19 @@ public class StartAndLoginTaskElement extends AbsTaskElement {
         while (TaskState.isWorking) {
             Util.getCapBitmapWithOffset();
             LogUtils.logd("step:1 capScreen");
-            if (Util.checkColorAndOffset(pointModel)) {
+            if (Util.checkColorAndOffset(pointModel) ) {
                 break;
+            }
+            if (AutoTool.isEmulator(BaseApplication.getAppContext())){
+                pointModel.setX(540);
+                pointModel.setY(1072);
+                if (Util.checkColor(pointModel)){
+                    break;
+                }
             }
             LogUtils.logd("step:2 parsePage");
             pageData = Util.getPageData();
+            LogUtils.logd("pageData:"+pageData.toString());
             if (checkPage("登录")) {
                 setNewCoord(pointModel, pageData.get(0).getRect());
                 LogUtils.logd("step:3 resetCoord");
@@ -59,8 +70,10 @@ public class StartAndLoginTaskElement extends AbsTaskElement {
             }  else if (check(6)) {
                 boolean isInit = SPUtils.getBoolean(CheckName.LOGIN_BTN_VERSION, false);
                 if (!isInit) {
-//                    SPUtils.getBoolean(CheckName.LOGIN_BTN_VERSION, true);
-//                     initPage();
+                    if (AutoTool.isEmulator(BaseApplication.getAppContext())){
+                        SPUtils.getBoolean(CheckName.LOGIN_BTN_VERSION, true);
+                        initPage();
+                    }
                 }
                 LogUtils.logd("step:4 continue");
                 return false;
@@ -107,7 +120,7 @@ public class StartAndLoginTaskElement extends AbsTaskElement {
                 // 重新设置坐标信息
                 setNewCoord(pointModel, itemsBean.getItemcoord());
                 SPUtils.setBoolean(CheckName.LOGIN_BTN_VERSION, true);
-                needSaveCoord = true;
+                // needSaveCoord = true;
                 return;
             }
         }

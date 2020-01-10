@@ -62,7 +62,7 @@ public class JoinGameTaskElement extends AbsTaskElement {
                 boolean isInit = SPUtils.getBoolean(CheckName.START_BTN_VERSION, false);
                 if (!isInit){
                     Util.sleep(400);
-//                    SPUtils.getBoolean(CheckName.START_BTN_VERSION, true);
+                    SPUtils.getBoolean(CheckName.START_BTN_VERSION, true);
                     initPage();
                 }
             }

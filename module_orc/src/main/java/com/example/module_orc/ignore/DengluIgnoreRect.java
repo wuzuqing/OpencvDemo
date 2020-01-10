@@ -17,6 +17,7 @@ import java.util.List;
 public class DengluIgnoreRect implements IIgnoreRect {
     public static final Rect loginGame = new Rect(134, 366, 93, 20);
     public static final Rect loginGame1 = new Rect(135, 366, 91, 21);
+    public static final Rect loginGame2 = new Rect(135, 366, 91, 21);
 
     @Override
     public List<OrcModel> ignoreRect(List<Rect> rects) {

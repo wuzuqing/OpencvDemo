@@ -100,7 +100,7 @@ public class MobaiTaskElement extends AbsTaskElement {
             while (true) {
                 target = pageData.get(0).getRect();   // 膜拜
                 if (status == 0) {
-                    if (checkMobaiColor()){
+                    if (checkMobaiColor(moBai)){
 
                     }else if (checkMobai(moBai, target)) {
                         clickEmpty(moBai);
@@ -112,7 +112,7 @@ public class MobaiTaskElement extends AbsTaskElement {
                         Thread.sleep(1000);
                     }
                 } else if (status == 1) {
-                    if (checkMobaiColor()){
+                    if (checkMobaiColor(moBai)){
 
                     }else
                     if (checkMobai(moBai, target)) {
@@ -125,7 +125,7 @@ public class MobaiTaskElement extends AbsTaskElement {
                         Thread.sleep(1000);
                     }
                 } else if (status == 2) {
-                    if (checkMobaiColor()){
+                    if (checkMobaiColor(moBai)){
 
                     }else
                     if (checkMobai(moBai, target)) {
@@ -164,9 +164,13 @@ public class MobaiTaskElement extends AbsTaskElement {
         return false;
     }
 
-    private boolean checkMobaiColor() {
-        return (!doBenfuBangDan && Util.checkColorAndClick(moBaiBtn))
+    private boolean checkMobaiColor(Rect moBai)  throws InterruptedException{
+        boolean isTrue = (!doBenfuBangDan && Util.checkColorAndClick(moBaiBtn))
             || (doBenfuBangDan && Util.checkColorAndClick(moBaiKfBtn));
+        if (isTrue){
+           clickEmpty(moBai);
+        }
+        return isTrue;
     }
 
     private void end() throws InterruptedException {

@@ -17,14 +17,7 @@ import com.example.module_orc.OrcConfig;
 public class LaunchManager {
 
     public static void killApp() {
-        try {
-            InputEventManager.getInstance().keyBack();
-            Thread.sleep(800);
-            InputEventManager.getInstance().click(899, 1117 + OrcConfig.offsetHeight);
-            Thread.sleep(1200);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        InputEventManager.getInstance().killApp();
     }
 
     public static final String WEIXIN_PACKAGE_NAME = "com.tencent.mm";

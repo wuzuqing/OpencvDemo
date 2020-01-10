@@ -2,6 +2,7 @@ package com.example.administrator.opencvdemo.event;
 
 import java.util.Locale;
 import com.example.administrator.opencvdemo.util.AutoTool;
+import com.example.administrator.opencvdemo.util.LaunchManager;
 import com.example.administrator.opencvdemo.util.PointManagerV2;
 
 /**
@@ -36,6 +37,11 @@ public class RootInputEventImpl implements IInputEvent {
     @Override
     public void screenshots() {
         AutoTool.execShellCmd(PointManagerV2.screenCap);
+    }
+
+    @Override
+    public void killApp() {
+        AutoTool.execShellCmd("am force-stop " + LaunchManager.APP_PACKAGE_NAME + " \n");
     }
 
     private String clickInt(int x, int y) {

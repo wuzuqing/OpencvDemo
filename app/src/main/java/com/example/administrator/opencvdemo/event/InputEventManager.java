@@ -79,4 +79,11 @@ public class InputEventManager implements IInputEvent,IInputClickHeavyLoad {
             clickEvent.screenshots();
         }
     }
+
+    @Override
+    public void killApp() {
+        if (clickEvent!=null){
+            clickEvent.killApp();
+        }
+    }
 }

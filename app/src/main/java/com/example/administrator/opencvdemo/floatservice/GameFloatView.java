@@ -1,7 +1,12 @@
 package com.example.administrator.opencvdemo.floatservice;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.util.List;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,9 +24,13 @@ import com.example.administrator.opencvdemo.model.TaskModel;
 import com.example.administrator.opencvdemo.notroot.ServiceHelper;
 import com.example.administrator.opencvdemo.notroot.WPZMGService3;
 import com.example.administrator.opencvdemo.util.HandlerUtil;
+import com.example.administrator.opencvdemo.util.LogUtils;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.TaskState;
 import com.example.administrator.opencvdemo.v2.task.ShuyuanTaskElement;
+import com.example.module_orc.OrcConfig;
+import com.example.module_orc.OrcHelper;
+import com.example.module_orc.OrcModel;
 
 /**
  * 作者：士元
@@ -136,6 +145,13 @@ public class GameFloatView extends BaseFloatView {
             @Override
             public void onClick(View v) {
             //调试专用
+                HandlerUtil.async(new Runnable() {
+                    @Override
+                    public void run() {
+                        LaunchManager.killApp();
+                        // Test.test(bitmap);
+                    }
+                });
             }
         });
         findViewById(R.id.tvTest).setOnClickListener(new View.OnClickListener() {
