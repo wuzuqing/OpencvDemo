@@ -111,16 +111,16 @@
   {
     "key": "LIAN_MENG",
     "name": "联盟",
-    "normalColor": "#4B504D",
-    "x": 125,
-    "y": 1140
+    "normalColor": "#5D5F56",
+    "x": 583,
+    "y": 1138
   },
   {
     "key": "YA_MEN_MAP",
     "name": "衙门",
-    "normalColor": "#514823",
-    "x": 62,
-    "y": 1237
+    "normalColor": "#928D7A",
+    "x": 416,
+    "y": 1235
   },
   {
     "key": "PAI_HANG_BANG",
@@ -139,11 +139,17 @@
   {
     "key": "LAO_FANG_MAP",
     "name": "牢房地图",
-    "normalColor": "#555F5B",
-    "x": 397,
-    "y": 913
+    "normalColor": "#5F5B4F",
+    "x": 811,
+    "y": 1017
   },
-
+  {
+    "key": "TONG_SHANG_MAP",
+    "name": "通商",
+    "normalColor": "#898470",
+    "x": 358,
+    "y": 981
+  },
 
 
   {
@@ -436,9 +442,9 @@
   {
     "key": "EMAIL_RED",
     "name": "邮箱红点",
-    "normalColor": "#DB1109",
-    "x": 151,
-    "y": 1316
+    "normalColor": "#E5914D",
+    "x": 89,
+    "y": 1397
   },
   {
     "key": "EMAIL_1",

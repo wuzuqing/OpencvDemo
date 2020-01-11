@@ -21,6 +21,9 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 经营资产
+ */
 public class JyzcTaskElement extends AbsTaskElement {
     private boolean needClickZhengshou = true;
     private boolean isEnd;

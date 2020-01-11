@@ -25,12 +25,12 @@ public class LogUtils {
 
 
             if (str.length() < maxLength) {
-                Log.d(TAG, str.trim());
+                Log.i(TAG, str.trim());
             } else {
                 int temp;
                 while (index < strLength) {
                     temp = index + maxLength;
-                    Log.d(TAG, str.substring(index, temp > strLength ? strLength : temp));
+                    Log.i(TAG, str.substring(index, temp > strLength ? strLength : temp));
                     index += maxLength;
                 }
 //                Log.d(TAG, str.substring(0, 3500));

@@ -32,7 +32,7 @@ public class WPZMGService3 extends Service implements Constant {
         public void handleMessage(Message msg) {
             if (msg.what == 0) {
                 TaskElement taskStateTask = mTaskState.getTask();
-                if (taskStateTask instanceof StartAndLoginTaskElement){
+                if (taskStateTask instanceof StartAndLoginTaskElement && mTaskState.isMobaiEnd()){
                     for (TaskRecordModel.DataBean bean : mDataBeans) {
                         if (bean.getAccount().equals(mTaskState.getUserInfo().getName())){
                             mTaskState.saveNextUserInfo();

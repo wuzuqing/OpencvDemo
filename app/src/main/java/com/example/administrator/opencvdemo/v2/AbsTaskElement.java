@@ -9,7 +9,6 @@ import com.example.administrator.opencvdemo.event.InputEventManager;
 import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.Result;
 import com.example.administrator.opencvdemo.model.TaskModel;
-import com.example.administrator.opencvdemo.notroot.EventHelper;
 import com.example.administrator.opencvdemo.util.Constant;
 import com.example.administrator.opencvdemo.util.LogUtils;
 import com.example.administrator.opencvdemo.util.NetWorkUtils;
@@ -169,8 +168,8 @@ public abstract class AbsTaskElement implements TaskElement, Constant , IInputCl
     }
 
     protected void swipeToRight() throws InterruptedException {
-        EventHelper.swipeHor(800, 150, 600);
-        Thread.sleep(2400);
+        InputEventManager.getInstance().swipe(800,600,350,600);
+        Thread.sleep(1200);
         FuWaiHelper.paiHangBangInit();
     }
 

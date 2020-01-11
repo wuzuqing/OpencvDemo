@@ -3,9 +3,8 @@ package com.example.administrator.opencvdemo.v2;
 import com.example.administrator.opencvdemo.config.CheckName;
 import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.Result;
-import com.example.administrator.opencvdemo.util.PointManagerV2;
 import com.example.administrator.opencvdemo.util.Constant;
-import com.example.administrator.opencvdemo.util.JsonUtils;
+import com.example.administrator.opencvdemo.util.PointManagerV2;
 import com.example.administrator.opencvdemo.util.SPUtils;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.util.http.HttpManager;
@@ -13,8 +12,6 @@ import com.example.administrator.opencvdemo.youtu.ImageParse;
 import com.example.module_orc.util.GsonUtils;
 
 import java.util.List;
-
-import static com.example.administrator.opencvdemo.util.Constant.COORDINATE_KEY;
 
 public class FuWaiHelper {
     public static PointModel shuYuan = PointManagerV2.get(Constant.ACADEMY);

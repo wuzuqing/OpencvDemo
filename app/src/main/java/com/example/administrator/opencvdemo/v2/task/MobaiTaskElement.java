@@ -8,7 +8,6 @@ import com.example.administrator.opencvdemo.config.CheckName;
 import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.TaskModel;
 import com.example.administrator.opencvdemo.util.ACache;
-import com.example.administrator.opencvdemo.util.LaunchManager;
 import com.example.administrator.opencvdemo.util.PointManagerV2;
 import com.example.administrator.opencvdemo.util.SPUtils;
 import com.example.administrator.opencvdemo.util.Util;
@@ -21,6 +20,10 @@ import com.example.module_orc.ignore.BenfubangdanIgnoreRect;
 
 import org.opencv.core.Rect;
 
+
+/**
+ * 膜拜
+ */
 public class MobaiTaskElement extends AbsTaskElement {
     public MobaiTaskElement(TaskModel taskModel) {
         super(taskModel);

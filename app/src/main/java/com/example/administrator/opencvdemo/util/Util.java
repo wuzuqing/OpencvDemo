@@ -1,13 +1,5 @@
 package com.example.administrator.opencvdemo.util;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -25,6 +17,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.text.format.Formatter;
 import android.util.Log;
+
 import com.example.administrator.opencvdemo.BaseApplication;
 import com.example.administrator.opencvdemo.event.InputEventManager;
 import com.example.administrator.opencvdemo.floatservice.MainService;
@@ -38,12 +31,25 @@ import com.example.administrator.opencvdemo.v2.task.ClzwTaskElement;
 import com.example.administrator.opencvdemo.v2.task.FengluTaskElement;
 import com.example.administrator.opencvdemo.v2.task.JoinGameTaskElement;
 import com.example.administrator.opencvdemo.v2.task.JyzcTaskElement;
+import com.example.administrator.opencvdemo.v2.task.LaoFangTaskElement;
+import com.example.administrator.opencvdemo.v2.task.LianMengTaskElement;
+import com.example.administrator.opencvdemo.v2.task.LqyjTaskElement;
 import com.example.administrator.opencvdemo.v2.task.MobaiTaskElement;
 import com.example.administrator.opencvdemo.v2.task.ShuyuanTaskElement;
 import com.example.administrator.opencvdemo.v2.task.StartAndLoginTaskElement;
+import com.example.administrator.opencvdemo.v2.task.YamenTaskElement;
 import com.example.module_orc.OrcConfig;
 import com.example.module_orc.OrcHelper;
 import com.example.module_orc.OrcModel;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * @author 吴祖清
@@ -276,6 +282,15 @@ public class Util implements Constant {
                 return new FengluTaskElement(model);
             case TASK_SHU_YUAN:
                 return new ShuyuanTaskElement(model);
+            case EMAIL:
+                return new LqyjTaskElement(model);
+            case LIAN_MENG_GAO_JIAN:
+                return new LianMengTaskElement(model);
+            case TASK_YA_MEN:
+                return new YamenTaskElement(model);
+            case TASK_LAO_FANG:
+                return new LaoFangTaskElement(model);
+
         }
         return null;
     }

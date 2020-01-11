@@ -13,6 +13,9 @@ import com.example.administrator.opencvdemo.v2.TaskState;
 import com.example.module_orc.OrcModel;
 
 
+/**
+ * 处理政务
+ */
 public class ClzwTaskElement extends AbsTaskElement {
     public static PointModel beiJing = PointManagerV2.get(Constant.CLZW_BG);
     public static PointModel getZhengJi = PointManagerV2.get(Constant.CLZW_GET);

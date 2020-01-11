@@ -1,6 +1,5 @@
 package com.example.administrator.opencvdemo.notroot;
 
-import java.util.List;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -9,7 +8,8 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.Toast;
-import com.example.administrator.opencvdemo.util.AutoTool;
+
+import java.util.List;
 
 /**
  * 作者：士元
@@ -64,7 +64,7 @@ public class ServiceHelper {
      * 前往开启辅助服务界面
      */
     public boolean goAccess() {
-        if (AutoTool.isEmulator(mContext) || checkAccessibilityEnabled(TaskAccessibilityService.class.getSimpleName())) {
+        if ( checkAccessibilityEnabled(TaskAccessibilityService.class.getSimpleName())) {
             Toast.makeText(mContext, "服务已启动", Toast.LENGTH_SHORT).show();
             return false;
         } else {

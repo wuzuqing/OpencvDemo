@@ -12,15 +12,10 @@ import com.example.administrator.opencvdemo.event.InputEventManager;
 import com.example.administrator.opencvdemo.event.RootInputEventImpl;
 import com.example.administrator.opencvdemo.event.SimpleV24InputEventImpl;
 import com.example.administrator.opencvdemo.notroot.ServiceHelper;
-import com.example.administrator.opencvdemo.util.AccountManager;
 import com.example.administrator.opencvdemo.util.AutoTool;
 import com.example.administrator.opencvdemo.util.ChengJiuArray;
-import com.example.administrator.opencvdemo.util.PointManagerV2;
 import com.example.administrator.opencvdemo.util.LogUtils;
 import com.example.administrator.opencvdemo.util.SPUtils;
-import com.example.administrator.opencvdemo.util.Util;
-import com.example.administrator.opencvdemo.util.http.HttpManager;
-import com.example.administrator.opencvdemo.youtu.StaticVal;
 import com.example.module_orc.OrcHelper;
 
 public class BaseApplication extends Application {
@@ -71,11 +66,6 @@ public class BaseApplication extends Application {
         }
 
         LogUtils.logd("densityDpi:" + metrics.densityDpi + " screenHeight:" + screenHeight);
-        PointManagerV2.init();
-        Util.init();
-        AccountManager.init();
-        HttpManager.init(this);
-        StaticVal.init();
         ChengJiuArray.init();
     }
 

@@ -9,6 +9,10 @@ import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.AbsTaskElement;
 import com.example.administrator.opencvdemo.v2.FuWaiHelper;
 
+
+/**
+ * 领取俸禄
+ */
 public class FengluTaskElement extends AbsTaskElement {
     public FengluTaskElement(TaskModel taskModel) {
         super(taskModel);

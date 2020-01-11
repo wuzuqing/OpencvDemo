@@ -1,8 +1,5 @@
 package com.example.administrator.opencvdemo;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
@@ -23,7 +20,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
+import com.example.administrator.opencvdemo.config.BaseConfig;
 import com.example.administrator.opencvdemo.floatservice.RequestPermissionsActivity;
 import com.example.administrator.opencvdemo.util.ToastUitl;
 import com.example.module_orc.IDiscernCallback;
@@ -33,6 +32,10 @@ import com.example.module_orc.OrcHelper;
 import com.example.module_orc.OrcModel;
 import com.xiaosu.lib.permission.OnRequestPermissionsCallBack;
 import com.xiaosu.lib.permission.PermissionCompat;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.module_orc.WorkMode.ONLY_BITMAP;
 
@@ -236,6 +239,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onGrant() {
                     // todo 权限授权成功回调
                     permissionSuccess = true;
+                    BaseConfig.init();
                 }
 
                 @Override
