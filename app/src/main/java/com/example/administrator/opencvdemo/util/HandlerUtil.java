@@ -4,6 +4,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.widget.TextView;
 
+import com.example.administrator.opencvdemo.v2.TaskElement;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 
 /**
  * @author 吴祖清
@@ -16,6 +21,14 @@ import android.widget.TextView;
  */
 
 public class HandlerUtil implements Constant{
+
+
+    public static HandlerUtil getInstance(){
+        return sHandlerUtil;
+    }
+    private HandlerUtil(){
+        mExecutorService = Executors.newFixedThreadPool(4);
+    }
 
     private static Handler mHandler = new Handler(new Handler.Callback() {
         @Override
@@ -52,5 +65,19 @@ public class HandlerUtil implements Constant{
     public static void startDjs(TextView tvLimitTime) {
         tvDjs = tvLimitTime;
 
+    }
+
+    private ExecutorService mExecutorService;
+    private static HandlerUtil sHandlerUtil = new HandlerUtil();
+
+    public ExecutorService getExecutorService() {
+        return mExecutorService;
+    }
+
+    public void execute(TaskElement task) {
+        if (mExecutorService==null){
+            mExecutorService = Executors.newFixedThreadPool(4);
+        }
+        mExecutorService.execute(task);
     }
 }

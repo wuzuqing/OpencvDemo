@@ -1,19 +1,15 @@
 package com.example.administrator.opencvdemo;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,7 +30,6 @@ import com.xiaosu.lib.permission.OnRequestPermissionsCallBack;
 import com.xiaosu.lib.permission.PermissionCompat;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.module_orc.WorkMode.ONLY_BITMAP;
@@ -45,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
     private Button btn;
     private int[] resIds = { R.mipmap.chufu, R.mipmap.chuligongwu, R.mipmap.zisi, R.mipmap.zican, R.mipmap.hongyanzhiji, R.mipmap.wzq1 };
     private String[] resNames = { "main", "clgw", "wdzs", "jyzc", "hyzj", "sfz" };
-    //    private int[] resIds = {R.mipmap.wzq1,R.mipmap.wzq, R.mipmap.wxb, R.mipmap.yl, R.mipmap.wzq1};
 
     private int currentIndex = 0;
     private TextView vTvResult;
@@ -89,20 +83,20 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 startActivityForResult(new Intent(getSelf(), RequestPermissionsActivity.class), 100);
-                // finish();
+                 finish();
             }
         });
         File imagePath = OrcHelper.getInstance().rootDir;
-        Log.d(TAG, "onCreate: ");
-        File[] files = imagePath.listFiles();
-        fileList = new ArrayList<>();
-        if (files != null) {
-            for (File file : files) {
-                if (file.isFile() && (file.getName().endsWith(".jpg") || file.getName().endsWith(".png"))) {
-                    fileList.add(file);
-                }
-            }
-        }
+//        Log.d(TAG, "onCreate: ");
+//        File[] files = imagePath.listFiles();
+//        fileList = new ArrayList<>();
+//        if (files != null) {
+//            for (File file : files) {
+//                if (file.isFile() && (file.getName().endsWith(".jpg") || file.getName().endsWith(".png"))) {
+//                    fileList.add(file);
+//                }
+//            }
+//        }
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -179,26 +173,25 @@ public class MainActivity extends AppCompatActivity {
                 //                startActivity(new Intent(MainActivity.this,ScanActivity.class));
             }
         });
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize = OrcConfig.topColorXishu;
-        Bitmap bitmap = null;
-        if (fileList.isEmpty()) {
-            bitmap = BitmapFactory.decodeResource(getResources(), resIds[currentIndex % resIds.length], options);
-            img.setImageBitmap(bitmap);
-        } else {
-            Glide.with(MainActivity.this).load(fileList.get(currentIndex % fileList.size())).into(img);
-        }
-
-        vTestAdapter = new TestAdapter();
-
-        vRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        vRecyclerView.setAdapter(vTestAdapter);
-        vTestAdapter.setOrcModelOnItemClickListener(new TestAdapter.OnItemClickListener<OrcModel>() {
-            @Override
-            public void onItemClick(TestAdapter.ViewHolder holder, OrcModel data, int position) {
-                BitmapPreviewFragment.show(getSelf(), data.getBitmap());
-            }
-        });
+//        BitmapFactory.Options options = new BitmapFactory.Options();
+//        options.inSampleSize = OrcConfig.topColorXishu;
+//        Bitmap bitmap = null;
+//        if (fileList.isEmpty()) {
+//            bitmap = BitmapFactory.decodeResource(getResources(), resIds[currentIndex % resIds.length], options);
+//            img.setImageBitmap(bitmap);
+//        } else {
+//            Glide.with(MainActivity.this).load(fileList.get(currentIndex % fileList.size())).into(img);
+//        }
+//        vTestAdapter = new TestAdapter();
+//
+//        vRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+//        vRecyclerView.setAdapter(vTestAdapter);
+//        vTestAdapter.setOrcModelOnItemClickListener(new TestAdapter.OnItemClickListener<OrcModel>() {
+//            @Override
+//            public void onItemClick(TestAdapter.ViewHolder holder, OrcModel data, int position) {
+//                BitmapPreviewFragment.show(getSelf(), data.getBitmap());
+//            }
+//        });
     }
 
     private static final String TAG = "MainActivity";
@@ -210,13 +203,13 @@ public class MainActivity extends AppCompatActivity {
         reqPermission();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
-            finish();
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
+//            finish();
+//        }
+//    }
 
     private FragmentActivity getSelf() {
         return this;

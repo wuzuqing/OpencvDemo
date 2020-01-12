@@ -5,9 +5,9 @@ import android.app.Service;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
-import android.util.Log;
+
 import com.example.administrator.opencvdemo.BaseApplication;
-import com.example.administrator.opencvdemo.util.HandlerUtil;
+import com.example.administrator.opencvdemo.util.LogUtils;
 import com.example.module_orc.OpenCVHelper;
 
 public class MainService extends Service {
@@ -55,8 +55,6 @@ public class MainService extends Service {
         if (gameFloatView != null) {
             gameFloatView.hideFloatView();
         }
-
-        Log.d(TAG, "onDestroy: ");
         if (mScreenBroadcastReceiver != null) {
             unregisterReceiver(mScreenBroadcastReceiver);
             mScreenBroadcastReceiver = null;

@@ -2,7 +2,6 @@ package com.example.administrator.opencvdemo.notroot;
 
 import android.app.Service;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -10,6 +9,8 @@ import android.os.Message;
 
 import com.example.administrator.opencvdemo.model.TaskRecordModel;
 import com.example.administrator.opencvdemo.util.Constant;
+import com.example.administrator.opencvdemo.util.HandlerUtil;
+import com.example.administrator.opencvdemo.util.LogUtils;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.util.http.GsonObjectCallback;
 import com.example.administrator.opencvdemo.util.http.HttpManager;
@@ -43,7 +44,7 @@ public class WPZMGService3 extends Service implements Constant {
                 }
                 taskStateTask.printWorkName();
                 taskStateTask.bindHandler(this);
-                AsyncTask.THREAD_POOL_EXECUTOR.execute(taskStateTask);
+                HandlerUtil.getInstance().execute(taskStateTask);
             }
         }
     };

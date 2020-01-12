@@ -1,6 +1,5 @@
 package com.example.administrator.opencvdemo.floatservice;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -8,6 +7,7 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
+
 import com.example.administrator.opencvdemo.util.ScreenCapture;
 
 public class RequestPermissionsActivity extends AppCompatActivity {
@@ -42,7 +42,7 @@ public class RequestPermissionsActivity extends AppCompatActivity {
         }
     }
     private void startMainService() {
-        setResult(Activity.RESULT_OK);
+//        setResult(Activity.RESULT_OK);
         if (getIntent() != null && getIntent().hasExtra("hao")) {
             Intent intent1 = new Intent(RequestPermissionsActivity.this, MainService.class);
             intent1.putExtra("action", "ACTION_BOOT_COMPLETED");
@@ -51,7 +51,7 @@ public class RequestPermissionsActivity extends AppCompatActivity {
         } else {
             MainService.start(RequestPermissionsActivity.this);
         }
-        finish();
+//        finish();
     }
 
     @Override

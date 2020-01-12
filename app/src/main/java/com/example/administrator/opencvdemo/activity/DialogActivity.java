@@ -12,6 +12,7 @@ import android.widget.EditText;
 import com.example.administrator.opencvdemo.R;
 import com.example.administrator.opencvdemo.util.AccountManager;
 import com.example.administrator.opencvdemo.util.Constant;
+import com.example.administrator.opencvdemo.util.LogUtils;
 import com.example.administrator.opencvdemo.util.SPUtils;
 import com.example.administrator.opencvdemo.util.Util;
 
@@ -188,6 +189,7 @@ public class DialogActivity extends NoAnimatorActivity implements Constant {
     protected void onDestroy() {
         super.onDestroy();
         overridePendingTransition(0, 0);
+        LogUtils.logd("DialogActivity.onDestroy");
     }
 
     public void help(View view) {

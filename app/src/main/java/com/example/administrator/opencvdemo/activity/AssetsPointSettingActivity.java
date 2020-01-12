@@ -13,12 +13,10 @@ import com.example.administrator.opencvdemo.BaseApplication;
 import com.example.administrator.opencvdemo.R;
 import com.example.administrator.opencvdemo.dialog.SelectPropDialog;
 import com.example.administrator.opencvdemo.model.PointModel;
-import com.example.administrator.opencvdemo.util.PointManagerV2;
 import com.example.administrator.opencvdemo.util.Constant;
 import com.example.administrator.opencvdemo.util.HandlerUtil;
-import com.example.administrator.opencvdemo.util.JsonUtils;
 import com.example.administrator.opencvdemo.util.LogUtils;
-import com.example.administrator.opencvdemo.util.SPUtils;
+import com.example.administrator.opencvdemo.util.PointManagerV2;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.TaskState;
 
@@ -111,4 +109,9 @@ public class AssetsPointSettingActivity extends NoAnimatorActivity implements Co
         return super.onTouchEvent(event);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LogUtils.logd("AssetsPointSettingActivity.onDestroy");
+    }
 }

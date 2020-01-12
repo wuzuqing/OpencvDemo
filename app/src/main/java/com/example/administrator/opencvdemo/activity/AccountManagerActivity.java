@@ -12,6 +12,7 @@ import com.example.administrator.opencvdemo.R;
 import com.example.administrator.opencvdemo.model.UserInfo;
 import com.example.administrator.opencvdemo.util.AccountManager;
 import com.example.administrator.opencvdemo.util.Constant;
+import com.example.administrator.opencvdemo.util.LogUtils;
 import com.example.administrator.opencvdemo.util.ToastUitl;
 import com.example.administrator.opencvdemo.util.Util;
 
@@ -108,6 +109,7 @@ public class AccountManagerActivity extends NoAnimatorActivity implements Consta
     protected void onDestroy() {
         super.onDestroy();
         overridePendingTransition(0, 0);
+        LogUtils.logd("AccountManagerActivity.onDestroy");
     }
 
     public void help(View view) {

@@ -496,7 +496,48 @@
     "x": 887,
     "y": 1739
   },
-
+  {
+    "key": "HUO_DONG_SHANG_PU",
+    "name": "活动商铺",
+    "normalColor": "#3E3B2C",
+    "x": 180,
+    "y": 237
+  },
+  {
+    "key": "HUO_DONG_LI_BAO_1",
+    "name": "礼包1",
+    "normalColor": "#11213A",
+    "x": 920,
+    "y": 857
+  },
+  {
+    "key": "HUO_DONG_LI_BAO_2",
+    "name": "礼包2",
+    "normalColor": "#182C4C",
+    "x": 904,
+    "y": 1355
+  },
+  {
+    "key": "HUO_DONG_JIN_RU",
+    "name": "进入活动",
+    "normalColor": "#A11E01",
+    "x": 536,
+    "y": 958
+  },
+  {
+    "key": "HUO_DONG_PROP",
+    "name": "道具数量",
+    "normalColor": "#2F2C2C",
+    "x": 485,
+    "y": 1115
+  },
+  {
+    "key": "HUO_DONG_SHI_YONG",
+    "name": "使用",
+    "normalColor": "#2F2C2C",
+    "x": 485,
+    "y": 1250
+  },
 
   {
     "key": "SHUYUAN_GET_1",

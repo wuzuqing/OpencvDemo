@@ -254,7 +254,12 @@ public interface Constant {
 //     int SCREEN_ON = 992;
 
 
-
+    String HUO_DONG_SHANG_PU = "HUO_DONG_SHANG_PU";
+    String HUO_DONG_LI_BAO_1 = "HUO_DONG_LI_BAO_1";
+    String HUO_DONG_LI_BAO_2 = "HUO_DONG_LI_BAO_2";
+    String HUO_DONG_JIN_RU = "HUO_DONG_JIN_RU";
+    String HUO_DONG_PROP = "HUO_DONG_PROP";
+    String HUO_DONG_SHI_YONG = "HUO_DONG_SHI_YONG";
 
 
     interface Login{

@@ -32,7 +32,7 @@ public class LaoFangTaskElement extends AbsTaskElement {
                 Util.getCapBitmapNew();
                 if (Util.checkColorAndClick(FuWaiHelper.laoFang)) {
                     Thread.sleep(1800);
-                    PointManagerV2.execShellCmdChuFuV2();
+                    PointManagerV2.execShellCmdClose();
                     Thread.sleep(1800);
                     PointManagerV2.execShellCmdChuFuV2();
                     return true;
