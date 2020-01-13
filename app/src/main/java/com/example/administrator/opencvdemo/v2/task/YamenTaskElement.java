@@ -31,10 +31,10 @@ public class YamenTaskElement extends AbsTaskElement {
             while (true){
                 Util.getCapBitmapNew();
                 if (Util.checkColorAndClick(FuWaiHelper.yaMen)) {
-                    Thread.sleep(1800);
-                    PointManagerV2.execShellCmdChuFuV2();
-                    Thread.sleep(1800);
-                    PointManagerV2.execShellCmdChuFuV2();
+                    // Thread.sleep(1800);
+                    // PointManagerV2.execShellCmdChuFuV2();
+                    // Thread.sleep(1800);
+                    // PointManagerV2.execShellCmdChuFuV2();
                     return true;
                 } else if (check(4)) {
                     return true;

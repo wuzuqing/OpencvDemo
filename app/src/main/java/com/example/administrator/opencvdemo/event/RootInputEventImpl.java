@@ -29,7 +29,7 @@ public class RootInputEventImpl implements IInputEvent {
     }
 
     @Override
-    public void input(String text) {
+    public void input(String text,boolean isPwd) {
         String inputTextUserInfoName = "input text ";
         AutoTool.execShellCmd(inputTextUserInfoName + text);
     }

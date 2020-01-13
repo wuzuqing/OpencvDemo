@@ -39,6 +39,8 @@ public interface Constant {
     String KEY_LIAN_MENG_FU_BEN = "KEY_LIAN_MENG_FU_BEN";
     String KEY_KUA_FU_JL = "KEY_KUA_FU_JL";
     String KEY_YA_MEN = "KEY_YA_MEN";
+    String KEY_XB_BUY = "KEY_XB_BUY";
+    String KEY_XB_USE = "KEY_XB_USE";
 
     String KEY_SPACE_TIME_TWO = "KEY_SPACE_TIME_TWO";
     String KEY_SPACE_TIME_FOUR = "KEY_SPACE_TIME_FOUR";

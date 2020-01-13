@@ -67,9 +67,9 @@ public class InputEventManager implements IInputEvent,IInputClickHeavyLoad {
     }
 
     @Override
-    public void input(String text) {
+    public void input(String text,boolean isPwd) {
         if (clickEvent != null && !TextUtils.isEmpty(text)) {
-            clickEvent.input(text);
+            clickEvent.input(text,isPwd);
         }
     }
 

@@ -26,8 +26,8 @@ public class SimpleV24InputEventImpl implements IInputEvent {
     }
 
     @Override
-    public void input(String text) {
-        EventHelper.inputUserInfo(text);
+    public void input(String text,boolean isPwd) {
+        EventHelper.inputText(text,isPwd);
     }
 
     @Override

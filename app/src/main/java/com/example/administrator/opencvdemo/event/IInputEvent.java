@@ -13,7 +13,7 @@ public interface IInputEvent {
 
     void swipe(int fromX, int fromY, int toX, int toY);
 
-    void input(String text);
+    void input(String text,boolean isPwd);
 
     void screenshots();
 

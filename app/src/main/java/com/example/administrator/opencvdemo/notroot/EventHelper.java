@@ -154,7 +154,7 @@ public class EventHelper {
     }
 
 
-    public static void inputUserInfo(String userInfoName) {
+    public static void inputText(String text,boolean isPwd) {
         if (accessibilityEvent == null || mService == null) {
             return;
         }
@@ -162,27 +162,37 @@ public class EventHelper {
             // 获取事件活动的窗口布局根节点
             AccessibilityNodeInfo rootNode = mService.getRootInActiveWindow();
             // 解析根节点
-            handle(rootNode, userInfoName);
+            handle(rootNode, text,isPwd);
         }
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    private static void handle(AccessibilityNodeInfo info, String userInfoName) {
+    private static boolean handle(AccessibilityNodeInfo info, String text,boolean isPwd) {
         // 判断节点是否有子控件
         if (info.getChildCount() == 0) {
             // 判断节点是否有文字并且有“搜索”文字
-            if (TextUtils.equals("android.widget.EditText", info.getClassName()) && info.getInputType() == 1) {
-                LogUtils.logd("getInputType:" + info.getInputType() + "");
-                setText(info, userInfoName);
+            if (TextUtils.equals("android.widget.EditText", info.getClassName()) ) {
+                LogUtils.logd("getInputType:" + info.getInputType() + " text:"+text + " isPwd:"+isPwd );
+                if (isPwd && info.getInputType()==129){
+                    setText(info, text);
+                    return true;
+                }else if (!isPwd && info.getInputType()==1){
+                    setText(info, text);
+                    return true;
+                }
             }
         } else {
             // 当 当前节点 有子控件时，解析它的孩子，以此递归
             for (int i = 0; i < info.getChildCount(); i++) {
                 if (info.getChild(i) != null) {
-                    handle(info.getChild(i), userInfoName);
+                    boolean isFind = handle(info.getChild(i), text, isPwd);
+                    if (isFind){
+                        return true;
+                    }
                 }
             }
         }
+        return false;
     }
 
     private static void setText(AccessibilityNodeInfo info, String txt) {

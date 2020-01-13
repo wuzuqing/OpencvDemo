@@ -33,7 +33,7 @@ public class DialogActivity extends NoAnimatorActivity implements Constant {
     private EditText etYanHuiNumber;
     private EditText etUserInfo;
     private CheckBox cbGx,cbKfJl,cbLoop,cbZw,cbOnlyFl, cbZh, cbMb, cbTask, cbChouCai, cbGuanKa, cbShuYuan,cbKfMb,
-            cbYanHui, cbZc, cbXs, cbCJ, cbOldShouCai,cbYx,cbLm,cbLmFb,cbGy,cbLf,cbYm;
+            cbYanHui, cbZc, cbXs, cbCJ, cbOldShouCai,cbYx,cbLm,cbLmFb,cbGy,cbLf,cbYm,cbXbBug,cbXbUse;
     boolean isTy;
     private CheckBox cbHyzh;
 
@@ -70,6 +70,8 @@ public class DialogActivity extends NoAnimatorActivity implements Constant {
         cbLmFb =  findViewById(R.id.cb_lmfb);
         cbLf =  findViewById(R.id.cb_lf);
         cbGy =  findViewById(R.id.cb_gy);
+        cbXbBug =  findViewById(R.id.cb_xb_buy);
+        cbXbUse =  findViewById(R.id.cb_xb_use);
         initData();
     }
 
@@ -103,6 +105,8 @@ public class DialogActivity extends NoAnimatorActivity implements Constant {
         cbGy.setChecked(SPUtils.getBoolean(KEY_GUAN_YAN));
         cbYm.setChecked(SPUtils.getBoolean(KEY_YA_MEN));
         cbLoop.setChecked(SPUtils.getBoolean(KEY_LOOP));
+        cbXbBug.setChecked(SPUtils.getBoolean(KEY_XB_BUY));
+        cbXbUse.setChecked(SPUtils.getBoolean(KEY_XB_USE));
     }
 
     private void reset() {
@@ -148,20 +152,12 @@ public class DialogActivity extends NoAnimatorActivity implements Constant {
             SPUtils.setBoolean(KEY_LOOP, cbLoop.isChecked());
             SPUtils.setBoolean(KEY_YA_MEN, cbYm.isChecked());
             SPUtils.setBoolean(KEY_LAO_FANG, cbLf.isChecked());
+            SPUtils.setBoolean(KEY_XB_BUY, cbXbBug.isChecked());
+            SPUtils.setBoolean(KEY_XB_USE, cbXbUse.isChecked());
         }
         Util.resetTaskModel();
     }
 
-
-    private float getFloat(EditText editText, float defValue) {
-        if (TextUtils.isEmpty(editText.getText())) return defValue;
-        try {
-            return Float.parseFloat(editText.getText().toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return defValue;
-    }
 
 
     /**

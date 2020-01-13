@@ -37,6 +37,7 @@ import com.example.administrator.opencvdemo.v2.task.LqyjTaskElement;
 import com.example.administrator.opencvdemo.v2.task.MobaiTaskElement;
 import com.example.administrator.opencvdemo.v2.task.ShuyuanTaskElement;
 import com.example.administrator.opencvdemo.v2.task.StartAndLoginTaskElement;
+import com.example.administrator.opencvdemo.v2.task.XiaoBangTaskElement;
 import com.example.administrator.opencvdemo.v2.task.YamenTaskElement;
 import com.example.module_orc.OrcConfig;
 import com.example.module_orc.OrcHelper;
@@ -82,6 +83,7 @@ public class Util implements Constant {
     private static final int TASK_ZHEGN_LIU = 19;//正九
     private static final int TASK_LAO_FANG = 20;//牢房
     private static final int TASK_YA_MEN = 21;//衙门
+    private static final int TASK_XIAO_BANG = 22;//小榜
 
     private static List<TaskModel> sTaskModelList;
     private static String pathName = PointManagerV2.saveFilePath.getAbsolutePath();
@@ -167,6 +169,10 @@ public class Util implements Constant {
         if (SPUtils.getBoolean(KEY_GUAN_YAN)) {
             taskModels.add(getSimpleModel("官宴", GUAN_YAN, KEY_SPACE_TIME_THREE, 86400)); //邮箱
         }
+        if (SPUtils.getBoolean(KEY_XB_BUY) || SPUtils.getBoolean(KEY_XB_USE)) {
+            taskModels.add(getSimpleModel("小榜", TASK_XIAO_BANG, KEY_SPACE_TIME_THREE, 86400)); //邮箱
+        }
+
 
         return taskModels;
     }
@@ -290,6 +296,8 @@ public class Util implements Constant {
                 return new YamenTaskElement(model);
             case TASK_LAO_FANG:
                 return new LaoFangTaskElement(model);
+            case TASK_XIAO_BANG:
+                return new XiaoBangTaskElement(model);
 
         }
         return null;

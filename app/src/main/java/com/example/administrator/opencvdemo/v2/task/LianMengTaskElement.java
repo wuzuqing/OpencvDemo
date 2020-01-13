@@ -27,7 +27,7 @@ public class LianMengTaskElement extends AbsTaskElement {
             Thread.sleep(1800);
             return false;
         } else if (checkPage("府外")) {
-            swipeToRight();
+            swipeToRight(350);
             while (true){
                 Util.getCapBitmapNew();
                 if (Util.checkColorAndClick(FuWaiHelper.lianMeng)) {

@@ -12,6 +12,7 @@ import com.example.administrator.opencvdemo.youtu.ImageParse;
 import com.example.module_orc.util.GsonUtils;
 
 import java.util.List;
+import android.text.TextUtils;
 
 public class FuWaiHelper {
     public static PointModel shuYuan = PointManagerV2.get(Constant.ACADEMY);
@@ -38,7 +39,6 @@ public class FuWaiHelper {
             return;
         }
         isIniting = true;
-        SPUtils.setBoolean(CheckName.FU_WAI, true);
         reqNet("fu_wai_center");
     }
 
@@ -47,7 +47,6 @@ public class FuWaiHelper {
         if (isInit) {
             return;
         }
-        SPUtils.setBoolean(CheckName.FU_WAI_PAI_HANG_BANG, true);
         reqNet("fu_wai_right");
     }
 
@@ -60,16 +59,29 @@ public class FuWaiHelper {
         hasChange = false;
         List<Result.ItemsBean> itemCoord = HttpManager.getItemCoord(page);
         if (itemCoord!=null && itemCoord.size()>0){
-            forCoordList(itemCoord);
+            if (TextUtils.equals(page,"fu_wai_center")){
+                forCoordList(itemCoord);
+            }else if (TextUtils.equals(page,"fu_wai_right")){
+                forCoordList1(itemCoord);
+            }
             isIniting = false;
             return;
         }
+        Util.getCapBitmapNew();
         ImageParse.getSyncData(  new ImageParse.Call() {
             @Override
             public void call(List<Result.ItemsBean> result) {
                 if (result == null || result.size() == 0) return;
                 try {
-                    forCoordList(result);
+                    if (TextUtils.equals(page,"fu_wai_center")){
+                      if (forCoordList(result)){
+                          SPUtils.setBoolean(CheckName.FU_WAI, true);
+                      }
+                    }else if (TextUtils.equals(page,"fu_wai_right")){
+                        if (forCoordList1(result)){
+                            SPUtils.setBoolean(CheckName.FU_WAI_PAI_HANG_BANG, true);
+                        }
+                    }
                     if (hasChange){
                         HttpManager.updatePageData(page, GsonUtils.toJson(result));
                     }
@@ -83,13 +95,12 @@ public class FuWaiHelper {
         });
     }
 
-    private static void forCoordList(List<Result.ItemsBean> result) {
+    private static boolean forCoordList(List<Result.ItemsBean> result) {
         for (Result.ItemsBean itemsBean : result) {
             switch (itemsBean.getItemstring()) {
                 case "院":
                 case "广院":
                 case "书":
-
                     setNewCoord(shuYuan, itemsBean.getItemcoord());
                     Result.ItemsBean.ItemcoordBean itemcoord = itemsBean.getItemcoord();
                     itemcoord.setY(itemcoord.getY()-140);
@@ -103,6 +114,19 @@ public class FuWaiHelper {
                 case "皇":
                     setNewCoord(huangGong, itemsBean.getItemcoord());
                     break;
+                case "邮":
+                case "件":
+                    setNewCoord(youJian, itemsBean.getItemcoord());
+                    break;
+            }
+        }
+        return hasChange;
+    }
+
+
+    private static boolean forCoordList1(List<Result.ItemsBean> result) {
+        for (Result.ItemsBean itemsBean : result) {
+            switch (itemsBean.getItemstring()) {
                 case "排":
                 case "行":
                     setNewCoord(paiHangBang, itemsBean.getItemcoord());
@@ -124,8 +148,8 @@ public class FuWaiHelper {
                     break;
             }
         }
+        return hasChange;
     }
-
     public static void resetInit() {
         isIniting = false;
         SPUtils.getBoolean(CheckName.FU_NEI, false);

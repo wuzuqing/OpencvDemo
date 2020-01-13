@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.example.administrator.opencvdemo.BaseApplication;
 import com.example.administrator.opencvdemo.util.JsonUtils;
+import com.example.administrator.opencvdemo.util.LogUtils;
 import com.example.administrator.opencvdemo.util.NetWorkUtils;
 
 import java.io.File;
@@ -87,7 +88,7 @@ public class OkHttp3Utils {
             HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
                 @Override
                 public void log(String message) {
-                    Log.i("xxx", message.toString());
+                    LogUtils.logd(message);
                 }
             });
             //Okhttp3的拦截器日志分类 4种

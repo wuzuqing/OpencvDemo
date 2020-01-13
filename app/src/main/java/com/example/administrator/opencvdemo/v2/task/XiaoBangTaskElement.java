@@ -3,12 +3,13 @@ package com.example.administrator.opencvdemo.v2.task;
 
 import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.TaskModel;
+import com.example.administrator.opencvdemo.util.ACache;
 import com.example.administrator.opencvdemo.util.Constant;
 import com.example.administrator.opencvdemo.util.PointManagerV2;
 import com.example.administrator.opencvdemo.util.SPUtils;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.AbsTaskElement;
-
+import com.example.administrator.opencvdemo.v2.TaskState;
 
 /**
  * 小榜
@@ -22,6 +23,8 @@ public class XiaoBangTaskElement extends AbsTaskElement {
     private int firstY = 386;
     private int secondY = 558;
 
+    private boolean xbBuy,xbUse;
+
     public XiaoBangTaskElement(TaskModel taskModel) {
         super(taskModel);
         // x,y      ,w,h
@@ -31,7 +34,10 @@ public class XiaoBangTaskElement extends AbsTaskElement {
 
     @Override
     protected boolean doTaskBefore() {
+        // 0-5
         row = SPUtils.getInt("etXsPosition", 5);
+        xbBuy = SPUtils.getBoolean(Constant.KEY_XB_BUY);
+        xbUse = SPUtils.getBoolean(Constant.KEY_XB_USE);
         col = 1;
         return super.doTaskBefore();
     }
@@ -70,29 +76,43 @@ public class XiaoBangTaskElement extends AbsTaskElement {
             PointModel close = PointManagerV2.get(EMAIL_DIALOG_CLOSE);
             PointModel huangGongClose = PointManagerV2.get(HUANG_GONG_CLOSE);
             //是否已购买
-            if (false) {
+            boolean checkTime = checkTime(KEY_XB_BUY, ACache.getTodayEndTime());
+            if (!checkTime) {
                 click(shangPu);
                 do {
                     for (int i = 0; i < 10; i++) {
+                        if (!TaskState.isWorking){
+                            return true;
+                        }
                         Util.sleep(600);
                         click(liBao1);
                     }
                     Util.sleep(600);
+                    if (!TaskState.isWorking){
+                        return true;
+                    }
                     Util.getCapBitmapNew();
                 } while (checkExp(netPoint, "当前网络异常"));
 
                 do {
                     for (int i = 0; i < 20; i++) {
+                        if (!TaskState.isWorking){
+                            return true;
+                        }
                         Util.sleep(600);
                         click(liBao2);
+                    }
+                    if (!TaskState.isWorking){
+                        return true;
                     }
                     Util.sleep(600);
                     Util.getCapBitmapNew();
                 } while (checkExp(netPoint, "当前网络异常"));
                 click(close);
                 Util.sleep(600);
+                Util.saveLastRefreshTime(KEY_WORK_FL, ACache.getTodayEndTime());
                 //只是购买
-                if (false) {
+                if (!xbUse) {
                     click(huangGongClose);
                     return true;
                 }
@@ -111,6 +131,9 @@ public class XiaoBangTaskElement extends AbsTaskElement {
                 } else if (Util.checkColor(propCount)) {
                     click(huangGongClose);
                     break;
+                }
+                if (!TaskState.isWorking){
+                    return true;
                 }
                 click(shiYong);
                 Util.sleep(600);

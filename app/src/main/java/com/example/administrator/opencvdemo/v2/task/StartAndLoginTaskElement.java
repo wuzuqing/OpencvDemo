@@ -3,6 +3,7 @@ package com.example.administrator.opencvdemo.v2.task;
 
 import com.example.administrator.opencvdemo.BaseApplication;
 import com.example.administrator.opencvdemo.config.CheckName;
+import com.example.administrator.opencvdemo.event.InputEventManager;
 import com.example.administrator.opencvdemo.util.AutoTool;
 import com.example.administrator.opencvdemo.util.LaunchManager;
 import com.example.administrator.opencvdemo.model.PointModel;
@@ -19,6 +20,7 @@ import com.example.administrator.opencvdemo.v2.TaskState;
 import org.opencv.core.Point;
 
 import java.util.List;
+import android.text.TextUtils;
 
 public class StartAndLoginTaskElement extends AbsTaskElement {
     PointModel pointModel = PointManagerV2.get(LOGIN_GAME);
@@ -26,7 +28,7 @@ public class StartAndLoginTaskElement extends AbsTaskElement {
     public StartAndLoginTaskElement(TaskModel taskModel) {
         super(taskModel);
     }
-
+    private String lastPwd;
     @Override
     protected boolean doTask() throws Exception {
         // 检查网络 等待2秒
@@ -94,7 +96,11 @@ public class StartAndLoginTaskElement extends AbsTaskElement {
         LogUtils.logd("step:5 input account");
         //输入账号
         UserInfo userInfo = TaskState.get().getUserInfo();
-        EventHelper.inputUserInfo(userInfo.getName());
+        InputEventManager.getInstance().input(userInfo.getName(),false);
+        if (!TextUtils.equals(lastPwd,userInfo.getPwd())){
+            InputEventManager.getInstance().input(userInfo.getPwd(),true);
+            lastPwd = userInfo.getPwd();
+        }
         Thread.sleep(800);
 
         if (Util.checkColor(pointModel)) {
