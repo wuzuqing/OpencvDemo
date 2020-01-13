@@ -163,12 +163,12 @@ public abstract class AbsTaskElement implements TaskElement, Constant , IInputCl
         }
     }
 
-    private void printCurrentPage(){
+    protected void printCurrentPage(){
         LogUtils.logd("当前页面：" + OrcConfig.pageName);
     }
 
     protected void swipeToRight() throws InterruptedException {
-        InputEventManager.getInstance().swipe(800,600,200,600);
+        InputEventManager.getInstance().swipe(800,600,250,600);
         Thread.sleep(1200);
         FuWaiHelper.paiHangBangInit();
     }
@@ -252,5 +252,9 @@ public abstract class AbsTaskElement implements TaskElement, Constant , IInputCl
         model.setNormalColor(Util.getColor(model));
         LogUtils.logd("oldX:" + oldX + " newX:" + model.getX() + "oldY:" + oldY + " newY:" + model.getY() + "oldColor:" + oldColor + " newColor:" + model.getNormalColor());
         needSaveCoord = true;
+    }
+
+    protected void log(String msg){
+        LogUtils.logd(msg);
     }
 }

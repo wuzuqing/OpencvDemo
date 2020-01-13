@@ -24,7 +24,7 @@ public class FengluTaskElement extends AbsTaskElement {
 
     @Override
     protected boolean doTaskBefore() {
-        if (checkTime(KEY_WORK_FL, ACache.getTodayEndTime())) {
+        if (checkTime(KEY_WORK_FL, ACache.getTodayEndTime()) && !getTaskModel().isOnlyOne()) {
             return false;
         }
         return super.doTaskBefore();
@@ -63,7 +63,7 @@ public class FengluTaskElement extends AbsTaskElement {
         click(getFengLu);
         Thread.sleep(600);
         click(huangGongClose);
-        Thread.sleep(200);
+        Thread.sleep(300);
         click(huangGongClose);
         Thread.sleep(1200);
         Util.saveLastRefreshTime(KEY_WORK_FL, ACache.getTodayEndTime());

@@ -44,6 +44,7 @@ public class StartAndLoginTaskElement extends AbsTaskElement {
         // 启动游戏
         LaunchManager.launchApp();
         Thread.sleep(4000);
+        Util.gc();
         //获取账号
         TaskState.resetFail();
 

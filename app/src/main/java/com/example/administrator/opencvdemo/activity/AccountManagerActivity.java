@@ -52,6 +52,9 @@ public class AccountManagerActivity extends NoAnimatorActivity implements Consta
                 AccountManagerActivity.this.onClick();
             }
         });
+        etPex.setText("wgl");
+        etStart.setText("243");
+        etEnd.setText("299");
     }
 
     private void onClick() {

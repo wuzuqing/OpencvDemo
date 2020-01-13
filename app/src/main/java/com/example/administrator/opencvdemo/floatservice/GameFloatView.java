@@ -24,7 +24,9 @@ import com.example.administrator.opencvdemo.util.PointManagerV2;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.FuWaiHelper;
 import com.example.administrator.opencvdemo.v2.TaskState;
+import com.example.administrator.opencvdemo.v2.task.FengluTaskElement;
 import com.example.administrator.opencvdemo.v2.task.LaoFangTaskElement;
+import com.example.administrator.opencvdemo.v2.task.MobaiTaskElement;
 
 /**
  * 作者：士元
@@ -169,7 +171,7 @@ public class GameFloatView extends BaseFloatView {
                 if (!ServiceHelper.getInstance().goAccess()){
                     hidePanel1();
                     TaskState.isWorking = true;
-                    AsyncTask.THREAD_POOL_EXECUTOR.execute(new LaoFangTaskElement(new TaskModel("邮件",true)));
+                    AsyncTask.THREAD_POOL_EXECUTOR.execute(new MobaiTaskElement(new TaskModel("邮件",true)));
                 }
             }
         });

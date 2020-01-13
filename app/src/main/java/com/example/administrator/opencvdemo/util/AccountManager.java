@@ -22,8 +22,8 @@ public class AccountManager {
         //            "ck52434333,520333&ck83250887,520333&ck84012149,520333&ck75077701,520333&ck74266770,520333&" +
         //            "ck56270983,520333&ck41351036,520333&" +
         //            "ck97381288,520333&ck68721497,520333&ck99371248,520333&ck21627506,520333&" +
-        //             "wgl251&wgl252&wgl253&wgl254&wgl255&wgl256&wgl257&wgl258&wgl259&wgl260&wgl261&wgl262";
-        "wgl243&wgl244&wgl245&wgl246&wgl247&wgl248&wgl249&wgl250&wgl251&wgl252&wgl253&wgl254&wgl255&wgl256&wgl257&wgl258&wgl259&wgl260&wgl261&wgl262";
+                    "wgl251";
+        // "wgl243&wgl244&wgl245&wgl246&wgl247&wgl248&wgl249&wgl250&wgl251&wgl252&wgl253&wgl254&wgl255&wgl256&wgl257&wgl258&wgl259&wgl260&wgl261&wgl262";
     //            "ck69539153,520333&ck82369145,520333&ck19656822,520333&ck92984644,520333";
 
     public static void init() {

@@ -647,7 +647,9 @@ public class Util implements Constant {
 
     private static void initSaveFile() {
         if (saveFile == null) {
-            saveFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES), "/cache");
+            File cacheDir = BaseApplication.getAppContext().getCacheDir();
+            saveFile = new File(cacheDir, "/cache");
+            // saveFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES), "/cache");
             if (!saveFile.exists()) {
                 saveFile.mkdirs();
             }
@@ -824,7 +826,8 @@ public class Util implements Constant {
     }
 
     public static void sleep(long time) throws InterruptedException {
-        Thread.sleep(BaseApplication.densityDpi == 480 ? time + 800 : time);
+        Thread.sleep( time);
+        // Thread.sleep(BaseApplication.densityDpi == 480 ? time + 800 : time);
     }
 
     public static void gc() {

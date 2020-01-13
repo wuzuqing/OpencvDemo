@@ -8,6 +8,7 @@ import android.os.IBinder;
 
 import com.example.administrator.opencvdemo.BaseApplication;
 import com.example.administrator.opencvdemo.util.LogUtils;
+import com.example.administrator.opencvdemo.v2.TaskState;
 import com.example.module_orc.OpenCVHelper;
 
 public class MainService extends Service {
@@ -31,6 +32,8 @@ public class MainService extends Service {
         BaseApplication.setIsShowPanel(true);
         startScreenBroadcastReceiver();
         OpenCVHelper.init(this);
+        TaskState  mTaskState = TaskState.get();
+        mTaskState.init(getApplicationContext());
     }
 
     private void createTouchView() {

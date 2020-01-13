@@ -24,4 +24,9 @@
 
     <!-- 白色 -->
     <color name="white">#ffffff</color>
+    <color name="test">#D02600</color>
+    <!--
+    D22900
+    -->
+
 </resources>

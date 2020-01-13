@@ -2,7 +2,6 @@ package com.example.administrator.opencvdemo.v2.task;
 
 import android.os.Handler;
 import android.text.TextUtils;
-
 import com.example.administrator.opencvdemo.BaseApplication;
 import com.example.administrator.opencvdemo.config.CheckName;
 import com.example.administrator.opencvdemo.model.PointModel;
@@ -17,14 +16,13 @@ import com.example.administrator.opencvdemo.v2.FuWaiHelper;
 import com.example.administrator.opencvdemo.v2.TaskState;
 import com.example.module_orc.OrcConfig;
 import com.example.module_orc.ignore.BenfubangdanIgnoreRect;
-
 import org.opencv.core.Rect;
 
 /**
  * 膜拜
  */
-public class MobaiTaskElement extends AbsTaskElement {
-    public MobaiTaskElement(TaskModel taskModel) {
+public class MobaiTaskElementOld extends AbsTaskElement {
+    public MobaiTaskElementOld(TaskModel taskModel) {
         super(taskModel);
     }
 
@@ -33,8 +31,6 @@ public class MobaiTaskElement extends AbsTaskElement {
     PointModel bangDanKuaFu = PointManagerV2.get(BANG_DAN_CROSS);
     PointModel moBaiBtn = PointManagerV2.get(BANG_DAN_GET);
     PointModel moBaiKfBtn = PointManagerV2.get(BANG_DAN_KF_GET);
-    PointModel guanKa = PointManagerV2.get(BANG_DAN_GUAN_KA);
-    PointModel qinMi = PointManagerV2.get(BANG_DAN_QIN_MI);
     private boolean doBenfuBangDan;
     PointModel huangGongClose = PointManagerV2.get(HUANG_GONG_CLOSE);
     private int status;
@@ -66,18 +62,15 @@ public class MobaiTaskElement extends AbsTaskElement {
     protected boolean doTask() throws Exception {
         pageData = Util.getBitmapAndPageData();
 
-        if (checkExp(netPoint, "当前网络异常")) {
-            return false;//检查网络环境
-        }
+        if (checkExp(netPoint, "当前网络异常")) return false;//检查网络环境
 
         if (checkPage("府内")) {
             PointManagerV2.execShellCmdChuFuV2();
-            Thread.sleep(1600);
+            Thread.sleep(1800);
             return false;
         } else if (checkPage("府外") && step == 0) {
             doBenfuBangDan = false;
             step = 1;
-            Thread.sleep(200);
             swipeToRight();
             if (!Util.checkColorAndClick(FuWaiHelper.paiHangBang)) {
                 click(paiHang);
@@ -99,26 +92,49 @@ public class MobaiTaskElement extends AbsTaskElement {
             }
             step = 2;
             Thread.sleep(1000);
+
         } else if (step == 2 && (checkPage("本服榜单") || checkPage("跨服榜单"))) {
             Rect moBai = BenfubangdanIgnoreRect.moBaiMax.clone();
             moBai.y += OrcConfig.offsetHeight;
-            printCurrentPage();
+            Rect target;
             while (true) {
-                if (Util.checkColor(moBaiBtn)) {
-                    //跳转到下一个
-                    if (status == 0) {
+                target = pageData.get(0).getRect();   // 膜拜
+                if (status == 0) {
+                    if (checkMobaiColor(moBai)){
+
+                    }else if (checkMobai(moBai, target)) {
+                        clickEmpty(moBai);
+                    } else {
+                        target = pageData.get(1).getRect().clone();
+                        target.y += OrcConfig.offsetHeight;
+                        click(target);
                         status = 1;
-                        click(guanKa);
-                        Util.sleep(800);
-                    } else if (status == 1) {
+                        Thread.sleep(1000);
+                    }
+                } else if (status == 1) {
+                    if (checkMobaiColor(moBai)){
+
+                    }else
+                    if (checkMobai(moBai, target)) {
+                        clickEmpty(moBai);
+                    } else {
+                        target = pageData.get(2).getRect();
+                        target.y += OrcConfig.offsetHeight;
+                        click(target);
                         status = 2;
-                        click(qinMi);
-                        Util.sleep(800);
-                    } else if (status == 2) {
-                        if (TaskState.get().isMobaiEnd() && !getTaskModel().isOnlyOne()) {
+                        Thread.sleep(1000);
+                    }
+                } else if (status == 2) {
+                    if (checkMobaiColor(moBai)){
+
+                    }else
+                    if (checkMobai(moBai, target)) {
+                        clickEmpty(moBai);
+                    } else {
+                        if (TaskState.get().isMobaiEnd()){
                             over();
                             return true;
-                        } else if (!doBenfuBangDan) {
+                        }else if (!doBenfuBangDan) {
                             click(huangGongClose);
                             Thread.sleep(1000);
                             doBenfuBangDan = true;
@@ -129,11 +145,8 @@ public class MobaiTaskElement extends AbsTaskElement {
                             return true;
                         }
                     }
-                } else {
-                    click(moBaiBtn);
-                    clickEmpty(moBai);
                 }
-                Util.getCapBitmapNew();
+                pageData = Util.getBitmapAndPageData();
             }
         } else {
             if (check(20)) {
@@ -144,18 +157,18 @@ public class MobaiTaskElement extends AbsTaskElement {
                 resetStep();
                 return true;
             }
-            click(540, 20);
+            click(540,20);
             Thread.sleep(200);
             return false;
         }
         return false;
     }
 
-    private boolean checkMobaiColor(Rect moBai) throws InterruptedException {
+    private boolean checkMobaiColor(Rect moBai)  throws InterruptedException{
         boolean isTrue = (!doBenfuBangDan && Util.checkColorAndClick(moBaiBtn))
             || (doBenfuBangDan && Util.checkColorAndClick(moBaiKfBtn));
-        if (isTrue) {
-            clickEmpty(moBai);
+        if (isTrue){
+           clickEmpty(moBai);
         }
         return isTrue;
     }
@@ -169,7 +182,7 @@ public class MobaiTaskElement extends AbsTaskElement {
         Thread.sleep(800);
     }
 
-    private void over() {
+    private void over(){
         Util.saveLastRefreshTime(KEY_WORK_KF_MB, ACache.getTodayEndTime());
         HttpManager.updateTask("mb_fl");
     }
@@ -179,14 +192,14 @@ public class MobaiTaskElement extends AbsTaskElement {
     private void clickEmpty(Rect moBai) throws InterruptedException {
         int x = BaseApplication.getScreenWidth() / 2;
         if (TextUtils.isEmpty(midColor)) {
-            midColor = Util.getColor(x, moBai.y);
+            midColor = Util.getColor( x, moBai.y);
         }
         Thread.sleep(200);
         clickMid(moBai);
         Thread.sleep(2400);
         while (true) {
             Util.getCapBitmapWithOffset();
-            if (TextUtils.equals(midColor, Util.getColor(x, moBai.y))) {
+            if (TextUtils.equals(midColor, Util.getColor( x, moBai.y))) {
                 break;
             }
             clickMid(moBai);
