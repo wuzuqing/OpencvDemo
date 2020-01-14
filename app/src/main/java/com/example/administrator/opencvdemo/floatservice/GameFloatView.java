@@ -20,6 +20,7 @@ import com.example.administrator.opencvdemo.notroot.ServiceHelper;
 import com.example.administrator.opencvdemo.notroot.WPZMGService3;
 import com.example.administrator.opencvdemo.util.HandlerUtil;
 import com.example.administrator.opencvdemo.util.LaunchManager;
+import com.example.administrator.opencvdemo.util.MenKeFenShuHelper;
 import com.example.administrator.opencvdemo.util.PointManagerV2;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.FuWaiHelper;
@@ -149,18 +150,23 @@ public class GameFloatView extends BaseFloatView {
                         // Test.test(bitmap);
 //                        PointModel close = PointManagerV2.get(Constant. EMAIL_DIALOG_CLOSE);
 //                        InputEventManager.getInstance().click(close);
+//                         try {
+//                             PointManagerV2.execShellCmdChuFuV2();
+//                             Util.sleep(600);
+//                             InputEventManager.getInstance().swipe(800,600,350,600);
+//                             Util.sleep(800);
+//                             Util.getCapBitmapNew();
+//                             Util.sleep(200);
+//                             FuWaiHelper.paiHangBangInit();
+//                         } catch (InterruptedException e) {
+//                             e.printStackTrace();
+//                         }
+//                         MenKeFenShuHelper.getPkIndex();
                         try {
-                            PointManagerV2.execShellCmdChuFuV2();
-                            Util.sleep(600);
-                            InputEventManager.getInstance().swipe(800,600,350,600);
-                            Util.sleep(800);
-                            Util.getCapBitmapNew();
-                            Util.sleep(200);
-                            FuWaiHelper.paiHangBangInit();
-                        } catch (InterruptedException e) {
+                            MenKeFenShuHelper.getInstance().getPkModel();
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
-
                     }
                 });
             }

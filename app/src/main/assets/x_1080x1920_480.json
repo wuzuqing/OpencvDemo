@@ -118,9 +118,9 @@
   {
     "key": "YA_MEN_MAP",
     "name": "衙门",
-    "normalColor": "#928D7A",
-    "x": 416,
-    "y": 1235
+    "normalColor": "#50514A",
+    "x": 433,
+    "y": 1286
   },
   {
     "key": "PAI_HANG_BANG",
@@ -627,11 +627,32 @@
     "y": 1578
   },
   {
-    "key": "YA_MEN_TEMP_DIALOG_HIDE",
-    "name": "衙门PK临时属性隐藏",
-    "normalColor": "#3D2725",
-    "x": 956,
-    "y": 1578
+    "key": "YA_MEN_TEMP_DIALOG_CLOSE",
+    "name": "衙门PK临时属性关闭",
+    "normalColor": "#1E293B",
+    "x": 981,
+    "y": 315
+  },
+  {
+    "key": "YA_MEN_LIAN_SHENG",
+    "name": "衙门连胜",
+    "normalColor": "#E3BA55",
+    "x": 720,
+    "y": 1036
+  },
+  {
+    "key": "YA_MEN_CHOOSE_SKIP",
+    "name": "衙门选择跳过",
+    "normalColor": "#220100",
+    "x": 1007,
+    "y": 1427
+  },
+  {
+    "key": "YA_MEN_END",
+    "name": "衙门结束",
+    "normalColor": "#2A3850",
+    "x": 726,
+    "y": 1289
   },
   {
     "key": "SHUYUAN_GET_6",

@@ -57,16 +57,16 @@ public class FuWaiHelper {
             e.printStackTrace();
         }
         hasChange = false;
-        List<Result.ItemsBean> itemCoord = HttpManager.getItemCoord(page);
-        if (itemCoord!=null && itemCoord.size()>0){
-            if (TextUtils.equals(page,"fu_wai_center")){
-                forCoordList(itemCoord);
-            }else if (TextUtils.equals(page,"fu_wai_right")){
-                forCoordList1(itemCoord);
-            }
-            isIniting = false;
-            return;
-        }
+        // List<Result.ItemsBean> itemCoord = HttpManager.getItemCoord(page);
+        // if (itemCoord!=null && itemCoord.size()>0){
+        //     if (TextUtils.equals(page,"fu_wai_center")){
+        //         forCoordList(itemCoord);
+        //     }else if (TextUtils.equals(page,"fu_wai_right")){
+        //         forCoordList1(itemCoord);
+        //     }
+        //     isIniting = false;
+        //     return;
+        // }
         Util.getCapBitmapNew();
         ImageParse.getSyncData(  new ImageParse.Call() {
             @Override

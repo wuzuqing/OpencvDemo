@@ -28,6 +28,7 @@ public class HttpManager {
 
     public static void init(Context context) {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        OkHttp3Utils.getInstance().getHandler();
         flag = String.format(Locale.CHINA, "%d_%d", metrics.widthPixels, metrics.heightPixels);
     }
 

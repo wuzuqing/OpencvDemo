@@ -173,7 +173,7 @@ public abstract class AbsTaskElement implements TaskElement, Constant , IInputCl
     protected void swipeToRight(int toX) throws InterruptedException {
         InputEventManager.getInstance().swipe(800,600,toX,600);
         Thread.sleep(2000);
-        FuWaiHelper.paiHangBangInit();
+
     }
 
     public void initPage() {

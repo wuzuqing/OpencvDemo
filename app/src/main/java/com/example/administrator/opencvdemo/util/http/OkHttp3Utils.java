@@ -98,9 +98,9 @@ public class OkHttp3Utils {
             okHttpClient = new OkHttpClient.Builder().connectTimeout(15, TimeUnit.SECONDS)
                     //添加OkHttp3的拦截器
                     .addInterceptor(httpLoggingInterceptor)
-                    .addNetworkInterceptor(new CacheInterceptor())
+                    // .addNetworkInterceptor(new CacheInterceptor())
                     .writeTimeout(20, TimeUnit.SECONDS).readTimeout(20, TimeUnit.SECONDS)
-                    .cache(new Cache(sdcache.getAbsoluteFile(), cacheSize))
+                    // .cache(new Cache(sdcache.getAbsoluteFile(), cacheSize))
                     .build();
         }
         return okHttpClient;

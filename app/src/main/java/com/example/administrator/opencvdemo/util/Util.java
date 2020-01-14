@@ -386,6 +386,14 @@ public class Util implements Constant {
         }
         return isTrue;
     }
+    public static boolean checkColorAndClick(PointModel pointModel,String subColor) {
+        boolean isTrue = checkColor(pointModel) || likeColor(subColor,getColor(pointModel));
+        if (isTrue) {
+            InputEventManager.getInstance().click(pointModel.getX(), pointModel.getY());
+        }
+        return isTrue;
+    }
+
 
     public static boolean checkColor(PointModel pointModel, int offset, int xiangXi) {
         if (bitmap == null || pointModel == null) {

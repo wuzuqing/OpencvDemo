@@ -81,6 +81,10 @@ public class MobaiTaskElement extends AbsTaskElement {
             swipeToRight();
             if (!Util.checkColorAndClick(FuWaiHelper.paiHangBang)) {
                 click(paiHang);
+            }else if (check(4)){
+                FuWaiHelper.paiHangBangInit();
+            }else if (check(20)){
+                return true;
             }
             Thread.sleep(800);
             return false;
