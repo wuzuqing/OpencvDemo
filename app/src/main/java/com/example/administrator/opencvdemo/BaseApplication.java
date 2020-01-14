@@ -59,7 +59,7 @@ public class BaseApplication extends Application {
         screenWidth = metrics.widthPixels;
         screenHeight = getScreenHeight3(this);
 
-        if (AutoTool.isRoot() || AutoTool.isEmulator(this)) {
+        if (AutoTool.isRoot() ) {
             InputEventManager.getInstance().setClickEvent(new RootInputEventImpl());
         } else if (Build.VERSION.SDK_INT >= 24) {
             InputEventManager.getInstance().setClickEvent(new SimpleV24InputEventImpl());

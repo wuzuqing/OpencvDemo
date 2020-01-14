@@ -374,7 +374,7 @@ public class Util implements Constant {
         if (bitmap == null || pointModel == null) {
             return false;
         }
-        String color = getColor(pointModel.getX(), pointModel.getY() + OrcConfig.offsetHeight);
+        String color = getColor(pointModel.getX(), pointModel.getY() );
         LogUtils.logd("checkColorAndOffset color:" + color + " offsetHeight:" + OrcConfig.offsetHeight + " pointModel:" + pointModel.toString());
         return color.equals(pointModel.getNormalColor()) || likeColor(color, pointModel.getNormalColor());
     }
@@ -531,7 +531,7 @@ public class Util implements Constant {
             return null;
         }
         if (bitmap.getHeight() > 1920) {
-            OrcConfig.offsetHeight = (bitmap.getHeight() - 1920 - OrcHelper.getInstance().getNavigationBarHeight()) / 2;
+            OrcConfig.offsetHeight = (bitmap.getHeight() - 1920 ) / 2;
         } else {
             OrcConfig.offsetHeight = 0;
         }
@@ -832,8 +832,8 @@ public class Util implements Constant {
         int oldX = model.getX();
         int oldY = model.getY();
         String oldColor = model.getNormalColor();
-        model.setX(coord.getX() + coord.getWidth() / 2);
-        model.setY(coord.getY() + coord.getHeight() / 2);
+        model.setComputeX(coord.getX() + coord.getWidth() / 2);
+        model.setComputeY(coord.getY() + coord.getHeight() / 2);
         model.setNormalColor(Util.getColor(model));
         LogUtils.logd(model.getName() + "oldX:" + oldX + " newX:" + model.getX());
         LogUtils.logd("oldY:" + oldY + " newY:" + model.getY());

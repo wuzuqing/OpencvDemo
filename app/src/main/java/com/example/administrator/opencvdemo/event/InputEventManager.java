@@ -2,6 +2,7 @@ package com.example.administrator.opencvdemo.event;
 
 import android.text.TextUtils;
 import com.example.administrator.opencvdemo.model.PointModel;
+import com.example.administrator.opencvdemo.util.LogUtils;
 import org.opencv.core.Rect;
 
 /**
@@ -22,6 +23,7 @@ public class InputEventManager implements IInputEvent,IInputClickHeavyLoad {
 
     public void setClickEvent(IInputEvent clickEvent) {
         this.clickEvent = clickEvent;
+        LogUtils.logd("clickEvent:"+clickEvent);
     }
 
     @Override

@@ -57,7 +57,7 @@ public class OnlyCardDiscern implements Runnable {
         Mat threshold;
         // 初始化
 
-        OrcConfig.offsetHeight = (bitmap1.getHeight() - 1920 -OrcHelper.getInstance().getNavigationBarHeight() ) / 2;
+        OrcConfig.offsetHeight = (bitmap1.getHeight() - 1920 ) / 2;
         if (  OrcConfig.offsetHeight <0){
             OrcConfig.offsetHeight = 0;
         }

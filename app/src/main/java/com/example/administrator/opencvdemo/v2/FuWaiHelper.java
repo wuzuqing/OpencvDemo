@@ -1,5 +1,6 @@
 package com.example.administrator.opencvdemo.v2;
 
+import com.example.administrator.opencvdemo.BaseApplication;
 import com.example.administrator.opencvdemo.config.CheckName;
 import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.Result;
@@ -12,7 +13,9 @@ import com.example.administrator.opencvdemo.youtu.ImageParse;
 import com.example.module_orc.util.GsonUtils;
 
 import java.util.List;
+import android.content.res.TypedArray;
 import android.text.TextUtils;
+import android.util.TypedValue;
 
 public class FuWaiHelper {
     public static PointModel shuYuan = PointManagerV2.get(Constant.ACADEMY);
@@ -84,17 +87,17 @@ public class FuWaiHelper {
                     }
                     if (hasChange){
                         HttpManager.updatePageData(page, GsonUtils.toJson(result));
+                        PointManagerV2.saveCoordinate();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                PointManagerV2.saveCoordinate();
 
                 isIniting = false;
             }
         });
     }
-
+    public static boolean isFuNei;
     private static boolean forCoordList(List<Result.ItemsBean> result) {
         for (Result.ItemsBean itemsBean : result) {
             switch (itemsBean.getItemstring()) {
@@ -118,6 +121,9 @@ public class FuWaiHelper {
                 case "件":
                     setNewCoord(youJian, itemsBean.getItemcoord());
                     break;
+                case "师":
+                    isFuNei = true;
+                    return false;
             }
         }
         return hasChange;
@@ -134,6 +140,12 @@ public class FuWaiHelper {
                 case "联":
                 case "盟":
                     setNewCoord(lianMeng, itemsBean.getItemcoord());
+                    if (!paiHangBang.isReset()){
+                        itemsBean.getItemcoord().setY((int) (itemsBean.getItemcoord().getY()+
+                            TypedValue.applyDimension(1, 120f,
+                                                    BaseApplication.getAppContext().getResources().getDisplayMetrics())));
+                        setNewCoord(paiHangBang, itemsBean.getItemcoord());
+                    }
                     break;
                 case "牢":
                     setNewCoord(laoFang, itemsBean.getItemcoord());

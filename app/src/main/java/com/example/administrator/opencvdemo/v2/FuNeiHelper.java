@@ -58,11 +58,11 @@ public class FuNeiHelper {
                     forCoordList(result);
                     if (hasChange){
                         HttpManager.updatePageData("fu_nei", GsonUtils.toJson(result));
+                        PointManagerV2.saveCoordinate();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                PointManagerV2.saveCoordinate();
                 SPUtils.setBoolean(CheckName.FU_NEI, true);
                 isIniting = false;
             }
@@ -77,6 +77,7 @@ public class FuNeiHelper {
                     setNewCoord(chuFu, itemsBean.getItemcoord());
                     break;
                 case "华":
+                case "安":
                     setNewCoord(huaAn, itemsBean.getItemcoord());
                     break;
                 case "师新":

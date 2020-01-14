@@ -120,7 +120,7 @@ public abstract class AbsTaskElement implements TaskElement, Constant , IInputCl
         if (Util.isRecycled()) {
             return true;
         }
-        if (Util.getColor(model.getX(), model.getY() + OrcConfig.offsetHeight).equals(model.getNormalColor())) { //检查网络环境
+        if (Util.getColor(model.getX(), model.getY()).equals(model.getNormalColor())) { //检查网络环境
             click(model);
             Thread.sleep(600);
             return true;

@@ -13,6 +13,7 @@ import com.example.administrator.opencvdemo.util.SPUtils;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.util.http.HttpManager;
 import com.example.administrator.opencvdemo.v2.AbsTaskElement;
+import com.example.administrator.opencvdemo.v2.FuNeiHelper;
 import com.example.administrator.opencvdemo.v2.FuWaiHelper;
 import com.example.administrator.opencvdemo.v2.TaskState;
 import com.example.module_orc.OrcConfig;
@@ -57,11 +58,12 @@ public class MobaiTaskElement extends AbsTaskElement {
         if (checkTime(KEY_WORK_MB, ACache.getTodayEndTime())) {
             return false;
         }
+        isTry = false;
         hasKuaFu = SPUtils.getBoolean(KEY_WORK_KF_MB, false);
         isInBangDan = false;
         return true;
     }
-
+    private boolean isTry = false;
     @Override
     protected boolean doTask() throws Exception {
         pageData = Util.getBitmapAndPageData();
@@ -69,25 +71,34 @@ public class MobaiTaskElement extends AbsTaskElement {
         if (checkExp(netPoint, "当前网络异常")) {
             return false;//检查网络环境
         }
-
-        if (checkPage("府内")) {
+        printCurrentPage();
+        if (checkPage("府内") || FuWaiHelper.isFuNei || Util.checkColor(FuNeiHelper.huaAn)) {
             PointManagerV2.execShellCmdChuFuV2();
+            FuWaiHelper.isFuNei = false;
             Thread.sleep(1600);
             return false;
-        } else if (checkPage("府外") && step == 0) {
-            doBenfuBangDan = false;
-            step = 1;
-            Thread.sleep(200);
-            swipeToRight();
-            if (!Util.checkColorAndClick(FuWaiHelper.paiHangBang)) {
-                click(paiHang);
+        } else if (checkPage("府外") ) {
+            if ( step == 0){
+                doBenfuBangDan = false;
+                step = 1;
+                Thread.sleep(200);
+                if (!isTry){
+                    swipeToRight();
+                }
+                if (!Util.checkColorAndClick(FuWaiHelper.paiHangBang)) {
+                    click(paiHang);
+                }else if (check(4)){
+                    FuWaiHelper.paiHangBangInit();
+                }else if (check(20)){
+                    return true;
+                }
+                Thread.sleep(800);
+                return false;
             }else if (check(4)){
+                step = 0;
+                isTry = true;
                 FuWaiHelper.paiHangBangInit();
-            }else if (check(20)){
-                return true;
             }
-            Thread.sleep(800);
-            return false;
         } else if (checkPage("排行榜") && step == 1) {
             if (doBenfuBangDan) {
                 if (hasKuaFu) {

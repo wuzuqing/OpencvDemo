@@ -19,6 +19,25 @@ public class PointModel {
     private boolean isReset;
     private int subY;
 
+    private int computeX = -1;
+    private int computeY = -1;
+
+    public void setComputeX(int computeX) {
+        this.computeX = computeX;
+    }
+
+    public void setComputeY(int computeY) {
+        this.computeY = computeY;
+    }
+
+    public int getComputeX() {
+        return computeX;
+    }
+
+    public int getComputeY() {
+        return computeY;
+    }
+
     @Override
     public String toString() {
         return "{" +
@@ -72,7 +91,17 @@ public class PointModel {
     }
 
     public int getX() {
+        if (getComputeX()>0){
+            return getComputeX();
+        }
         return x;
+    }
+
+    public int getBaseX(){
+        return x;
+    }
+    public int getBaseY(){
+        return y;
     }
 
     public void setX(int x) {
@@ -80,6 +109,9 @@ public class PointModel {
     }
 
     public int getY() {
+        if (getComputeY()>0){
+            return getComputeY();
+        }
         return y;
     }
 

@@ -38,8 +38,12 @@ public class LaunchManager {
     //跳转页面的方法
     public static void launchapp(Context context, String packageName) {
         Intent intent = context.getPackageManager().getLaunchIntentForPackage(packageName);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+        if (intent==null){
+            ToastUitl.showShort("未安装该应用");
+        }else{
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        }
         // LoadingActivity.launch(context, packageName1, 0);
     }
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
+import com.example.administrator.opencvdemo.BaseApplication;
 import com.example.administrator.opencvdemo.model.PagePointsModel;
 import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.Result;
@@ -27,9 +28,8 @@ public class HttpManager {
     private static String area = "142";
 
     public static void init(Context context) {
-        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         OkHttp3Utils.getInstance().getHandler();
-        flag = String.format(Locale.CHINA, "%d_%d", metrics.widthPixels, metrics.heightPixels);
+        flag = String.format(Locale.CHINA, "%d_%d", BaseApplication.getScreenWidth(), BaseApplication.getScreenHeight());
     }
 
     public static void updateTask(String tasks) {

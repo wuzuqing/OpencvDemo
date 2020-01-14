@@ -79,6 +79,7 @@ public class JoinGameTaskElement extends AbsTaskElement {
             }
             //检查 通告对话框的环境
             pageData = Util.getPageData();
+            printCurrentPage();
             if (checkPage("游戏公告")) {
                 boolean isInit = SPUtils.getBoolean(CheckName.GAME_NOTICE_BTN_VERSION, false);
                 if (!isInit){
@@ -97,10 +98,10 @@ public class JoinGameTaskElement extends AbsTaskElement {
                 return true;
             }else{
                 Thread.sleep(400);
-//                boolean isInit = SPUtils.getBoolean(CheckName.GAME_NOTICE_BTN_VERSION, false);
-//                if (!isInit){
-//                    initPage();
-//                }
+               boolean isInit = SPUtils.getBoolean(CheckName.GAME_NOTICE_BTN_VERSION, false);
+               if (!isInit){
+                   initPage();
+               }
             }
         }
         Util.sleep(800);
@@ -132,11 +133,11 @@ public class JoinGameTaskElement extends AbsTaskElement {
                 needSaveCoord = true;
                 return;
             }else if (equals(GAME_NOTICE_BTN_NAME,bean.getItemstring())){
-                SPUtils.setBoolean(CheckName.GAME_NOTICE_BTN_VERSION,true);
-                gameNoticePoint.setY(bean.getItemcoord().getY()+bean.getItemcoord().getHeight()-10);
-                gameNoticePoint.setX((int) (BaseApplication.getScreenWidth()*0.9065));
-                gameNoticePoint.setNormalColor(Util.getColor(gameNoticePoint));
-                needSaveCoord = true;
+                // SPUtils.setBoolean(CheckName.GAME_NOTICE_BTN_VERSION,true);
+                // gameNoticePoint.setY(bean.getItemcoord().getY()+bean.getItemcoord().getHeight()-10);
+                // gameNoticePoint.setX((int) (BaseApplication.getScreenWidth()*0.9065));
+                // gameNoticePoint.setNormalColor(Util.getColor(gameNoticePoint));
+                // needSaveCoord = true;
             }
         }
     }

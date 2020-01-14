@@ -7,6 +7,7 @@ import com.example.administrator.opencvdemo.util.ACache;
 import com.example.administrator.opencvdemo.util.PointManagerV2;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.AbsTaskElement;
+import com.example.administrator.opencvdemo.v2.FuNeiHelper;
 import com.example.administrator.opencvdemo.v2.FuWaiHelper;
 
 
@@ -36,11 +37,23 @@ public class FengluTaskElement extends AbsTaskElement {
 
         if (checkExp(netPoint, "当前网络异常")) return false;//检查网络环境
 
+        printCurrentPage();
         if (checkPage("府内")) {
             PointManagerV2.execShellCmdChuFuV2();
             Thread.sleep(1800);
             return false;
         } else if (checkPage("府外")) {
+            if (FuWaiHelper.isFuNei){
+                FuWaiHelper.isFuNei = false;
+                PointManagerV2.execShellCmdChuFuV2();
+                Thread.sleep(1800);
+                return false;
+            }else if (Util.checkColor(FuNeiHelper.huaAn)){
+                FuWaiHelper.isFuNei = false;
+                PointManagerV2.execShellCmdChuFuV2();
+                Thread.sleep(1800);
+                return false;
+            }
             FuWaiHelper.init();
             if (!Util.checkColorAndClick(FuWaiHelper.huangGong)) {
                 clickMid(pageData.get(0).getRect());

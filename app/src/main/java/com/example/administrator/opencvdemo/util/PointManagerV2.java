@@ -53,8 +53,9 @@ public class PointManagerV2 implements Constant {
             return;
         }
         DisplayMetrics metrics = BaseApplication.getAppContext().getResources().getDisplayMetrics();
-        int selfWidth = metrics.widthPixels;
-        int selfHeight = metrics.heightPixels;
+        int selfWidth = BaseApplication.getScreenWidth();
+        int selfHeight =BaseApplication.getScreenHeight();
+
         int tempHeight = (int) (selfWidth * originalHeight / originalWidth);
         int tempTop = (selfHeight - tempHeight) / 2;
         float radioX = selfWidth / originalWidth;
@@ -78,10 +79,14 @@ public class PointManagerV2 implements Constant {
         if (selfHeight < originalHeight) {
             return;
         }
-        int realX = (int) (pointModel.getX() * radioX);
-        int realY = (int) (pointModel.getY() * radioY) + tempTop;
-        pointModel.setX(realX);
-        pointModel.setY(realY);
+        int oldX = pointModel.getBaseX();
+        int oldY = pointModel.getBaseY();
+        int realX = (int) (oldX * radioX);
+        int realY = (int) (oldY * radioY) + tempTop;
+        pointModel.setComputeX(realX);
+        pointModel.setComputeY(realY);
+        LogUtils.logd("compute " +pointModel.getName() +" : "+oldX+","+oldY + " real:"+realX +","+realY);
+
     }
 
     public static void init() {

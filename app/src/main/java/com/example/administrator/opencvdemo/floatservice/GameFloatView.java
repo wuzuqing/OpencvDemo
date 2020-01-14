@@ -178,7 +178,7 @@ public class GameFloatView extends BaseFloatView {
                 if (!ServiceHelper.getInstance().goAccess()){
                     hidePanel1();
                     TaskState.isWorking = true;
-                    AsyncTask.THREAD_POOL_EXECUTOR.execute(new YamenTaskElement(new TaskModel("邮件",true)));
+                    AsyncTask.THREAD_POOL_EXECUTOR.execute(new FengluTaskElement(new TaskModel("邮件",true)));
                 }
             }
         });
