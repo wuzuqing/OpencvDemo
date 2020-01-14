@@ -191,4 +191,8 @@ public class DialogActivity extends NoAnimatorActivity implements Constant {
     public void help(View view) {
 //        startActivity(new Intent(this, HelpActivity.class));
     }
+
+    public void selectTask(View view) {
+
+    }
 }

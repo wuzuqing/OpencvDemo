@@ -29,7 +29,6 @@ public class MobaiTaskElement extends AbsTaskElement {
         super(taskModel);
     }
 
-    PointModel paiHang = PointManagerV2.get(PAI_HANG_BANG);
     PointModel bangDanSelf = PointManagerV2.get(BANG_DAN_SELF);
     PointModel bangDanKuaFu = PointManagerV2.get(BANG_DAN_CROSS);
     PointModel moBaiBtn = PointManagerV2.get(BANG_DAN_GET);
@@ -58,12 +57,10 @@ public class MobaiTaskElement extends AbsTaskElement {
         if (checkTime(KEY_WORK_MB, ACache.getTodayEndTime())) {
             return false;
         }
-        isTry = false;
         hasKuaFu = SPUtils.getBoolean(KEY_WORK_KF_MB, false);
         isInBangDan = false;
         return true;
     }
-    private boolean isTry = false;
     @Override
     protected boolean doTask() throws Exception {
         pageData = Util.getBitmapAndPageData();
@@ -77,28 +74,23 @@ public class MobaiTaskElement extends AbsTaskElement {
             FuWaiHelper.isFuNei = false;
             Thread.sleep(1600);
             return false;
-        } else if (checkPage("府外") ) {
-            if ( step == 0){
-                doBenfuBangDan = false;
-                step = 1;
-                Thread.sleep(200);
-                if (!isTry){
-                    swipeToRight();
-                }
-                if (!Util.checkColorAndClick(FuWaiHelper.paiHangBang)) {
-                    click(paiHang);
-                }else if (check(4)){
-                    FuWaiHelper.paiHangBangInit();
-                }else if (check(20)){
-                    return true;
-                }
-                Thread.sleep(800);
-                return false;
-            }else if (check(4)){
-                step = 0;
-                isTry = true;
+        } else if (checkPage("府外") && step == 0) {
+            doBenfuBangDan = false;
+            Thread.sleep(200);
+            swipeToRight();
+            click(FuWaiHelper.paiHangBang);
+            Thread.sleep(800);
+            step = 1;
+            return false;
+        } else if (checkPage("府外") && step==1){
+            if (check(4)){
                 FuWaiHelper.paiHangBangInit();
+            }else if (TaskState.failCount==10){
+                //无奈结束
+                return true;
             }
+            Thread.sleep(800);
+            return false;
         } else if (checkPage("排行榜") && step == 1) {
             if (doBenfuBangDan) {
                 if (hasKuaFu) {
@@ -168,7 +160,7 @@ public class MobaiTaskElement extends AbsTaskElement {
 
     private boolean checkMobaiColor(Rect moBai) throws InterruptedException {
         boolean isTrue = (!doBenfuBangDan && Util.checkColorAndClick(moBaiBtn))
-            || (doBenfuBangDan && Util.checkColorAndClick(moBaiKfBtn));
+                || (doBenfuBangDan && Util.checkColorAndClick(moBaiKfBtn));
         if (isTrue) {
             clickEmpty(moBai);
         }

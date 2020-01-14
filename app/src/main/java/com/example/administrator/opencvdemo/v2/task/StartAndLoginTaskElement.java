@@ -1,26 +1,24 @@
 package com.example.administrator.opencvdemo.v2.task;
 
 
+import android.text.TextUtils;
+
 import com.example.administrator.opencvdemo.BaseApplication;
-import com.example.administrator.opencvdemo.config.CheckName;
 import com.example.administrator.opencvdemo.event.InputEventManager;
-import com.example.administrator.opencvdemo.util.AutoTool;
-import com.example.administrator.opencvdemo.util.LaunchManager;
 import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.Result;
 import com.example.administrator.opencvdemo.model.TaskModel;
 import com.example.administrator.opencvdemo.model.UserInfo;
 import com.example.administrator.opencvdemo.notroot.EventHelper;
-import com.example.administrator.opencvdemo.util.PointManagerV2;
+import com.example.administrator.opencvdemo.util.AutoTool;
+import com.example.administrator.opencvdemo.util.LaunchManager;
 import com.example.administrator.opencvdemo.util.LogUtils;
-import com.example.administrator.opencvdemo.util.SPUtils;
+import com.example.administrator.opencvdemo.util.PointManagerV2;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.AbsTaskElement;
 import com.example.administrator.opencvdemo.v2.TaskState;
-import org.opencv.core.Point;
 
 import java.util.List;
-import android.text.TextUtils;
 
 public class StartAndLoginTaskElement extends AbsTaskElement {
     PointModel pointModel = PointManagerV2.get(LOGIN_GAME);
@@ -70,17 +68,19 @@ public class StartAndLoginTaskElement extends AbsTaskElement {
                 setNewCoord(pointModel, pageData.get(0).getRect());
                 LogUtils.logd("step:3 resetCoord");
                 break;
-            }  else if (check(6)) {
-                boolean isInit = SPUtils.getBoolean(CheckName.LOGIN_BTN_VERSION, false);
-                if (!isInit) {
-                    if (AutoTool.isEmulator(BaseApplication.getAppContext())){
-                        SPUtils.getBoolean(CheckName.LOGIN_BTN_VERSION, true);
-                        initPage();
-                    }
-                }
-                LogUtils.logd("step:4 continue");
-                return false;
-            }else if (check(12)){
+            }
+//            else if (check(6)) {
+//                boolean isInit = SPUtils.getBoolean(CheckName.LOGIN_BTN_VERSION, false);
+//                if (!isInit) {
+//                    if (AutoTool.isEmulator(BaseApplication.getAppContext())){
+//                        SPUtils.getBoolean(CheckName.LOGIN_BTN_VERSION, true);
+//                        initPage();
+//                    }
+//                }
+//                LogUtils.logd("step:4 continue");
+//                return false;
+//            }
+            else if (check(12)){
                 // 退出游戏
                 killApp();
                 return true;
@@ -122,15 +122,15 @@ public class StartAndLoginTaskElement extends AbsTaskElement {
 
     @Override
     protected void callBack(List<Result.ItemsBean> result) {
-        for (Result.ItemsBean itemsBean : result) {
-            if (equals(CheckName.LOGIN_BTN_NAME, itemsBean.getItemstring())) {
-                // 重新设置坐标信息
-                setNewCoord(pointModel, itemsBean.getItemcoord());
-                SPUtils.setBoolean(CheckName.LOGIN_BTN_VERSION, true);
-                // needSaveCoord = true;
-                return;
-            }
-        }
+//        for (Result.ItemsBean itemsBean : result) {
+//            if (equals(CheckName.LOGIN_BTN_NAME, itemsBean.getItemstring())) {
+//                // 重新设置坐标信息
+//                setNewCoord(pointModel, itemsBean.getItemcoord());
+//                SPUtils.setBoolean(CheckName.LOGIN_BTN_VERSION, true);
+//                // needSaveCoord = true;
+//                return;
+//            }
+//        }
 //        SPUtils.setBoolean(CheckName.LOGIN_BTN_VERSION,false);
     }
 

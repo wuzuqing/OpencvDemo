@@ -473,6 +473,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:onClick="selectTask"
+                    android:text="选择任务"
+                    android:textSize="12sp" />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:onClick="exit"
                     android:text="退出辅助"
                     android:textSize="12sp" />
@@ -485,6 +493,7 @@
                 android:layout_marginTop="6dp"
                 android:text="温馨提示: 体验期间只能使用收菜功能,其他设置无效;\n如需开通其他功能,请联系技术支持\nQQ: 1052243597\n微信:wzq187159"
                 android:textColor="#f00" />
+
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </FrameLayout>

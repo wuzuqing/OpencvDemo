@@ -1,8 +1,8 @@
 package com.example.administrator.opencvdemo.util;
 
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 
 import com.example.administrator.opencvdemo.BaseApplication;
 import com.example.administrator.opencvdemo.event.InputEventManager;
@@ -38,7 +38,10 @@ public class PointManagerV2 implements Constant {
     }
 
     public static void initCoordinate() {
-        String string = Util.getFileStringAndSp(COORDINATE_KEY);
+        String string = HttpManager.getBasePoints().getData().getTotalPoints();
+//        if (TextUtils.isEmpty(string)) {
+//            string = Util.getFileStringAndSp(COORDINATE_KEY);
+//        }
         if (TextUtils.isEmpty(string)) {
             string = JsonUtils.getJson("x_1080x1920_480.json", BaseApplication.getAppContext());
         }
@@ -52,9 +55,8 @@ public class PointManagerV2 implements Constant {
         if (coordinateList == null || coordinateList.size() == 0) {
             return;
         }
-        DisplayMetrics metrics = BaseApplication.getAppContext().getResources().getDisplayMetrics();
         int selfWidth = BaseApplication.getScreenWidth();
-        int selfHeight =BaseApplication.getScreenHeight();
+        int selfHeight = BaseApplication.getScreenHeight();
 
         int tempHeight = (int) (selfWidth * originalHeight / originalWidth);
         int tempTop = (selfHeight - tempHeight) / 2;
@@ -63,7 +65,7 @@ public class PointManagerV2 implements Constant {
         for (PointModel pointModel : coordinateList) {
             //没有重置或者尺寸与原始不一致则需要计算新的x y坐标
             if (!pointModel.isReset() && (originalWidth != selfWidth || originalHeight != selfHeight)
-            ) {
+                    ) {
                 //重新计算坐标
                 compute(pointModel, selfHeight, tempTop, radioX, radioY);
             }
@@ -75,7 +77,7 @@ public class PointManagerV2 implements Constant {
     private static final float originalHeight = 1920f;
 
     private static void compute(PointModel pointModel,
-        int selfHeight, int tempTop, float radioX, float radioY) {
+                                int selfHeight, int tempTop, float radioX, float radioY) {
         if (selfHeight < originalHeight) {
             return;
         }
@@ -91,7 +93,19 @@ public class PointManagerV2 implements Constant {
 
     public static void init() {
         screenCap = "screencap -p " + saveFilePath.getPath();
-        initCoordinate();
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    initCoordinate();
+                    Util.init();
+                    AccountManager.init();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+
     }
 
     public static List<PointModel> getChengJiuGet() {

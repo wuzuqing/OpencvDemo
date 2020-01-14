@@ -9,11 +9,12 @@ import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.Result;
 import com.example.administrator.opencvdemo.model.TaskModel;
 import com.example.administrator.opencvdemo.util.ACache;
-import com.example.administrator.opencvdemo.util.PointManagerV2;
 import com.example.administrator.opencvdemo.util.Constant;
+import com.example.administrator.opencvdemo.util.PointManagerV2;
 import com.example.administrator.opencvdemo.util.SPUtils;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.AbsTaskElement;
+import com.example.administrator.opencvdemo.v2.FuNeiHelper;
 import com.example.administrator.opencvdemo.v2.FuWaiHelper;
 import com.example.administrator.opencvdemo.v2.TaskState;
 
@@ -39,6 +40,12 @@ public class ShuyuanTaskElement extends AbsTaskElement {
     private boolean isInShuYuan;
 
     @Override
+    protected boolean doTaskBefore() {
+        isInShuYuan = false;
+        return super.doTaskBefore();
+    }
+
+    @Override
     protected boolean doTask() throws Exception {
         if (checkTime( KEY_SHU_YUAN, ACache.TIME_HOUR * 3)) {
             return  true;
@@ -51,6 +58,17 @@ public class ShuyuanTaskElement extends AbsTaskElement {
                 Thread.sleep(1200);
                 continue;
             } else if (checkPage("府外")) {
+                if (FuWaiHelper.isFuNei){
+                    FuWaiHelper.isFuNei = false;
+                    PointManagerV2.execShellCmdChuFuV2();
+                    Thread.sleep(1800);
+                    return false;
+                }else if (Util.checkColor(FuNeiHelper.huaAn)){
+                    FuWaiHelper.isFuNei = false;
+                    PointManagerV2.execShellCmdChuFuV2();
+                    Thread.sleep(1800);
+                    return false;
+                }
                 FuWaiHelper.init();
                 if (!Util.checkColorAndClick(FuWaiHelper.shuYuan)) {
                     if (pageData.size() > 0) {

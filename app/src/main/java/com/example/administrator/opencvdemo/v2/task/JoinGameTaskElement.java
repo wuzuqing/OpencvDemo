@@ -1,13 +1,12 @@
 package com.example.administrator.opencvdemo.v2.task;
 
-import com.example.administrator.opencvdemo.BaseApplication;
 import com.example.administrator.opencvdemo.config.CheckName;
-import com.example.administrator.opencvdemo.util.LaunchManager;
 import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.Result;
 import com.example.administrator.opencvdemo.model.TaskModel;
-import com.example.administrator.opencvdemo.util.PointManagerV2;
+import com.example.administrator.opencvdemo.util.LaunchManager;
 import com.example.administrator.opencvdemo.util.LogUtils;
+import com.example.administrator.opencvdemo.util.PointManagerV2;
 import com.example.administrator.opencvdemo.util.SPUtils;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.AbsTaskElement;
@@ -22,6 +21,7 @@ import static com.example.administrator.opencvdemo.config.CheckName.GAME_NOTICE_
 public class JoinGameTaskElement extends AbsTaskElement {
     private PointModel startPoint = PointManagerV2.get(START_GAME);
     private PointModel gameNoticePoint = PointManagerV2.get(GAME_NOTICE_DIALOG_CLOSE);
+
     public JoinGameTaskElement(TaskModel taskModel) {
         super(taskModel);
     }
@@ -34,46 +34,44 @@ public class JoinGameTaskElement extends AbsTaskElement {
         while (TaskState.isWorking) {
             LogUtils.logd("step:1 capScreen");
             Util.getCapBitmapWithOffset();
-            if (Util.checkColorAndOffset(startPoint)){
+            if (Util.checkColorAndClick(startPoint)) {
                 LogUtils.logd("step:2 click default");
-                click(startPoint);
                 break;
             }
             pageData = Util.getPageData();
             if (checkPage("进入游戏")) {
-                setNewCoord(startPoint,pageData.get(0).getRect());
+                setNewCoord(startPoint, pageData.get(0).getRect());
                 click(pageData.get(0).getRect());  //进入游戏
                 LogUtils.logd("step:3 click parse page");
                 break;
-            }else if (Util.checkColor(pointModel)){
+            } else if (Util.checkColor(pointModel)) {
                 LogUtils.logd("step:4 click login default");
                 click(pointModel); //点击登录
                 Thread.sleep(1200);
-            }else  if (checkPage("登录")) {
+            } else if (checkPage("登录")) {
                 LogUtils.logd("step:4 click login  parse page");
                 clickMid(pageData.get(0).getRect()); //点击登录
                 Thread.sleep(1200);
                 break;
-            }else if (check(8)) {
+            } else if (check(8)) {
                 LaunchManager.killApp();
                 resetStep();
                 return true;
-            }else{
-                boolean isInit = SPUtils.getBoolean(CheckName.START_BTN_VERSION, false);
-                if (!isInit){
-                    Util.sleep(400);
-                    SPUtils.getBoolean(CheckName.START_BTN_VERSION, true);
-                    initPage();
-                }
+//            }else{
+//                boolean isInit = SPUtils.getBoolean(CheckName.START_BTN_VERSION, false);
+//                if (!isInit){
+//                    Util.sleep(400);
+//                    SPUtils.getBoolean(CheckName.START_BTN_VERSION, true);
+//                    initPage();
+//                }
             }
             Util.sleep(400);
         }
         LogUtils.logd("step:5 wait");
         Thread.sleep(3500);
         while (TaskState.isWorking) {
-            Util.getCapBitmapWithOffset();
-            if (Util.checkColorAndOffset(gameNoticePoint)){
-                click(gameNoticePoint);
+            Util.getCapBitmapNew();
+            if (Util.checkColorAndClick(gameNoticePoint)) {
                 LogUtils.logd("step:6 click default");
                 break;
             }
@@ -81,14 +79,14 @@ public class JoinGameTaskElement extends AbsTaskElement {
             pageData = Util.getPageData();
             printCurrentPage();
             if (checkPage("游戏公告")) {
-                boolean isInit = SPUtils.getBoolean(CheckName.GAME_NOTICE_BTN_VERSION, false);
-                if (!isInit){
-                    initPage();
-                }
-                if (Util.checkColor(gameNoticePoint)){
+//                boolean isInit = SPUtils.getBoolean(CheckName.GAME_NOTICE_BTN_VERSION, false);
+//                if (!isInit){
+//                    initPage();
+//                }
+                if (Util.checkColor(gameNoticePoint)) {
                     click(gameNoticePoint);
                     LogUtils.logd("step:7 click default");
-                }else{
+                } else {
                     clickMid(pageData.get(0).getRect());
                     LogUtils.logd("step:8 click  parse page");
                 }
@@ -96,25 +94,25 @@ public class JoinGameTaskElement extends AbsTaskElement {
             } else if (check(8)) {
                 resetStep();
                 return true;
-            }else{
+            } else {
                 Thread.sleep(400);
-               boolean isInit = SPUtils.getBoolean(CheckName.GAME_NOTICE_BTN_VERSION, false);
-               if (!isInit){
-                   initPage();
-               }
+//               boolean isInit = SPUtils.getBoolean(CheckName.GAME_NOTICE_BTN_VERSION, false);
+//               if (!isInit){
+//                   initPage();
+//               }
             }
         }
         Util.sleep(800);
         LogUtils.logd("step:9 wait");
-        while (TaskState.isWorking){
+        while (TaskState.isWorking) {
             Util.getCapBitmapNew();
-            if (FuNeiHelper.huaAn!=null && Util.checkColor(FuNeiHelper.huaAn)){
+            if (FuNeiHelper.huaAn != null && Util.checkColor(FuNeiHelper.huaAn)) {
                 break;
-            }else if (check(8)){
+            } else if (check(8)) {
                 LaunchManager.killApp();
                 resetStep();
                 return true;
-            }else{
+            } else if (TaskState.failCount == 4) {
                 FuNeiHelper.init();
                 LogUtils.logd("step:10 init");
             }
@@ -126,13 +124,13 @@ public class JoinGameTaskElement extends AbsTaskElement {
     @Override
     protected void callBack(List<Result.ItemsBean> result) {
         for (Result.ItemsBean bean : result) {
-            if (equals(bean.getItemstring(),CheckName.START_BTN_NAME)){
+            if (equals(bean.getItemstring(), CheckName.START_BTN_NAME)) {
                 // 重新设置坐标信息
-                setNewCoord(startPoint,bean.getItemcoord());
-                SPUtils.setBoolean(CheckName.START_BTN_VERSION,true);
+                setNewCoord(startPoint, bean.getItemcoord());
+                SPUtils.setBoolean(CheckName.START_BTN_VERSION, true);
                 needSaveCoord = true;
                 return;
-            }else if (equals(GAME_NOTICE_BTN_NAME,bean.getItemstring())){
+            } else if (equals(GAME_NOTICE_BTN_NAME, bean.getItemstring())) {
                 // SPUtils.setBoolean(CheckName.GAME_NOTICE_BTN_VERSION,true);
                 // gameNoticePoint.setY(bean.getItemcoord().getY()+bean.getItemcoord().getHeight()-10);
                 // gameNoticePoint.setX((int) (BaseApplication.getScreenWidth()*0.9065));

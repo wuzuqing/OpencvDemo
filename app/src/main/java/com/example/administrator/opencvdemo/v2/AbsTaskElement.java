@@ -211,8 +211,8 @@ public abstract class AbsTaskElement implements TaskElement, Constant , IInputCl
         int oldX = model.getX();
         int oldY = model.getY();
         String oldColor = model.getNormalColor();
-        model.setX(coord.getX() + coord.getWidth() / 2);
-        model.setY(coord.getY() + coord.getHeight() / 2);
+        model.setComputeX(coord.getX() + coord.getWidth() / 2);
+        model.setComputeY(coord.getY() + coord.getHeight() / 2);
         model.setNormalColor(Util.getColor(model));
         if (offsetY != 0) {
             model.setSubY(model.getY() + offsetY);

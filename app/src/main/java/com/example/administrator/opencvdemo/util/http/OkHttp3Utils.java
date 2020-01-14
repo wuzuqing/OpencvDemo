@@ -98,9 +98,9 @@ public class OkHttp3Utils {
             okHttpClient = new OkHttpClient.Builder().connectTimeout(15, TimeUnit.SECONDS)
                     //添加OkHttp3的拦截器
                     .addInterceptor(httpLoggingInterceptor)
-                    // .addNetworkInterceptor(new CacheInterceptor())
+                     .addNetworkInterceptor(new CacheInterceptor())
                     .writeTimeout(20, TimeUnit.SECONDS).readTimeout(20, TimeUnit.SECONDS)
-                    // .cache(new Cache(sdcache.getAbsoluteFile(), cacheSize))
+                     .cache(new Cache(sdcache.getAbsoluteFile(), cacheSize))
                     .build();
         }
         return okHttpClient;
@@ -154,12 +154,56 @@ public class OkHttp3Utils {
      * 参数2 回调Callback
      */
 
+    public static <T> T doPostSync(String url,Map<String,String> map, Class<T> clz) {
+        String resultStr = doPostSync(url,map);
+        if (TextUtils.isEmpty(resultStr)){
+            return null;
+        }else{
+            return (T) JsonUtils.fromJson(resultStr, clz);
+        }
+    }
+    /**
+     * get请求
+     * 参数1 url
+     * 参数2 回调Callback
+     */
+
     public static String doGetSync(String url) {
 
         //创建OkHttpClient请求对象
         OkHttpClient okHttpClient = getOkHttpClient();
         //创建Request
         Request request = new Request.Builder().url(baseUrl + url).build();
+        //得到Call对象
+        Call call = okHttpClient.newCall(request);
+        //执行异步请求
+        try {
+            Response execute = call.execute();
+            String json = execute.body().string();
+            return json;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+    /**
+     * get请求
+     * 参数1 url
+     * 参数2 回调Callback
+     */
+
+    public static String doPostSync(String url, Map<String, String> params) {
+
+        //创建OkHttpClient请求对象
+        OkHttpClient okHttpClient = getOkHttpClient();
+        //创建Request
+        FormBody.Builder builder = new FormBody.Builder();
+        //遍历集合
+        for (String key : params.keySet()) {
+            builder.add(key, params.get(key));
+
+        }
+        Request request = new Request.Builder().url(baseUrl + url).post(builder.build()).build();
         //得到Call对象
         Call call = okHttpClient.newCall(request);
         //执行异步请求
@@ -333,7 +377,7 @@ public class OkHttp3Utils {
         @Override
         public Response intercept(Chain chain) throws IOException {
             // 有网络时 设置缓存超时时间1个小时
-            int maxAge = 60 * 60;
+            int maxAge = 20;
             // 无网络时，设置超时为1天
             int maxStale = 60 * 60 * 24;
             Request request = chain.request();

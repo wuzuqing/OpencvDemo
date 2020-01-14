@@ -2,16 +2,15 @@ package com.example.administrator.opencvdemo.util.http;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 
 import com.example.administrator.opencvdemo.BaseApplication;
 import com.example.administrator.opencvdemo.model.PagePointsModel;
-import com.example.administrator.opencvdemo.model.PointModel;
 import com.example.administrator.opencvdemo.model.Result;
 import com.example.administrator.opencvdemo.model.ServicePointModel;
 import com.example.administrator.opencvdemo.model.TaskRecordModel;
 import com.example.administrator.opencvdemo.util.JsonUtils;
 import com.example.administrator.opencvdemo.v2.TaskState;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -19,7 +18,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import com.google.gson.reflect.TypeToken;
 import okhttp3.Call;
 import okhttp3.Callback;
 
@@ -84,6 +82,10 @@ public class HttpManager {
 
             }
         });
+    }
+
+    public static ServicePointModel getBasePoints() {
+        return OkHttp3Utils.doGetSync("/game/getPoints?flag=base" , ServicePointModel.class);
     }
 
     public static ServicePointModel getPoints() {

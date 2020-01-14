@@ -15,11 +15,11 @@ public class ServicePointModel extends HttpBaseModel {
 
     public static class DataBean{
         private String flag;
-        private String total_points;
-        private String first_points;
-        private String second_points;
-        private String three_points;
-        private String four_points;
+        private String totalPoints;
+        private String firstPoints;
+        private String secondPoints;
+        private String threePoints;
+        private String fourPoints;
 
         public String getFlag() {
             return flag;
@@ -30,43 +30,47 @@ public class ServicePointModel extends HttpBaseModel {
         }
 
         public String getTotal_points() {
-            return total_points;
+            return totalPoints;
         }
 
-        public void setTotal_points(String total_points) {
-            this.total_points = total_points;
+        public String getTotalPoints() {
+            return totalPoints;
         }
 
-        public String getFirst_points() {
-            return first_points;
+        public void setTotalPoints(String totalPoints) {
+            this.totalPoints = totalPoints;
         }
 
-        public void setFirst_points(String first_points) {
-            this.first_points = first_points;
+        public String getFirstPoints() {
+            return firstPoints;
         }
 
-        public String getSecond_points() {
-            return second_points;
+        public void setFirstPoints(String firstPoints) {
+            this.firstPoints = firstPoints;
         }
 
-        public void setSecond_points(String second_points) {
-            this.second_points = second_points;
+        public String getSecondPoints() {
+            return secondPoints;
         }
 
-        public String getThree_points() {
-            return three_points;
+        public void setSecondPoints(String secondPoints) {
+            this.secondPoints = secondPoints;
         }
 
-        public void setThree_points(String three_points) {
-            this.three_points = three_points;
+        public String getThreePoints() {
+            return threePoints;
         }
 
-        public String getFour_points() {
-            return four_points;
+        public void setThreePoints(String threePoints) {
+            this.threePoints = threePoints;
         }
 
-        public void setFour_points(String four_points) {
-            this.four_points = four_points;
+        public String getFourPoints() {
+            return fourPoints;
+        }
+
+        public void setFourPoints(String fourPoints) {
+            this.fourPoints = fourPoints;
         }
     }
 }
