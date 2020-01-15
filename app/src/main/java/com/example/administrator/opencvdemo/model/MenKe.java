@@ -8,12 +8,12 @@ package com.example.administrator.opencvdemo.model;
  */
 public class MenKe {
     private String name;
-    private long colorValue;
+    private String  color;
     private int score;
 
-    public MenKe(String name, long colorValue, int score) {
+    public MenKe(String name, String color, int score) {
         this.name = name;
-        this.colorValue = colorValue;
+        this.color = color;
         this.score = score;
     }
 
@@ -25,12 +25,12 @@ public class MenKe {
         this.name = name;
     }
 
-    public long getColorValue() {
-        return colorValue;
+    public String getColor() {
+        return color;
     }
 
-    public void setColorValue(long colorValue) {
-        this.colorValue = colorValue;
+    public void setColor(String color) {
+        this.color = color;
     }
 
     public int getScore() {

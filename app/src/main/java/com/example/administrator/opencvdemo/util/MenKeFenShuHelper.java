@@ -3,7 +3,9 @@ package com.example.administrator.opencvdemo.util;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import android.graphics.Bitmap;
 import android.util.LongSparseArray;
@@ -37,6 +39,7 @@ public class MenKeFenShuHelper {
     private void init() {
         mapValues = new HashMap<>();
         mapValues.put("#4D2210", 99);
+        mapValues.put("#481D0D", 99);
         mapValues.put("#363636", 0);
         mapValues.put("#344931", 1);
         mapValues.put("#34455D", 2);
@@ -46,6 +49,7 @@ public class MenKeFenShuHelper {
         mapValues.put("#5E3675", 3);
         mapValues.put("#8F2E2E", 4);
         mapValues.put("#C1861C", 5);
+        mapValues.put("#C0851C", 5);
         mapValues.put("#C2871C", 5);
         mapValues.put("#C1861B", 5);
         mapValues.put("#E48A13", 6);
@@ -53,6 +57,9 @@ public class MenKeFenShuHelper {
         mapValues.put("#E48919", 6);
         mapValues.put("#E38818", 6);
         mapValues.put("#E58B1A", 6);
+        mapValues.put("#8E2E2E", 4);
+        mapValues.put("#BF841A", 5);
+        mapValues.put("#E99F23", 6);
         leftPkModel = new PointModel("YA_MEN_PK_LEFT_MEN_KE", "左边的门客");
         midPkModel = new PointModel("YA_MEN_PK_LEFT_MEN_KE", "左边的门客");
         rightPkModel = new PointModel("YA_MEN_PK_LEFT_MEN_KE", "左边的门客");
@@ -65,20 +72,68 @@ public class MenKeFenShuHelper {
         rightPkModel.setX(755 + 250);
         rightPkModel.setY(358);
 
-        menKeMap = new LongSparseArray<>();
+        List<MenKe> menKeList = new ArrayList<>();
+        menKeList.add(new MenKe("魏微", "#AC8978", 700));
+        menKeList.add(new MenKe("魏微", "#AD8B7B", 700));
+        menKeList.add(new MenKe("魏微", "#AC8777", 700));
+        menKeList.add(new MenKe("魏微", "#CA977E", 500));
+        menKeList.add(new MenKe("魏微", "#CB997F", 500));
+        menKeList.add(new MenKe("魏微", "#C8957C", 500));
 
-        menKeMap.put(-69845441944L,new MenKe("曹雪芹",-69845441944L,10)); // -69829723435
-        menKeMap.put(-75070154256L,new MenKe("干将",-75070154256L,10));
-        menKeMap.put(-85834120346L,new MenKe("林则徐",-85834120346L,10));
+        menKeList.add(new MenKe("魏忠贤", "#AC8568", 1000));
 
-        menKeMap.put(-76976664483L,new MenKe("张雪岩",-76976664483L,10));
-        menKeMap.put(-89233258131L,new MenKe("箫剑",-89233258131L,10)); // -89191547847
-        menKeMap.put(-79042291862L,new MenKe("魏微",-79042291862L,10));
+        menKeList.add(new MenKe("高长恭", "#9C695A", 950));
 
-        menKeMap.put(-33287875214L,new MenKe("李白",-33287875214L,10));
-        menKeMap.put(-77578457458L,new MenKe("郑板桥",-77578457458L,10)); // -65916666693
-        menKeMap.put(-72618918673L,new MenKe("欧阳修",-72618918673L,10));
+        menKeList.add(new MenKe("二蛋", "#AB7461", 600));
+        menKeList.add(new MenKe("二蛋", "#A8705D", 600));
 
+        menKeList.add(new MenKe("韩信", "#B48775", 960));
+        menKeList.add(new MenKe("韩信", "#B58977", 960));
+        menKeList.add(new MenKe("韩信", "#B38573", 960));
+        menKeList.add(new MenKe("韩信", "#C69E86", 960));
+        menKeList.add(new MenKe("韩信", "#C7A28A", 960));
+        menKeList.add(new MenKe("韩信", "#C7A088", 960));
+
+        menKeList.add(new MenKe("樊梨花", "#95493E", 890));
+
+        menKeList.add(new MenKe("花木兰", "#C4A090", 880));
+        menKeList.add(new MenKe("花木兰", "#C29E8E", 880));
+        menKeList.add(new MenKe("花木兰", "#C19C8C", 880));
+
+        menKeList.add(new MenKe("穆桂英", "#D1B4A8", 850));
+        menKeList.add(new MenKe("穆桂英", "#CEB2A7", 850));
+
+
+        menKeList.add(new MenKe("秦良玉", "#D9B7AB", 810));
+        menKeList.add(new MenKe("秦良玉", "#D8B6AA", 810));
+        menKeList.add(new MenKe("秦良玉", "#DAB9AD", 810));
+        menKeList.add(new MenKe("秦良玉", "#D0AFA5", 810));
+
+        menKeList.add(new MenKe("梁红玉", "#CCB0A6", 800));
+        menKeList.add(new MenKe("梁红玉", "#CEADA3", 800));
+        menKeList.add(new MenKe("梁红玉", "#CEADA3", 800));
+
+        menKeList.add(new MenKe("赵高", "#C69B83", 780));
+        menKeList.add(new MenKe("赵高", "#C49981", 780));
+        menKeList.add(new MenKe("赵高", "#C79D85", 780));
+
+        menKeList.add(new MenKe("秦桧", "#957064", 770));
+        menKeList.add(new MenKe("秦桧", "#9A7569", 770));
+        menKeList.add(new MenKe("秦桧", "#987367", 770));
+
+        menKeList.add(new MenKe("李莲英", "#B27C53", 750));
+        menKeList.add(new MenKe("李莲英", "#B07951", 750));
+
+        menKeMap = new HashMap<>();
+
+        for (MenKe menKe : menKeList) {
+            List<MenKe> menKes = menKeMap.get(menKe.getColor());
+            if (menKes == null) {
+                menKes = new ArrayList<>();
+                menKeMap.put(menKe.getColor(), menKes);
+            }
+            menKes.add(menKe);
+        }
     }
 
     private int getIntValue(String color) {
@@ -95,10 +150,12 @@ public class MenKeFenShuHelper {
         }
         //pk页面
         Util.getCapBitmapNew();
+        // 35    386  727
         int leftX = 52, midX = 403, rightX = 755;
+        // int leftX = 35+19, midX = 386+19, rightX = 737+19;
         int y = 328, width = 288, height = 335;
         Bitmap src = Util.getBitmap();
-        if (src==null){
+        if (src == null) {
             return 1;
         }
         int getColorY = y + 30;
@@ -132,10 +189,13 @@ public class MenKeFenShuHelper {
         LogUtils.logd("right color:" + color3 + " rightValue:" + rightValue);
 
         long timeMillis = System.currentTimeMillis();
-        int leftColorValue = getColorValue(src, leftX, y,timeMillis);
-        int midColorValue = getColorValue(src, midX, y,timeMillis);
-        int rightColorValue = getColorValue(src, rightX, y,timeMillis);
+        int leftColorValue = getColorValue(src, leftX, y, timeMillis);
+        int midColorValue = getColorValue(src, midX, y, timeMillis);
+        int rightColorValue = getColorValue(src, rightX, y, timeMillis);
 
+        LogUtils.logd(" leftColorValue:" + leftColorValue);
+        LogUtils.logd(" midColorValue:" + midColorValue);
+        LogUtils.logd(" rightColorValue:" + rightColorValue);
         if (pkIndex == 0) {
             pkValue = leftValue;
             hasEqs = leftValue == midValue || leftValue == rightValue;
@@ -152,11 +212,9 @@ public class MenKeFenShuHelper {
         if (!hasEqs) {
             return pkIndex;
         }
-        if (pkValue==99){
+        if (pkValue == 99) {
             return -1;
         }
-
-
 
         // //
         // // 80x80
@@ -167,32 +225,48 @@ public class MenKeFenShuHelper {
         return pkIndex;
     }
 
-    private LongSparseArray<MenKe> menKeMap;
-    private static int getColorValue(Bitmap src,int left,int top,  long timeMillis){
+    private Map<String, List<MenKe>> menKeMap;
+
+    private static int getColorValue(Bitmap src, int left, int top, long timeMillis) {
 
         // 288, height = 335;
-        String cacheDir = FileUtil.getAppCacheDir();
-        int tempW = 288-8,tempH=315;
-        Bitmap bitmap1 = Bitmap.createBitmap(src, left+4, top, tempW, tempH);
-        // Bitmap bitmap1 = Bitmap.createBitmap(src, left+(288-tempW)/2, top-tempW-10+335, tempW, tempH);
-        try {
-            // int width = bitmap1.getWidth();
-            // int height = bitmap1.getHeight();
-            // long totalValue = 0;
-            // for (int i = 0; i < width; i++) {
-            //     for (int j = 0; j < height; j++) {
-            //         int pixel = bitmap1.getPixel(i, j);
-            //         totalValue+=pixel;
-            //     }
-            // }
-            // LogUtils.logd("left:"+left +" totalValue:"+totalValue);
-
-            bitmap1.compress(Bitmap.CompressFormat.PNG,100,new FileOutputStream(new File(cacheDir,"/"+timeMillis+"_"+left+".png")));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        int tempW = 288, tempH = 315;
+        String color = Util.getColor(src, left + tempW / 2, top + tempH / 2);
+        LogUtils.logd("left:"+left + " color:"+color);
+        List<MenKe> list = getInstance().menKeMap.get(color);
+        if (list == null) {
+            return -1;
         }
+        int value = 0;
+        for (MenKe menKe : list) {
+            if (value == 0) {
+                value = menKe.getScore();
+            } else {
+                if (value < menKe.getScore()) {
+                    value = menKe.getScore();
+                }
+            }
+        }
+        // Bitmap bitmap1 = Bitmap.createBitmap(src, left, top, tempW, tempH);
+        // // Bitmap bitmap1 = Bitmap.createBitmap(src, left+(288-tempW)/2, top-tempW-10+335, tempW, tempH);
+        // try {
+        //     // int width = bitmap1.getWidth();
+        //     // int height = bitmap1.getHeight();
+        //     // long totalValue = 0;
+        //     // for (int i = 0; i < width; i++) {
+        //     //     for (int j = 0; j < height; j++) {
+        //     //         int pixel = bitmap1.getPixel(i, j);
+        //     //         totalValue+=pixel;
+        //     //     }
+        //     // }
+        //     // LogUtils.logd("left:"+left +" totalValue:"+totalValue);
+        //    String cacheDir = FileUtil.getAppCacheDir();
+        //     bitmap1.compress(Bitmap.CompressFormat.PNG, 100, new FileOutputStream(new File(cacheDir, "/" + timeMillis + "_" + left + ".png")));
+        // } catch (FileNotFoundException e) {
+        //     e.printStackTrace();
+        // }
 
-        return 0;
+        return value;
     }
 
     public PointModel getPkModel() {
@@ -202,7 +276,7 @@ public class MenKeFenShuHelper {
             return midPkModel;
         } else if (index == 2) {
             return rightPkModel;
-        }else if (index==-1){
+        } else if (index == -1) {
             return null;
         }
         return leftPkModel;
