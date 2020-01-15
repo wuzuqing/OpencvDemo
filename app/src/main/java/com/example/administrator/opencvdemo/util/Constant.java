@@ -41,6 +41,8 @@ public interface Constant {
     String KEY_YA_MEN = "KEY_YA_MEN";
     String KEY_XB_BUY = "KEY_XB_BUY";
     String KEY_XB_USE = "KEY_XB_USE";
+    String KEY_XB_BUY_YB = "KEY_XB_BUY_YB";
+    String KEY_XB_GET = "KEY_XB_GET";
 
     String KEY_SPACE_TIME_TWO = "KEY_SPACE_TIME_TWO";
     String KEY_SPACE_TIME_FOUR = "KEY_SPACE_TIME_FOUR";
@@ -265,6 +267,9 @@ public interface Constant {
     String HUO_DONG_JIN_RU = "HUO_DONG_JIN_RU";
     String HUO_DONG_PROP = "HUO_DONG_PROP";
     String HUO_DONG_SHI_YONG = "HUO_DONG_SHI_YONG";
+    String XIAO_BANG_JIANGLI_RUKOU = "XIAO_BANG_JIANGLI_RUKOU";
+    String XIAO_BANG_LING_QU_JIANG_LI = "XIAO_BANG_LING_QU_JIANG_LI";
+    String XIAO_BANG_LIANMENG_PAIMENG = "XIAO_BANG_LIANMENG_PAIMENG";
 
 
     interface Login{

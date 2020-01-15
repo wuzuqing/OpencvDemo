@@ -654,6 +654,30 @@
     "x": 726,
     "y": 1289
   },
+
+
+
+  {
+    "key": "XIAO_BANG_JIANGLI_RUKOU",
+    "name": "排名奖励",
+    "normalColor": "#E19137",
+    "x": 924,
+    "y": 1732
+  },
+  {
+    "key": "XIAO_BANG_LING_QU_JIANG_LI",
+    "name": "排名奖励",
+    "normalColor": "#8A4719",
+    "x": 699,
+    "y": 1846
+  },
+  {
+    "key": "XIAO_BANG_LIANMENG_PAIMENG",
+    "name": "排名奖励",
+    "normalColor": "#E6F6FF",
+    "x": 488,
+    "y": 200
+  },
   {
     "key": "SHUYUAN_GET_6",
     "name": "书院6",

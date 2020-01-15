@@ -3,7 +3,6 @@ package com.example.administrator.opencvdemo.floatservice;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -15,22 +14,15 @@ import com.example.administrator.opencvdemo.R;
 import com.example.administrator.opencvdemo.activity.AccountManagerActivity;
 import com.example.administrator.opencvdemo.activity.AssetsPointSettingActivity;
 import com.example.administrator.opencvdemo.activity.DialogActivity;
-import com.example.administrator.opencvdemo.event.InputEventManager;
 import com.example.administrator.opencvdemo.model.TaskModel;
 import com.example.administrator.opencvdemo.notroot.ServiceHelper;
 import com.example.administrator.opencvdemo.notroot.WPZMGService3;
 import com.example.administrator.opencvdemo.util.HandlerUtil;
 import com.example.administrator.opencvdemo.util.LaunchManager;
-import com.example.administrator.opencvdemo.util.LogUtils;
 import com.example.administrator.opencvdemo.util.MenKeFenShuHelper;
-import com.example.administrator.opencvdemo.util.PointManagerV2;
 import com.example.administrator.opencvdemo.util.Util;
-import com.example.administrator.opencvdemo.v2.FuWaiHelper;
 import com.example.administrator.opencvdemo.v2.TaskState;
-import com.example.administrator.opencvdemo.v2.task.FengluTaskElement;
-import com.example.administrator.opencvdemo.v2.task.LaoFangTaskElement;
-import com.example.administrator.opencvdemo.v2.task.MobaiTaskElement;
-import com.example.administrator.opencvdemo.v2.task.YamenTaskElement;
+import com.example.administrator.opencvdemo.v2.task.XiaoBangTaskElement;
 
 /**
  * 作者：士元
@@ -177,7 +169,7 @@ public class GameFloatView extends BaseFloatView {
                 if (!ServiceHelper.getInstance().goAccess()){
                     hidePanel1();
                     TaskState.isWorking = true;
-                    AsyncTask.THREAD_POOL_EXECUTOR.execute(new FengluTaskElement(new TaskModel("邮件",true)));
+                    AsyncTask.THREAD_POOL_EXECUTOR.execute(new XiaoBangTaskElement(new TaskModel("邮件",true)));
                 }
             }
         });

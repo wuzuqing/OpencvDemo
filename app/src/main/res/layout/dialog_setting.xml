@@ -432,12 +432,40 @@
                     android:textSize="9sp" />
 
                 <CheckBox
+                    android:id="@+id/cb_xb_buy_yb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="小榜购买道具元宝"
+                    android:textSize="9sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:background="@color/green" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <CheckBox
                     android:id="@+id/cb_xb_use"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="小榜使用道具"
                     android:textSize="9sp" />
 
+                <CheckBox
+                    android:id="@+id/cb_xb_get"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="小榜领取奖励"
+                    android:textSize="9sp" />
 
             </LinearLayout>
 
@@ -489,10 +517,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
                 android:layout_marginTop="6dp"
                 android:text="温馨提示: 体验期间只能使用收菜功能,其他设置无效;\n如需开通其他功能,请联系技术支持\nQQ: 1052243597\n微信:wzq187159"
-                android:textColor="#f00" />
+                android:textColor="#f00"
+                android:visibility="gone" />
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

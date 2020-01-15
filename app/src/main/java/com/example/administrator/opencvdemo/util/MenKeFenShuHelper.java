@@ -1,18 +1,14 @@
 package com.example.administrator.opencvdemo.util;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import android.graphics.Bitmap;
+
+import com.example.administrator.opencvdemo.model.MenKe;
+import com.example.administrator.opencvdemo.model.PointModel;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import android.graphics.Bitmap;
-import android.util.LongSparseArray;
-import android.util.SparseArray;
-import com.example.administrator.opencvdemo.model.MenKe;
-import com.example.administrator.opencvdemo.model.PointModel;
-import com.example.administrator.opencvdemo.youtu.FileUtil;
 
 /**
  * 作者：士元
@@ -159,18 +155,7 @@ public class MenKeFenShuHelper {
             return 1;
         }
         int getColorY = y + 30;
-        // Bitmap bitmap1 = Bitmap.createBitmap(src, leftX, y, width, height);
-        // Bitmap bitmap2 = Bitmap.createBitmap(src, midX, y, width, height);
-        // Bitmap bitmap3 = Bitmap.createBitmap(src, rightX, y, width, height);
-        // String cacheDir = FileUtil.getAppCacheDir();
-        // try {
-        //     bitmap1.compress(Bitmap.CompressFormat.PNG,100,new FileOutputStream(new File(cacheDir,"/1.png")));
-        //     bitmap2.compress(Bitmap.CompressFormat.PNG,100,new FileOutputStream(new File(cacheDir,"/2.png")));
-        //     bitmap3.compress(Bitmap.CompressFormat.PNG,100,new FileOutputStream(new File(cacheDir,"/3.png")));
-        // } catch (FileNotFoundException e) {
-        //     e.printStackTrace();
-        // }
-        //
+
         String color1 = color(src.getPixel(leftX + 250, getColorY));
         String color2 = color(src.getPixel(midX + 250, getColorY));
         String color3 = color(src.getPixel(rightX + 250, getColorY));
@@ -201,10 +186,10 @@ public class MenKeFenShuHelper {
             hasEqs = leftValue == midValue || leftValue == rightValue;
         } else if (pkIndex == 1) {
             pkValue = midValue;
-            hasEqs = leftValue == midValue || midValue == rightValue;
-        } else if (pkIndex == 2) {
+            hasEqs = midValue == rightValue;
+        } else {
             pkValue = rightValue;
-            hasEqs = leftValue == rightValue || midValue == rightValue;
+            hasEqs = leftValue == rightValue;
         }
         if (pkValue < 4) {
             return pkIndex;
@@ -216,12 +201,23 @@ public class MenKeFenShuHelper {
             return -1;
         }
 
-        // //
-        // // 80x80
-        //
-        // Bitmap bitmap2 = Bitmap.createBitmap(src, midX, y, 80, 40);
-        // Bitmap bitmap3 = Bitmap.createBitmap(src, rightX, y, 80, 40);
-
+        // 根据得分计算要pk的门客
+        if (leftValue==midValue&& midColorValue  ==rightValue){
+            int minValue = Math.min(Math.min(leftColorValue,midColorValue),rightColorValue);
+            if (minValue==leftValue){
+                pkIndex=0;
+            }else if (midValue==midColorValue){
+                pkIndex=1;
+            }else {
+                pkIndex=2;
+            }
+        }else if (leftValue==midValue){
+             pkIndex = leftColorValue>midColorValue?1:0;
+        }else if (leftValue==rightValue){
+            pkIndex = leftColorValue>rightColorValue?2:0;
+        }else {
+            pkIndex = midColorValue>rightColorValue?2:1;
+        }
         return pkIndex;
     }
 

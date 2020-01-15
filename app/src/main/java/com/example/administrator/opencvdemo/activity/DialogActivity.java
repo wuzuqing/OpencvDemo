@@ -34,6 +34,7 @@ public class DialogActivity extends NoAnimatorActivity implements Constant {
     private EditText etUserInfo;
     private CheckBox cbGx,cbKfJl,cbLoop,cbZw,cbOnlyFl, cbZh, cbMb, cbTask, cbChouCai, cbGuanKa, cbShuYuan,cbKfMb,
             cbYanHui, cbZc, cbXs, cbCJ, cbOldShouCai,cbYx,cbLm,cbLmFb,cbGy,cbLf,cbYm,cbXbBug,cbXbUse;
+    private CheckBox cbXbBuyYb,cbXbGet;
     boolean isTy;
     private CheckBox cbHyzh;
 
@@ -72,6 +73,8 @@ public class DialogActivity extends NoAnimatorActivity implements Constant {
         cbGy =  findViewById(R.id.cb_gy);
         cbXbBug =  findViewById(R.id.cb_xb_buy);
         cbXbUse =  findViewById(R.id.cb_xb_use);
+        cbXbGet =  findViewById(R.id.cb_xb_get);
+        cbXbBuyYb =  findViewById(R.id.cb_xb_buy_yb);
         initData();
     }
 
@@ -107,6 +110,8 @@ public class DialogActivity extends NoAnimatorActivity implements Constant {
         cbLoop.setChecked(SPUtils.getBoolean(KEY_LOOP));
         cbXbBug.setChecked(SPUtils.getBoolean(KEY_XB_BUY));
         cbXbUse.setChecked(SPUtils.getBoolean(KEY_XB_USE));
+        cbXbGet.setChecked(SPUtils.getBoolean(KEY_XB_GET));
+        cbXbBuyYb.setChecked(SPUtils.getBoolean(KEY_XB_BUY_YB));
     }
 
     private void reset() {
@@ -154,6 +159,8 @@ public class DialogActivity extends NoAnimatorActivity implements Constant {
             SPUtils.setBoolean(KEY_LAO_FANG, cbLf.isChecked());
             SPUtils.setBoolean(KEY_XB_BUY, cbXbBug.isChecked());
             SPUtils.setBoolean(KEY_XB_USE, cbXbUse.isChecked());
+            SPUtils.setBoolean(KEY_XB_GET, cbXbGet.isChecked());
+            SPUtils.setBoolean(KEY_XB_BUY_YB, cbXbBuyYb.isChecked());
         }
         Util.resetTaskModel();
     }

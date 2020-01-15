@@ -12,9 +12,9 @@ import com.example.administrator.opencvdemo.v2.AbsTaskElement;
 import com.example.administrator.opencvdemo.v2.TaskState;
 
 /**
- * 小榜
+ * 门客擂台和名魁
  */
-public class XiaoBangTaskElement extends AbsTaskElement {
+public class MenKePiFuTaskElement extends AbsTaskElement {
     private int row; //行
     private int col; //列
     private int width = 1028;
@@ -25,7 +25,7 @@ public class XiaoBangTaskElement extends AbsTaskElement {
 
     private boolean xbBuy,xbUse;
 
-    public XiaoBangTaskElement(TaskModel taskModel) {
+    public MenKePiFuTaskElement(TaskModel taskModel) {
         super(taskModel);
         // x,y      ,w,h
         // 30,386  ,1028,  42
