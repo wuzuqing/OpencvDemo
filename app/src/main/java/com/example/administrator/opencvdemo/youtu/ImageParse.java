@@ -46,7 +46,12 @@ public class ImageParse {
     }
     public static void getSyncData(Call call) {
         LogUtils.logd("start");
-        getSyncData(Util.getBitmap(),call);
+        Bitmap bitmap = Util.getBitmap();
+        if (bitmap==null){
+            call.call(new ArrayList<Result.ItemsBean>());
+        }else{
+            getSyncData(bitmap,call);
+        }
     }
     public static void getSyncData(Bitmap bitmap,Call call) {
         JSONObject respose = null;

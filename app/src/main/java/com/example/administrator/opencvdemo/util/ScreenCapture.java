@@ -62,7 +62,6 @@ public class ScreenCapture {
 
     //系统保存截图的路径
     public static final String SCREENCAPTURE_PATH = "ScreenCapture" + File.separator + "Screenshots" + File.separator;
-    //  public static final String SCREENCAPTURE_PATH = "ZAKER" + File.separator + "Screenshots" + File.separator;
 
     public static final String SCREENSHOT_NAME = "Screenshot";
 
@@ -82,9 +81,6 @@ public class ScreenCapture {
         mScreenWidth = BaseApplication.getScreenWidth();
         mScreenHeight = BaseApplication.getScreenHeight();
 //        mScreenHeight = mScreenHeight > 1500 ? 1920 : mScreenHeight;
-        Log.d(TAG, "mScreenWidth: " + mScreenWidth);
-        Log.d(TAG, "mScreenHeight: " + mScreenHeight);
-        Log.d(TAG, "densityDpi: " + metrics.densityDpi);
     }
 
     public static void init(Context context, Intent intent) {
@@ -367,14 +363,6 @@ public class ScreenCapture {
         return out.toByteArray();
     }
 
-    // public static void getPage() {
-    //     OrcHelper.getInstance().executeCallAsync(WorkMode.ONLY_BITMAP,  Util.getBitmap() , "zwp", "1", new IDiscernCallback() {
-    //         @Override
-    //         public void call(final List<OrcModel> result) {
-    //             Log.d(TAG, "getPage: " + result.toString());
-    //         }
-    //     });
-    // }
 
     public static String getAppPath(Context context) {
 

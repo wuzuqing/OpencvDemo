@@ -75,7 +75,6 @@ public class OnlyCardDiscern implements Runnable {
         //二值化
         Imgproc.threshold(dst, dst, OrcConfig.thresh, 255, OrcConfig.threshType);
         threshold = dst.clone();
-       Mat   threshold1 = dst.clone();
         //      //膨胀
         Mat erodeElement = Imgproc.getStructuringElement(Imgproc.MARKER_CROSS, new Size(OrcConfig.width, 1));
         Imgproc.erode(dst, dst, erodeElement);
@@ -203,6 +202,15 @@ public class OnlyCardDiscern implements Runnable {
                 orcModel.setBitmap(bitmap);
                 orcModel.setResult(pageName);
                 orcModels.add(0, orcModel);
+            }
+            src.release();
+            dst.release();
+            erodeElement.release();
+            if (bitmap1!=null){
+                if (bitmap1.getHeight()>1920 && !bitmap1.isRecycled()){
+                    bitmap1.recycle();
+                }
+                bitmap1 = null;
             }
             callback.call(orcModels);
         }

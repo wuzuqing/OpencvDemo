@@ -334,6 +334,7 @@ public class Util implements Constant {
     }
 
     public static String getColor(int x, int y) {
+        Bitmap bitmap = getBitmap();
         if (bitmap == null) {
             return "";
         }
@@ -350,7 +351,7 @@ public class Util implements Constant {
     }
 
     public static boolean checkColor(PointModel pointModel) {
-        if (bitmap == null || pointModel == null) {
+        if (getBitmap() == null || pointModel == null) {
             return false;
         }
         String color = getColor(pointModel.getX(), pointModel.getY());
@@ -362,7 +363,7 @@ public class Util implements Constant {
     }
 
     public static boolean checkSubColor(PointModel pointModel) {
-        if (bitmap == null || pointModel == null || TextUtils.isEmpty(pointModel.getSubColor())) {
+        if (getBitmap()  == null || pointModel == null || TextUtils.isEmpty(pointModel.getSubColor())) {
             return false;
         }
         String color = getColor(pointModel.getX(), pointModel.getSubY());
@@ -371,7 +372,7 @@ public class Util implements Constant {
     }
 
     public static boolean checkColorAndOffset(PointModel pointModel) {
-        if (bitmap == null || pointModel == null) {
+        if (getBitmap()  == null || pointModel == null) {
             return false;
         }
         String color = getColor(pointModel.getX(), pointModel.getY() );
@@ -396,7 +397,7 @@ public class Util implements Constant {
 
 
     public static boolean checkColor(PointModel pointModel, int offset, int xiangXi) {
-        if (bitmap == null || pointModel == null) {
+        if (getBitmap()  == null || pointModel == null) {
             return false;
         }
         String color = getColor(pointModel.getX(), pointModel.getY());
@@ -483,6 +484,9 @@ public class Util implements Constant {
     public static Bitmap bitmap = null;
 
     public static Bitmap getBitmap() {
+        if (isRecycled()){
+            return null;
+        }
         return bitmap;
     }
 
@@ -495,14 +499,17 @@ public class Util implements Constant {
     }
 
     public static int getBitmapHeight() {
-        if (bitmap == null) {
+        Bitmap bitmap = getBitmap();
+        if (bitmap  == null) {
             return 0;
         }
         return bitmap.getHeight();
     }
 
     public static Bitmap getCapBitmapNew() {
-        //        Bitmap bitmap = null;
+        if (bitmap!=null && !bitmap.isRecycled()){
+            bitmap.recycle();
+        }
         if (Build.VERSION.SDK_INT >= 21) {
             ScreenCapture.startCaptureSync();
             try {
@@ -851,6 +858,7 @@ public class Util implements Constant {
             if (bitmap!=null && !bitmap.isRecycled()){
                 bitmap.recycle();
             }
+            bitmap =null;
             System.gc();
         }catch (Exception e){
             e.printStackTrace();
