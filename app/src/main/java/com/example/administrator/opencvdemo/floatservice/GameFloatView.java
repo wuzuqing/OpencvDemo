@@ -27,6 +27,7 @@ import com.example.administrator.opencvdemo.v2.task.ChongBangTaskElement;
 import com.example.administrator.opencvdemo.v2.task.KuaFuJiangLiTaskElement;
 import com.example.administrator.opencvdemo.v2.task.MenKeLeiTaiTaskElement;
 import com.example.administrator.opencvdemo.v2.task.XiaoBangTaskElement;
+import com.example.administrator.opencvdemo.v2.task.YamenTaskElement;
 
 /**
  * 作者：士元
@@ -175,7 +176,7 @@ public class GameFloatView extends BaseFloatView {
                     hidePanel1();
                     TaskState.isWorking = true;
                     // MenKeLeiTaiTaskElement
-                    AsyncTask.THREAD_POOL_EXECUTOR.execute(new XiaoBangTaskElement(new TaskModel("邮件",true)));
+                    AsyncTask.THREAD_POOL_EXECUTOR.execute(new YamenTaskElement(new TaskModel("邮件",true)));
                 }
             }
         });

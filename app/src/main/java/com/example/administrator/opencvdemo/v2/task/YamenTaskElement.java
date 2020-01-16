@@ -17,6 +17,13 @@ public class YamenTaskElement extends AbsTaskElement {
     public YamenTaskElement(TaskModel taskModel) {
         super(taskModel);
     }
+    private boolean isSwipe;
+
+    @Override
+    protected boolean doTaskBefore() {
+        isSwipe = false;
+        return super.doTaskBefore();
+    }
 
     @Override
     protected boolean doTask() throws Exception {
@@ -33,7 +40,10 @@ public class YamenTaskElement extends AbsTaskElement {
             Thread.sleep(1800);
             return false;
         } else if (checkPage("府外")) {
-            swipeToRight();
+            if (!isSwipe){
+                swipeToRight();
+                isSwipe = true;
+            }
             while (TaskState.isWorking){
                 Util.getCapBitmapNew();
                 if (Util.checkColorAndClick(index)){
@@ -47,7 +57,7 @@ public class YamenTaskElement extends AbsTaskElement {
                 }
                 Thread.sleep(800);
             }
-           return false;
+           // return false;
         }
         PointModel wait = PointManagerV2.get(Constant.YA_MEN_WAIT);
         PointModel zhunZou = PointManagerV2.get(Constant.YA_MEN_ZHUN_ZOU);
@@ -78,16 +88,17 @@ public class YamenTaskElement extends AbsTaskElement {
             Util.sleep(1200);
         }
         boolean isCheckUnBuy = false;
-        boolean isHideDialog = false;
+        int isHideDialog = 0;
         int tryCount = 0;
         while (TaskState.isWorking) {
             Util.getCapBitmapNew();
             //吃豆算法需要更新
-            if (!isHideDialog && Util.checkColorAndClick(tempDialogHide)) {
+            if (isHideDialog<2 && Util.checkColorAndClick(tempDialogHide)) {
                 Util.sleep(200);
                 click(dialogClose);
                 Util.sleep(800);
-                isHideDialog = true;
+                isHideDialog++;
+                // isHideDialog = true;
             } else if (!isCheckUnBuy && Util.checkColorAndClick(unBuyTemp)) {
                 Util.sleep(800);
                 isCheckUnBuy = true;
@@ -104,6 +115,8 @@ public class YamenTaskElement extends AbsTaskElement {
                 } else {
                     tryCount = 0;
                     click(pkModel);
+                    Util.sleep(600);
+                    click(skip);
                     Util.sleep(800);
                 }
             } else if (Util.checkColorAndClick(lianSheng)) {
