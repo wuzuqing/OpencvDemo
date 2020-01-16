@@ -92,6 +92,12 @@ public class Util implements Constant {
     public static boolean isMoBaiEnd;
     private static long nextDayTime;
 
+    private static boolean isOpenSpeed;
+
+    public static void setIsOpenSpeed(boolean isOpenSpeed) {
+        Util.isOpenSpeed = isOpenSpeed;
+    }
+
     public static void setAction(String action) {
         Util.action = action;
         LogUtils.logd("action:" + action);
@@ -132,7 +138,7 @@ public class Util implements Constant {
             taskModels.add(getSimpleModel("俸禄", TASK_FENG_LU, KEY_SPACE_TIME_FOUR, 86400)); //政绩
         }
 
-        if (SPUtils.getBoolean(KEY_WORK_MB,true)) {
+        if (SPUtils.getBoolean(KEY_WORK_MB, true)) {
             taskModels.add(getSimpleModel("膜拜", TASK_MO_BAI, KEY_SPACE_TIME_THREE, 86400)); //政绩
         }
         if (SPUtils.getBoolean(KEY_LAO_FANG)) {
@@ -172,7 +178,6 @@ public class Util implements Constant {
         if (SPUtils.getBoolean(KEY_XB_BUY) || SPUtils.getBoolean(KEY_XB_USE)) {
             taskModels.add(getSimpleModel("小榜", TASK_XIAO_BANG, KEY_SPACE_TIME_THREE, 86400)); //邮箱
         }
-
 
         return taskModels;
     }
@@ -298,7 +303,6 @@ public class Util implements Constant {
                 return new LaoFangTaskElement(model);
             case TASK_XIAO_BANG:
                 return new XiaoBangTaskElement(model);
-
         }
         return null;
     }
@@ -311,6 +315,7 @@ public class Util implements Constant {
         getTaskModel();
 
         refreshNextDayTime();
+        setIsOpenSpeed(SPUtils.getBoolean(Constant.KEY_OPEN_SPEED));
     }
 
     public static void refreshNextDayTime() {
@@ -358,12 +363,13 @@ public class Util implements Constant {
         LogUtils.logd("color:" + color + " pointModel:" + pointModel.toString());
         return color.equals(pointModel.getNormalColor()) || likeColor(color, pointModel.getNormalColor());
     }
-    public static boolean checkColor(String  firstColor,String secondColor) {
-        return firstColor.equals(secondColor) || likeColor(firstColor,secondColor);
+
+    public static boolean checkColor(String firstColor, String secondColor) {
+        return firstColor.equals(secondColor) || likeColor(firstColor, secondColor);
     }
 
     public static boolean checkSubColor(PointModel pointModel) {
-        if (getBitmap()  == null || pointModel == null || TextUtils.isEmpty(pointModel.getSubColor())) {
+        if (getBitmap() == null || pointModel == null || TextUtils.isEmpty(pointModel.getSubColor())) {
             return false;
         }
         String color = getColor(pointModel.getX(), pointModel.getSubY());
@@ -372,10 +378,10 @@ public class Util implements Constant {
     }
 
     public static boolean checkColorAndOffset(PointModel pointModel) {
-        if (getBitmap()  == null || pointModel == null) {
+        if (getBitmap() == null || pointModel == null) {
             return false;
         }
-        String color = getColor(pointModel.getX(), pointModel.getY() );
+        String color = getColor(pointModel.getX(), pointModel.getY());
         LogUtils.logd("checkColorAndOffset color:" + color + " offsetHeight:" + OrcConfig.offsetHeight + " pointModel:" + pointModel.toString());
         return color.equals(pointModel.getNormalColor()) || likeColor(color, pointModel.getNormalColor());
     }
@@ -387,17 +393,17 @@ public class Util implements Constant {
         }
         return isTrue;
     }
-    public static boolean checkColorAndClick(PointModel pointModel,String subColor) {
-        boolean isTrue = checkColor(pointModel) || likeColor(subColor,getColor(pointModel));
+
+    public static boolean checkColorAndClick(PointModel pointModel, String subColor) {
+        boolean isTrue = checkColor(pointModel) || likeColor(subColor, getColor(pointModel));
         if (isTrue) {
             InputEventManager.getInstance().click(pointModel.getX(), pointModel.getY());
         }
         return isTrue;
     }
 
-
     public static boolean checkColor(PointModel pointModel, int offset, int xiangXi) {
-        if (getBitmap()  == null || pointModel == null) {
+        if (getBitmap() == null || pointModel == null) {
             return false;
         }
         String color = getColor(pointModel.getX(), pointModel.getY());
@@ -484,7 +490,7 @@ public class Util implements Constant {
     public static Bitmap bitmap = null;
 
     public static Bitmap getBitmap() {
-        if (isRecycled()){
+        if (isRecycled()) {
             return null;
         }
         return bitmap;
@@ -500,20 +506,20 @@ public class Util implements Constant {
 
     public static int getBitmapHeight() {
         Bitmap bitmap = getBitmap();
-        if (bitmap  == null) {
+        if (bitmap == null) {
             return 0;
         }
         return bitmap.getHeight();
     }
 
     public static Bitmap getCapBitmapNew() {
-        if (bitmap!=null && !bitmap.isRecycled()){
+        if (bitmap != null && !bitmap.isRecycled()) {
             bitmap.recycle();
         }
         if (Build.VERSION.SDK_INT >= 21) {
             ScreenCapture.startCaptureSync();
             try {
-                Thread.sleep(100);
+                sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -521,10 +527,10 @@ public class Util implements Constant {
         }
         try {
             InputEventManager.getInstance().screenshots();
-            Thread.sleep(1500);
+            sleep(1500);
             do {
                 bitmap = BitmapFactory.decodeFile(pathName);
-                Thread.sleep(250);
+                Util.sleep(250);
             } while (bitmap == null);
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -538,7 +544,7 @@ public class Util implements Constant {
             return null;
         }
         if (bitmap.getHeight() > 1920) {
-            OrcConfig.offsetHeight = (bitmap.getHeight() - 1920 ) / 2;
+            OrcConfig.offsetHeight = (bitmap.getHeight() - 1920) / 2;
         } else {
             OrcConfig.offsetHeight = 0;
         }
@@ -849,18 +855,17 @@ public class Util implements Constant {
     }
 
     public static void sleep(long time) throws InterruptedException {
-        Thread.sleep( time);
-        // Thread.sleep(BaseApplication.densityDpi == 480 ? time + 800 : time);
+        Thread.sleep(time);
     }
 
     public static void gc() {
         try {
-            if (bitmap!=null && !bitmap.isRecycled()){
+            if (bitmap != null && !bitmap.isRecycled()) {
                 bitmap.recycle();
             }
-            bitmap =null;
+            bitmap = null;
             System.gc();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

@@ -32,9 +32,11 @@ public class DialogActivity extends NoAnimatorActivity implements Constant {
     private EditText etCount;
     private EditText etYanHuiNumber;
     private EditText etUserInfo;
-    private CheckBox cbGx,cbKfJl,cbLoop,cbZw,cbOnlyFl, cbZh, cbMb, cbTask, cbChouCai, cbGuanKa, cbShuYuan,cbKfMb,
-            cbYanHui, cbZc, cbXs, cbCJ, cbOldShouCai,cbYx,cbLm,cbLmFb,cbGy,cbLf,cbYm,cbXbBug,cbXbUse;
-    private CheckBox cbXbBuyYb,cbXbGet;
+    private CheckBox cbGx, cbKfJl, cbLoop, cbZw, cbOnlyFl, cbZh, cbMb, cbTask, cbChouCai, cbGuanKa, cbShuYuan, cbKfMb,
+        cbYanHui, cbZc, cbXs, cbCJ, cbOldShouCai, cbYx, cbLm, cbLmFb, cbGy, cbLf, cbYm, cbXbBug, cbXbUse;
+    private CheckBox cbXbBuyYb, cbXbGet;
+    //开启加速
+    private CheckBox cbOpenSpeed;
     boolean isTy;
     private CheckBox cbHyzh;
 
@@ -42,39 +44,40 @@ public class DialogActivity extends NoAnimatorActivity implements Constant {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_setting);
-        etSpace =  findViewById(R.id.et_space);
-        cbLoop =  findViewById(R.id.cb_loop);
-        etYanHuiNumber =  findViewById(R.id.et_yan_hui_number);
-        etCount =  findViewById(R.id.et_count);
-        etXsPosition =  findViewById(R.id.et_xs_position);
-        etUserInfo =  findViewById(R.id.et_height_user_info);
-        cbChouCai =  findViewById(R.id.cb_shoucai);
-        cbYm =  findViewById(R.id.cb_ym);
-        cbZw =  findViewById(R.id.cb_zw);
-        cbOnlyFl =  findViewById(R.id.cb_fl_only);
-        cbMb =  findViewById(R.id.cb_mb);
-        cbKfMb =  findViewById(R.id.cb_kf_bo);
-        cbGx =  findViewById(R.id.cb_gx);
-        cbKfJl =  findViewById(R.id.cb_kf_jl);
-        cbTask =  findViewById(R.id.cb_task);
-        cbGuanKa =  findViewById(R.id.cb_guanka);
-        cbShuYuan =  findViewById(R.id.cb_sy);
-        cbZh =  findViewById(R.id.cbZh);
-        cbHyzh =  findViewById(R.id.cb_hyzh);
-        cbYanHui =  findViewById(R.id.cb_yh);
-        cbZc =  findViewById(R.id.cb_zc);
-        cbXs =  findViewById(R.id.cbXs);
-        cbCJ =  findViewById(R.id.cbCj);
-        cbOldShouCai =  findViewById(R.id.cbOsc);
-        cbYx =  findViewById(R.id.cb_yx);
-        cbLm =  findViewById(R.id.cb_lm);
-        cbLmFb =  findViewById(R.id.cb_lmfb);
-        cbLf =  findViewById(R.id.cb_lf);
-        cbGy =  findViewById(R.id.cb_gy);
-        cbXbBug =  findViewById(R.id.cb_xb_buy);
-        cbXbUse =  findViewById(R.id.cb_xb_use);
-        cbXbGet =  findViewById(R.id.cb_xb_get);
-        cbXbBuyYb =  findViewById(R.id.cb_xb_buy_yb);
+        etSpace = findViewById(R.id.et_space);
+        cbLoop = findViewById(R.id.cb_loop);
+        etYanHuiNumber = findViewById(R.id.et_yan_hui_number);
+        etCount = findViewById(R.id.et_count);
+        etXsPosition = findViewById(R.id.et_xs_position);
+        etUserInfo = findViewById(R.id.et_height_user_info);
+        cbChouCai = findViewById(R.id.cb_shoucai);
+        cbYm = findViewById(R.id.cb_ym);
+        cbZw = findViewById(R.id.cb_zw);
+        cbOnlyFl = findViewById(R.id.cb_fl_only);
+        cbMb = findViewById(R.id.cb_mb);
+        cbKfMb = findViewById(R.id.cb_kf_bo);
+        cbGx = findViewById(R.id.cb_gx);
+        cbKfJl = findViewById(R.id.cb_kf_jl);
+        cbTask = findViewById(R.id.cb_task);
+        cbGuanKa = findViewById(R.id.cb_guanka);
+        cbShuYuan = findViewById(R.id.cb_sy);
+        cbZh = findViewById(R.id.cbZh);
+        cbHyzh = findViewById(R.id.cb_hyzh);
+        cbYanHui = findViewById(R.id.cb_yh);
+        cbZc = findViewById(R.id.cb_zc);
+        cbXs = findViewById(R.id.cbXs);
+        cbCJ = findViewById(R.id.cbCj);
+        cbOldShouCai = findViewById(R.id.cbOsc);
+        cbYx = findViewById(R.id.cb_yx);
+        cbLm = findViewById(R.id.cb_lm);
+        cbLmFb = findViewById(R.id.cb_lmfb);
+        cbLf = findViewById(R.id.cb_lf);
+        cbGy = findViewById(R.id.cb_gy);
+        cbXbBug = findViewById(R.id.cb_xb_buy);
+        cbXbUse = findViewById(R.id.cb_xb_use);
+        cbXbGet = findViewById(R.id.cb_xb_get);
+        cbXbBuyYb = findViewById(R.id.cb_xb_buy_yb);
+        cbOpenSpeed = findViewById(R.id.cb_open_speed);
         initData();
     }
 
@@ -85,8 +88,8 @@ public class DialogActivity extends NoAnimatorActivity implements Constant {
         etCount.setText(String.valueOf(SPUtils.getInt("count", 1)));
         etXsPosition.setText(String.valueOf(SPUtils.getInt("etXsPosition", 1)));
         cbZw.setChecked(SPUtils.getBoolean(KEY_WORK_ZW));
-        cbOnlyFl.setChecked(SPUtils.getBoolean(KEY_WORK_ONLY_FL,true));
-        cbMb.setChecked(SPUtils.getBoolean(KEY_WORK_MB,true));
+        cbOnlyFl.setChecked(SPUtils.getBoolean(KEY_WORK_ONLY_FL, true));
+        cbMb.setChecked(SPUtils.getBoolean(KEY_WORK_MB, true));
         cbKfMb.setChecked(SPUtils.getBoolean(KEY_WORK_KF_MB));
         cbTask.setChecked(SPUtils.getBoolean(KEY_WORK_TASK));
         cbChouCai.setChecked(SPUtils.getBoolean(KEY_CHOU_CAI));
@@ -112,6 +115,7 @@ public class DialogActivity extends NoAnimatorActivity implements Constant {
         cbXbUse.setChecked(SPUtils.getBoolean(KEY_XB_USE));
         cbXbGet.setChecked(SPUtils.getBoolean(KEY_XB_GET));
         cbXbBuyYb.setChecked(SPUtils.getBoolean(KEY_XB_BUY_YB));
+        cbOpenSpeed.setChecked(SPUtils.getBoolean(KEY_OPEN_SPEED));
     }
 
     private void reset() {
@@ -119,23 +123,23 @@ public class DialogActivity extends NoAnimatorActivity implements Constant {
             String s = etUserInfo.getText().toString();
             AccountManager.saveUserInfo(s);
         }
-        if (isTy){
+        if (isTy) {
             SPUtils.setBoolean(KEY_CHOU_CAI, cbChouCai.isChecked());
-        }else{
+        } else {
             SPUtils.setInt(KEY_SPACE_TIME_ONE, Integer.parseInt(etCount.getText().toString()));
             SPUtils.setInt("space", Integer.parseInt(etSpace.getText().toString()));
-            if (!TextUtils.isEmpty(etXsPosition.getText().toString())){
+            if (!TextUtils.isEmpty(etXsPosition.getText().toString())) {
                 SPUtils.setInt("etXsPosition", Integer.parseInt(etXsPosition.getText().toString()));
             }
-            if (!TextUtils.isEmpty(etCount.getText().toString())){
+            if (!TextUtils.isEmpty(etCount.getText().toString())) {
                 SPUtils.setInt("count", Integer.parseInt(etCount.getText().toString()));
             }
             SPUtils.setBoolean(KEY_WORK_ZW, cbZw.isChecked());
             SPUtils.setBoolean(KEY_KUA_FU_JL, cbKfJl.isChecked());
             SPUtils.setString(KEY_YAN_HUI_NUMBER, etYanHuiNumber.getText().toString());
 
-            SPUtils.setBoolean(KEY_WORK_MB,cbMb.isChecked());
-            SPUtils.setBoolean(KEY_WORK_KF_MB,cbKfMb.isChecked());
+            SPUtils.setBoolean(KEY_WORK_MB, cbMb.isChecked());
+            SPUtils.setBoolean(KEY_WORK_KF_MB, cbKfMb.isChecked());
             SPUtils.setBoolean(KEY_WORK_TASK, cbTask.isChecked());
             SPUtils.setBoolean(KEY_CHOU_CAI, cbChouCai.isChecked());
             SPUtils.setBoolean(KEY_GUAN_KA, cbGuanKa.isChecked());
@@ -161,16 +165,14 @@ public class DialogActivity extends NoAnimatorActivity implements Constant {
             SPUtils.setBoolean(KEY_XB_USE, cbXbUse.isChecked());
             SPUtils.setBoolean(KEY_XB_GET, cbXbGet.isChecked());
             SPUtils.setBoolean(KEY_XB_BUY_YB, cbXbBuyYb.isChecked());
+            SPUtils.setBoolean(KEY_OPEN_SPEED, cbOpenSpeed.isChecked());
+            Util.setIsOpenSpeed(SPUtils.getBoolean(Constant.KEY_OPEN_SPEED));
         }
         Util.resetTaskModel();
     }
 
-
-
     /**
      * 隐藏软键盘
-     *
-     * @param view
      */
     public static void hideSoftKeyboard(View view) {
         Context context = view.getContext();
@@ -196,7 +198,7 @@ public class DialogActivity extends NoAnimatorActivity implements Constant {
     }
 
     public void help(View view) {
-//        startActivity(new Intent(this, HelpActivity.class));
+        //        startActivity(new Intent(this, HelpActivity.class));
     }
 
     public void selectTask(View view) {

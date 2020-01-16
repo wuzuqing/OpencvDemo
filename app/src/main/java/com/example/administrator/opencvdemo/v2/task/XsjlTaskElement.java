@@ -28,7 +28,7 @@ public class XsjlTaskElement extends AbsTaskElement {
         if (checkPage("府内")) {
 
             if (Util.checkColorAndClick(FuWaiHelper.youJian)) {
-                Thread.sleep(800);
+                sleep(800);
                 //收邮件
                 PointModel close = PointManagerV2.get(EMAIL_DIALOG_CLOSE);
                 PointModel emailOk = PointManagerV2.get(EMAIL_OK);
@@ -42,18 +42,18 @@ public class XsjlTaskElement extends AbsTaskElement {
                         if (!Util.checkColor(email)) {
                             count++;
                             click(email);
-                            Thread.sleep(800);
+                            sleep(800);
                             click(emailOk);
-                            Thread.sleep(1200);
+                            sleep(1200);
                             click(close);
-                            Thread.sleep(800);
+                            sleep(800);
                         }
                     }
                     if (checkExp(netPoint, "当前网络异常")) {
                         continue;
                     }
                     click(close);
-                    Thread.sleep(800);
+                    sleep(800);
                     if (count == 0 || count<emails.size()) {
                         break;
                     }
@@ -62,7 +62,7 @@ public class XsjlTaskElement extends AbsTaskElement {
 //                        break;
 //                    }
                     click(FuWaiHelper.youJian);
-                    Thread.sleep(800);
+                    sleep(800);
                 }
                 PointManagerV2.execShellCmdChuFuV2();
 //                clickMid(pageData.get(0).getRect());
@@ -72,11 +72,11 @@ public class XsjlTaskElement extends AbsTaskElement {
             }
 
 
-            Thread.sleep(1800);
+            sleep(1800);
             return false;
         } else if (checkPage("府外")) {
             PointManagerV2.execShellCmdChuFuV2();
-            Thread.sleep(800);
+            sleep(800);
             return false;
         }
         return true;

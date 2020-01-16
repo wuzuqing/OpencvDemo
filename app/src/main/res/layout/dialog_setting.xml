@@ -181,6 +181,27 @@
                     android:layout_height="wrap_content"
                     android:text="循环执行"
                     android:textSize="9sp" />
+                <CheckBox
+                    android:id="@+id/cb_open_speed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="开启加速"
+                    android:textSize="9sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:background="@color/green" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
 
                 <CheckBox
                     android:id="@+id/cb_zw"

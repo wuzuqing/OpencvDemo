@@ -40,45 +40,45 @@ public class FengluTaskElement extends AbsTaskElement {
         printCurrentPage();
         if (checkPage("府内")) {
             PointManagerV2.execShellCmdChuFuV2();
-            Thread.sleep(1800);
+            sleep(1800);
             return false;
         } else if (checkPage("府外")) {
             if (FuWaiHelper.isFuNei){
                 FuWaiHelper.isFuNei = false;
                 PointManagerV2.execShellCmdChuFuV2();
-                Thread.sleep(1800);
+                sleep(1800);
                 return false;
             }else if (Util.checkColor(FuNeiHelper.huaAn)){
                 FuWaiHelper.isFuNei = false;
                 PointManagerV2.execShellCmdChuFuV2();
-                Thread.sleep(1800);
+                sleep(1800);
                 return false;
             }
             FuWaiHelper.init();
             if (!Util.checkColorAndClick(FuWaiHelper.huangGong)) {
                 clickMid(pageData.get(0).getRect());
             }
-            Thread.sleep(800);
+            sleep(800);
             click(wang);
-            Thread.sleep(800);
+            sleep(800);
             return false;
         } else if (checkPage("皇宫")) {
             clickMid(pageData.get(0).getRect());
-            Thread.sleep(800);
+            sleep(800);
         } else if (!checkPage("皇宫俸禄")) {
             if (check(12)) {
                 resetStep();
                 return true;
             }
-            Thread.sleep(200);
+            sleep(200);
             return false;
         }
         click(getFengLu);
-        Thread.sleep(600);
+        sleep(600);
         click(huangGongClose);
         Thread.sleep(300);
         click(huangGongClose);
-        Thread.sleep(1200);
+        sleep(1200);
         Util.saveLastRefreshTime(KEY_WORK_FL, ACache.getTodayEndTime());
         return true;
     }

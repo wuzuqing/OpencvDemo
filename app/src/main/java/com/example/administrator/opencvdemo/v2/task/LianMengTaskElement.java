@@ -24,22 +24,22 @@ public class LianMengTaskElement extends AbsTaskElement {
 
         if (checkPage("府内")) {
             PointManagerV2.execShellCmdChuFuV2();
-            Thread.sleep(1800);
+            sleep(1800);
             return false;
         } else if (checkPage("府外")) {
             swipeToRight(350);
             while (true){
                 Util.getCapBitmapNew();
                 if (Util.checkColorAndClick(FuWaiHelper.lianMeng)) {
-                    Thread.sleep(1800);
+                    sleep(1800);
                     PointManagerV2.execShellCmdChuFuV2();
-                    Thread.sleep(1800);
+                    sleep(1800);
                     PointManagerV2.execShellCmdChuFuV2();
                     return true;
                 } else if (check(4)) {
                     return true;
                 }
-                Thread.sleep(800);
+                sleep(800);
             }
         }
         return true;

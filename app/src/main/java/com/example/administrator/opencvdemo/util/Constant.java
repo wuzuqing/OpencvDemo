@@ -42,6 +42,7 @@ public interface Constant {
     String KEY_XB_USE = "KEY_XB_USE";
     String KEY_XB_BUY_YB = "KEY_XB_BUY_YB";
     String KEY_XB_GET = "KEY_XB_GET";
+    String KEY_OPEN_SPEED = "KEY_OPEN_SPEED";
 
     String KEY_SPACE_TIME_TWO = "KEY_SPACE_TIME_TWO";
     String KEY_SPACE_TIME_FOUR = "KEY_SPACE_TIME_FOUR";

@@ -30,7 +30,7 @@ public class JoinGameTaskElement extends AbsTaskElement {
     protected boolean doTask() throws Exception {
         // 检查是否有更新
         PointModel pointModel = PointManagerV2.get(LOGIN_GAME);
-        Thread.sleep(1400);
+        sleep(1400);
         while (TaskState.isWorking) {
             LogUtils.logd("step:1 capScreen");
             Util.getCapBitmapWithOffset();
@@ -47,11 +47,11 @@ public class JoinGameTaskElement extends AbsTaskElement {
             } else if (Util.checkColor(pointModel)) {
                 LogUtils.logd("step:4 click login default");
                 click(pointModel); //点击登录
-                Thread.sleep(1200);
+                sleep(1200);
             } else if (checkPage("登录")) {
                 LogUtils.logd("step:4 click login  parse page");
                 clickMid(pageData.get(0).getRect()); //点击登录
-                Thread.sleep(1200);
+                sleep(1200);
                 break;
             } else if (check(8)) {
                 LaunchManager.killApp();
@@ -60,12 +60,12 @@ public class JoinGameTaskElement extends AbsTaskElement {
 //            }else{
 //                boolean isInit = SPUtils.getBoolean(CheckName.START_BTN_VERSION, false);
 //                if (!isInit){
-//                    Util.sleep(400);
+//                    sleep(400);
 //                    SPUtils.getBoolean(CheckName.START_BTN_VERSION, true);
 //                    initPage();
 //                }
             }
-            Util.sleep(400);
+            sleep(400);
         }
         LogUtils.logd("step:5 wait");
         Thread.sleep(3500);
@@ -102,7 +102,7 @@ public class JoinGameTaskElement extends AbsTaskElement {
 //               }
             }
         }
-        Util.sleep(800);
+        sleep(800);
         LogUtils.logd("step:9 wait");
         while (TaskState.isWorking) {
             Util.getCapBitmapNew();

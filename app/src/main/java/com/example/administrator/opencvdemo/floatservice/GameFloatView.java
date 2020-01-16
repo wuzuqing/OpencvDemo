@@ -14,13 +14,16 @@ import com.example.administrator.opencvdemo.R;
 import com.example.administrator.opencvdemo.activity.AccountManagerActivity;
 import com.example.administrator.opencvdemo.activity.AssetsPointSettingActivity;
 import com.example.administrator.opencvdemo.activity.DialogActivity;
+import com.example.administrator.opencvdemo.event.InputEventManager;
 import com.example.administrator.opencvdemo.model.TaskModel;
 import com.example.administrator.opencvdemo.notroot.ServiceHelper;
 import com.example.administrator.opencvdemo.notroot.WPZMGService3;
+import com.example.administrator.opencvdemo.util.Constant;
 import com.example.administrator.opencvdemo.util.HandlerUtil;
 import com.example.administrator.opencvdemo.util.LaunchManager;
 import com.example.administrator.opencvdemo.util.MenKeFenShuHelper;
 import com.example.administrator.opencvdemo.util.PointManagerV2;
+import com.example.administrator.opencvdemo.util.SPUtils;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.TaskState;
 import com.example.administrator.opencvdemo.v2.task.ChongBangTaskElement;
@@ -40,7 +43,6 @@ public class GameFloatView extends BaseFloatView {
     private TextView tvShowOrHide;
     View llPanel;
 
-
     public GameFloatView(@NonNull Context context) {
         super(context);
     }
@@ -48,7 +50,6 @@ public class GameFloatView extends BaseFloatView {
     public GameFloatView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
-
 
     @Override
     protected int getLayoutId() {
@@ -86,7 +87,7 @@ public class GameFloatView extends BaseFloatView {
         findViewById(R.id.tvStartSome).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!ServiceHelper.getInstance().goAccess()){
+                if (!ServiceHelper.getInstance().goAccess()) {
                     xiaoHao();
                     ((TextView) v).setText(Util.isWPZMGServiceRunning ? "取消挂机" : "开始挂机");
                     hidePanel1();
@@ -119,7 +120,6 @@ public class GameFloatView extends BaseFloatView {
             @Override
             public void onClick(View v) {
                 LaunchManager.launchapp(getContext());
-
             }
         });
         findViewById(R.id.tvUpgrade).setOnClickListener(new View.OnClickListener() {
@@ -141,10 +141,23 @@ public class GameFloatView extends BaseFloatView {
         findViewById(R.id.tvTestDebug).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            //调试专用
+                //调试专用
                 HandlerUtil.async(new Runnable() {
                     @Override
                     public void run() {
+                        try {
+                            if (SPUtils.getBoolean(Constant.KEY_OPEN_SPEED)) {
+                                InputEventManager.getInstance().swipe(800, 600, 350, 600);
+                                Util.sleep(800);
+                                InputEventManager.getInstance().swipe(800, 600, 350, 600);
+                            } else {
+                                InputEventManager.getInstance().swipe(800, 600, 350, 600);
+                                Util.sleep(2000);
+                            }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
                         // long start = SystemClock.elapsedRealtime();
                         // while (true){
                         //     try {
@@ -158,12 +171,12 @@ public class GameFloatView extends BaseFloatView {
                         //     }
                         // }
 
-                        try {
-                            PointManagerV2.execShellCmdClose();
-                            // MenKeFenShuHelper.getInstance().getPkModel();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        // try {
+                        //     PointManagerV2.execShellCmdClose();
+                        //     // MenKeFenShuHelper.getInstance().getPkModel();
+                        // } catch (Exception e) {
+                        //     e.printStackTrace();
+                        // }
                     }
                 });
             }
@@ -172,11 +185,11 @@ public class GameFloatView extends BaseFloatView {
             @Override
             public void onClick(View v) {
                 // 主号
-                if (!ServiceHelper.getInstance().goAccess()){
+                if (!ServiceHelper.getInstance().goAccess()) {
                     hidePanel1();
                     TaskState.isWorking = true;
                     // MenKeLeiTaiTaskElement
-                    AsyncTask.THREAD_POOL_EXECUTOR.execute(new YamenTaskElement(new TaskModel("邮件",true)));
+                    AsyncTask.THREAD_POOL_EXECUTOR.execute(new YamenTaskElement(new TaskModel("邮件", true)));
                 }
             }
         });

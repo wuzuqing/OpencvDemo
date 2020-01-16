@@ -27,12 +27,12 @@ public class LqyjTaskElement extends AbsTaskElement {
 
         if (checkPage("府内")) {
             PointManagerV2.execShellCmdChuFuV2();
-            Thread.sleep(1800);
+            sleep(1800);
             return false;
         } else if (checkPage("府外")) {
             FuWaiHelper.init();
             if (Util.checkColorAndClick(FuWaiHelper.youJian)) {
-                Thread.sleep(800);
+                sleep(800);
                 //收邮件
                 PointModel close = PointManagerV2.get(EMAIL_DIALOG_CLOSE);
                 PointModel emailOk = PointManagerV2.get(EMAIL_OK);
@@ -46,11 +46,11 @@ public class LqyjTaskElement extends AbsTaskElement {
                         if (!Util.checkColor(email)) {
                             count++;
                             click(email);
-                            Thread.sleep(800);
+                            sleep(800);
                             click(emailOk);
-                            Thread.sleep(1200);
+                            sleep(1200);
                             click(close);
-                            Thread.sleep(800);
+                            sleep(800);
                             if (checkExp(netPoint, "当前网络异常")) {
                                 i--;
                                 count--;
@@ -61,19 +61,19 @@ public class LqyjTaskElement extends AbsTaskElement {
                         continue;
                     }
                     click(close);
-                    Thread.sleep(800);
+                    sleep(800);
                     if (count == 0 || count<emails.size()) {
                         break;
                     }
                     click(FuWaiHelper.youJian);
-                    Thread.sleep(800);
+                    sleep(800);
                 }
                 PointManagerV2.execShellCmdChuFuV2();
                 return true;
             } else if (check(4)) {
                 return true;
             }
-            Thread.sleep(800);
+            sleep(800);
             return false;
         }
         return true;

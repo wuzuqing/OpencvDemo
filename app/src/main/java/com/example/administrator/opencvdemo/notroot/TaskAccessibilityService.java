@@ -13,6 +13,7 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
 import java.util.List;
+import com.example.administrator.opencvdemo.util.Util;
 
 public class TaskAccessibilityService extends AccessibilityService {
 
@@ -41,7 +42,7 @@ public class TaskAccessibilityService extends AccessibilityService {
     @TargetApi(16)
     public void performBackClick() {
         try {
-            Thread.sleep(500);
+            Util.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -54,7 +55,7 @@ public class TaskAccessibilityService extends AccessibilityService {
     @TargetApi(28)
     public void performTakeScreen() {
         try {
-            Thread.sleep(500);
+            Util.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -66,7 +67,7 @@ public class TaskAccessibilityService extends AccessibilityService {
      */
     public void performScrollBackward() {
         try {
-            Thread.sleep(500);
+            Util.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -79,7 +80,7 @@ public class TaskAccessibilityService extends AccessibilityService {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void performScrollForward() {
         try {
-            Thread.sleep(500);
+            Util.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

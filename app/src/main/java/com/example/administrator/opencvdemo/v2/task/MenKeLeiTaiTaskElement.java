@@ -37,11 +37,11 @@ public class MenKeLeiTaiTaskElement extends AbsHuoDongElement {
             PointModel pointModel = PointManagerV2.getPointModel(row, col);
             //第一排 第二排
             click(pointModel);
-            Thread.sleep(1400);
+            sleep(1400);
             return false;
         } else if (checkPage("府外")) {
             PointManagerV2.execShellCmdChuFuV2();
-            Thread.sleep(800);
+            sleep(800);
             return false;
         } else if (Util.checkColor(duiWu) || Util.checkColor(yiLingQU)) {
             int count = 0;
@@ -53,16 +53,16 @@ public class MenKeLeiTaiTaskElement extends AbsHuoDongElement {
                 } else {
                     count++;
                     click(yiLingQU);
-                    Util.sleep(800);
+                    sleep(800);
                     click(yiLingQU);
                 }
                 if (count == 2) {
                     break;
                 }
-                Util.sleep(800);
+                sleep(800);
             }
             PointManagerV2.execShellCmdChuFuV2();
-            Thread.sleep(800);
+            sleep(800);
             return true;
         } else if (check(6)) {
             return true;

@@ -116,11 +116,11 @@ public class MobaiTaskElement extends AbsTaskElement {
                     if (status == 0) {
                         status = 1;
                         click(guanKa);
-                        Util.sleep(800);
+                        sleep(800);
                     } else if (status == 1) {
                         status = 2;
                         click(qinMi);
-                        Util.sleep(800);
+                        sleep(800);
                     } else if (status == 2) {
                         if (TaskState.get().isMobaiEnd() && !getTaskModel().isOnlyOne()) {
                             over();

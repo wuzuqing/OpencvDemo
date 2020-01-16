@@ -45,25 +45,25 @@ public class ChongBangTaskElement extends AbsHuoDongElement {
             PointModel pointModel = PointManagerV2.getPointModel(row, col);
             //第一排 第二排
             click(pointModel);
-            Thread.sleep(800);
+           sleep(800);
             return false;
         } else if (checkPage("府外")) {
             PointManagerV2.execShellCmdChuFuV2();
-            Thread.sleep(800);
+           sleep(800);
             return false;
         } else if (Util.checkColor(cbIndex)) {
             if (!doFirst && !Util.checkColor(cbEnter1)) { // F6EADD
                 click(cbEnter1);
-                Util.sleep(1400);
+               sleep(1400);
                 doFirst = true;
                 doFirstBang();
             }
             if (!doSecond && !Util.checkColor(cbEnter2)) {
                 click(cbEnter2);
-                Util.sleep(1400);
+               sleep(1400);
                 doSecond = true;
                 doFirstBang();
-                Util.sleep(1000);
+               sleep(1000);
                 click(cbClose);
             } else {
                 return false;
@@ -76,30 +76,8 @@ public class ChongBangTaskElement extends AbsHuoDongElement {
     }
 
     private void doFirstBang() throws Exception {
-        Util.sleep(2200);
+       sleep(2200);
         PointManagerV2.execShellCmdChuFuV2();
-        Util.sleep(600);
-        // while (true) {
-        //     Util.getCapBitmapNew();
-        //     if (Util.checkColor(yiLingQU)) {
-        //         click(quFuTab);
-        //         count++;
-        //     } else {
-        //         count++;
-        //         click(yiLingQU);
-        //         Util.sleep(800);
-        //         click(yiLingQU);
-        //     }
-        //     if (count == 2) {
-        //         break;
-        //     }
-        //     Util.sleep(800);
-        // }
-        // PointModel huangGongClose = PointManagerV2.get(HUANG_GONG_CLOSE);
-        // click(kuaFuDialogClose);
-        // Util.sleep(800);
-        // click(huangGongClose);
-        // // PointManagerV2.execShellCmdChuFuV2();
-        // Thread.sleep(800);
+       sleep(600);
     }
 }

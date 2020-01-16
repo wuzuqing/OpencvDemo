@@ -82,7 +82,7 @@ public class JyzcTaskElement extends AbsTaskElement {
                 return true;
             }
         }
-        Thread.sleep(1000);
+        sleep(1000);
         while (TaskState.isWorking && isInJycz) {
             LogUtils.logd("step:3 cap screen");
             Util.getCapBitmapWithOffset();
@@ -90,18 +90,18 @@ public class JyzcTaskElement extends AbsTaskElement {
             if (checkPage("道具使用")) {
                 LogUtils.logd("step:4 click daoju");
                 clickMid(pageData.get(0).getRect());
-                Thread.sleep(800);
+                sleep(800);
                 continue;
             }
             if (needClickZhengshou) {
                 click(PointManagerV2.get(JYZC_ZS));
-                Thread.sleep(800);
+                sleep(800);
                 needClickZhengshou = false;
                 continue;
             }
             if (isEnd) {
                 clickClose();
-                Thread.sleep(1000);
+                sleep(1000);
                 return true;
             }
             int count = 0;
@@ -118,7 +118,7 @@ public class JyzcTaskElement extends AbsTaskElement {
                     if (Util.checkColorAndOffset(model)) {
                         click(model);
                         count++;
-                        Thread.sleep(240);
+                        sleep(240);
                     }
                 }
             } else {
@@ -131,7 +131,7 @@ public class JyzcTaskElement extends AbsTaskElement {
                     for (PointModel model : coordinateList) {
                         if (Util.checkColor(model)) {
                             EventHelper.click(model.getX(), model.getY());
-                            Thread.sleep(240);
+                            sleep(240);
                             count++;
                         }
                     }
@@ -140,7 +140,7 @@ public class JyzcTaskElement extends AbsTaskElement {
                     for (OrcModel orcModel : pageData) {
                         if (TextUtils.equals("经营", orcModel.getResult())) {
                             click(orcModel.getRect());
-                            Thread.sleep(240);
+                            sleep(240);
                             count++;
                         }
                     }
@@ -149,7 +149,7 @@ public class JyzcTaskElement extends AbsTaskElement {
             if (count == 1) {
                 isCountOne++;
             }
-            Thread.sleep(800);
+            sleep(800);
             isEnd = count == 0 || isCountOne > 3;
             LogUtils.logd(" count" + count);
         }

@@ -55,18 +55,18 @@ public class ShuyuanTaskElement extends AbsTaskElement {
             if (checkExp(netPoint, "当前网络异常")) continue;//检查网络环境
             if (checkPage("府内")) {
                 PointManagerV2.execShellCmdChuFuV2();
-                Thread.sleep(1200);
+                sleep(1200);
                 continue;
             } else if (checkPage("府外")) {
                 if (FuWaiHelper.isFuNei){
                     FuWaiHelper.isFuNei = false;
                     PointManagerV2.execShellCmdChuFuV2();
-                    Thread.sleep(1800);
+                    sleep(1800);
                     return false;
                 }else if (Util.checkColor(FuNeiHelper.huaAn)){
                     FuWaiHelper.isFuNei = false;
                     PointManagerV2.execShellCmdChuFuV2();
-                    Thread.sleep(1800);
+                    sleep(1800);
                     return false;
                 }
                 FuWaiHelper.init();
@@ -94,27 +94,27 @@ public class ShuyuanTaskElement extends AbsTaskElement {
         while (TaskState.isWorking && isInShuYuan) {
             pageData = Util.getBitmapAndPageData();
             if (Util.checkColorAndClick(oneKey)) {
-                Thread.sleep(1000);
+                sleep(1000);
                 Util.checkColorAndClick(oneKey);
-                Thread.sleep(1000);
+                sleep(1000);
                 click(academyGetOk);
-                Thread.sleep(200);
+                sleep(200);
             } else {
                 for (PointModel model : shuYuans) {
                     if (Util.checkSubColor(model)){
                         click(model);
-                        Thread.sleep(2000);
+                        sleep(2000);
                         click(model);
-                        Thread.sleep(700);
+                        sleep(700);
                         click(academyGetOk);
-                        Thread.sleep(800);
+                        sleep(800);
                     }
                 }
             }
             PointManagerV2.execShellCmdClose();
-            Thread.sleep(600);
+            sleep(600);
             PointManagerV2.execShellCmdChuFuV2();
-            Thread.sleep(600);
+            sleep(600);
             Util.saveLastRefreshTime(KEY_SHU_YUAN, ACache.TIME_HOUR * 3);
             break;
         }

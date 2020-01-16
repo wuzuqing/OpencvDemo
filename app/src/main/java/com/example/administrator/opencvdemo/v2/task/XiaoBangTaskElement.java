@@ -83,29 +83,29 @@ public class XiaoBangTaskElement extends AbsTaskElement {
                 PointModel lianMengPaiMing = PointManagerV2.get(Constant.XIAO_BANG_LIANMENG_PAIMENG);
                 click(lingQuRuKou);
 
-                Util.sleep(600);
+               sleep(600);
                 if (Util.checkColor(lingQu)){
                     click(lingQu);
-                    Util.sleep(600);
+                   sleep(600);
                     click(lianMengPaiMing);
-                    Util.sleep(400);
+                   sleep(400);
                 }
 
                 click(lianMengPaiMing);
-                Util.sleep(600);
+               sleep(600);
 
                 Util.getCapBitmapNew();
                 if (Util.checkColor(lingQu)){
                     click(lingQu);
-                    Util.sleep(600);
+                   sleep(600);
                     click(lianMengPaiMing);
-                    Util.sleep(400);
+                   sleep(400);
                 }
 
                 click(huangGongClose);
-                Util.sleep(600);
+               sleep(600);
                 click(huangGongClose);
-                Util.sleep(600);
+               sleep(600);
                 return true;
 
             }
@@ -118,10 +118,10 @@ public class XiaoBangTaskElement extends AbsTaskElement {
                         if (!TaskState.isWorking){
                             return true;
                         }
-                        Util.sleep(600);
+                       sleep(600);
                         click(liBao1);
                     }
-                    Util.sleep(600);
+                   sleep(600);
                     if (!TaskState.isWorking){
                         return true;
                     }
@@ -133,17 +133,17 @@ public class XiaoBangTaskElement extends AbsTaskElement {
                         if (!TaskState.isWorking){
                             return true;
                         }
-                        Util.sleep(600);
+                       sleep(600);
                         click(liBao2);
                     }
                     if (!TaskState.isWorking){
                         return true;
                     }
-                    Util.sleep(600);
+                   sleep(600);
                     Util.getCapBitmapNew();
                 } while (checkExp(netPoint, "当前网络异常"));
                 click(close);
-                Util.sleep(600);
+               sleep(600);
                 Util.saveLastRefreshTime(KEY_WORK_FL, ACache.getTodayEndTime());
                 //只是购买
                 if (!xbUse) {
@@ -157,7 +157,7 @@ public class XiaoBangTaskElement extends AbsTaskElement {
             PointModel shiYong = PointManagerV2.get(Constant.HUO_DONG_SHI_YONG);
             click(jinRu);
 
-            Util.sleep(600);
+           sleep(600);
             while (TaskState.isWorking) {
                 Util.getCapBitmapNew();
                 if (checkExp(netPoint, "当前网络异常")) {
@@ -167,14 +167,14 @@ public class XiaoBangTaskElement extends AbsTaskElement {
                     break;
                 }
                 click(shiYong);
-                Util.sleep(600);
+               sleep(600);
             }
 
 
 
 
 
-            Util.sleep(600);
+           sleep(600);
             click(huangGongClose);
             return true;
         } else if (checkPage("府外")) {

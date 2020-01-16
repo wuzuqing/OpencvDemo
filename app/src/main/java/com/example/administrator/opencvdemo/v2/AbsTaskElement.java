@@ -13,6 +13,7 @@ import com.example.administrator.opencvdemo.util.Constant;
 import com.example.administrator.opencvdemo.util.LogUtils;
 import com.example.administrator.opencvdemo.util.NetWorkUtils;
 import com.example.administrator.opencvdemo.util.PointManagerV2;
+import com.example.administrator.opencvdemo.util.SPUtils;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.youtu.ImageParse;
 import com.example.module_orc.OrcConfig;
@@ -22,7 +23,7 @@ import org.opencv.core.Rect;
 
 import java.util.List;
 
-public abstract class AbsTaskElement implements TaskElement, Constant , IInputClickHeavyLoad {
+public abstract class AbsTaskElement implements TaskElement, Constant, IInputClickHeavyLoad {
     public static final String TAG = "TaskElement";
 
     public AbsTaskElement() {
@@ -93,7 +94,6 @@ public abstract class AbsTaskElement implements TaskElement, Constant , IInputCl
         return true;
     }
 
-
     protected abstract boolean doTask() throws Exception;
 
     public boolean isNetConnected() {
@@ -116,7 +116,7 @@ public abstract class AbsTaskElement implements TaskElement, Constant , IInputCl
         TaskState.get().resetStep();
     }
 
-    public  boolean checkExp(PointModel model, String msg) throws InterruptedException {
+    public boolean checkExp(PointModel model, String msg) throws InterruptedException {
         if (Util.isRecycled()) {
             return true;
         }
@@ -163,17 +163,35 @@ public abstract class AbsTaskElement implements TaskElement, Constant , IInputCl
         }
     }
 
-    protected void printCurrentPage(){
+    protected void printCurrentPage() {
         LogUtils.logd("当前页面：" + OrcConfig.pageName);
     }
 
     protected void swipeToRight() throws InterruptedException {
         swipeToRight(350);
     }
-    protected void swipeToRight(int toX) throws InterruptedException {
-        InputEventManager.getInstance().swipe(800,600,toX,600);
-        Thread.sleep(2000);
 
+    protected void swipeToRight(int toX) throws InterruptedException {
+        if (SPUtils.getBoolean(Constant.KEY_OPEN_SPEED)) {
+            InputEventManager.getInstance().swipe(800, 600, 350, 600);
+            sleep(800);
+            InputEventManager.getInstance().swipe(800, 600, 350, 600);
+            sleep(1000);
+        } else {
+            InputEventManager.getInstance().swipe(800, 600, 350, 600);
+            sleep(2000);
+        }
+        // InputEventManager.getInstance().swipe(800,600,toX,600);
+        // Thread.sleep(2000);
+
+    }
+
+    protected void sleep(long time) {
+        try {
+            Util.sleep(time);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void initPage() {
@@ -257,7 +275,7 @@ public abstract class AbsTaskElement implements TaskElement, Constant , IInputCl
         needSaveCoord = true;
     }
 
-    protected void log(String msg){
+    protected void log(String msg) {
         LogUtils.logd(msg);
     }
 }

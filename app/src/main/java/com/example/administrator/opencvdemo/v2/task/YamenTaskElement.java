@@ -37,7 +37,7 @@ public class YamenTaskElement extends AbsTaskElement {
 
         }else if (checkPage("府内")) {
             PointManagerV2.execShellCmdChuFuV2();
-            Thread.sleep(1800);
+            sleep(1800);
             return false;
         } else if (checkPage("府外")) {
             if (!isSwipe){
@@ -55,7 +55,7 @@ public class YamenTaskElement extends AbsTaskElement {
                 }else if (check(15)){
                     return true;
                 }
-                Thread.sleep(800);
+                sleep(800);
             }
            // return false;
         }
@@ -69,7 +69,7 @@ public class YamenTaskElement extends AbsTaskElement {
         PointModel skip = PointManagerV2.get(YA_MEN_CHOOSE_SKIP);
         PointModel lianSheng = PointManagerV2.get(YA_MEN_LIAN_SHENG);
         PointModel end = PointManagerV2.get(YA_MEN_END);
-        Thread.sleep(800);
+        sleep(800);
         while (TaskState.isWorking) {
             Util.getCapBitmapNew();
             if (Util.checkColorAndClick(index) || Util.checkColorAndClick(zhunZou)) {
@@ -79,13 +79,13 @@ public class YamenTaskElement extends AbsTaskElement {
             } else if (Util.checkColor(wait)) {
 
                 click(huangGongClose);
-                Util.sleep(800);
+                sleep(800);
                 //结束中
                 PointManagerV2.execShellCmdChuFuV2();
-                Util.sleep(800);
+                sleep(800);
                 return true;
             }
-            Util.sleep(1200);
+            sleep(1200);
         }
         boolean isCheckUnBuy = false;
         int isHideDialog = 0;
@@ -94,49 +94,49 @@ public class YamenTaskElement extends AbsTaskElement {
             Util.getCapBitmapNew();
             //吃豆算法需要更新
             if (isHideDialog<2 && Util.checkColorAndClick(tempDialogHide)) {
-                Util.sleep(200);
+                sleep(200);
                 click(dialogClose);
-                Util.sleep(800);
+                sleep(800);
                 isHideDialog++;
                 // isHideDialog = true;
             } else if (!isCheckUnBuy && Util.checkColorAndClick(unBuyTemp)) {
-                Util.sleep(800);
+                sleep(800);
                 isCheckUnBuy = true;
             } else if (Util.checkColorAndClick(pkVs)) {
                 PointModel pkModel = MenKeFenShuHelper.getInstance().getPkModel();
                 if (pkModel == null) {
                     //结束了
                     click(huangGongClose);
-                    Util.sleep(800);
+                    sleep(800);
                     //结束中
                     PointManagerV2.execShellCmdChuFuV2();
-                    Util.sleep(800);
+                    sleep(800);
                     break;
                 } else {
                     tryCount = 0;
                     click(pkModel);
-                    Util.sleep(600);
+                    sleep(600);
                     click(skip);
-                    Util.sleep(800);
+                    sleep(800);
                 }
             } else if (Util.checkColorAndClick(lianSheng)) {
-                Util.sleep(600);
+                sleep(600);
             }else if (Util.checkColorAndClick(skip)) {
-                Util.sleep(600);
+                sleep(600);
             } else if (Util.checkColorAndClick(end)) {
-                Util.sleep(400);
+                sleep(400);
                 click(huangGongClose);
-                Util.sleep(800);
+                sleep(800);
                 //结束中
                 PointManagerV2.execShellCmdChuFuV2();
-                Util.sleep(800);
+                sleep(800);
                 break;
             } else if (tryCount>20){
                 return true;
             }else{
                 tryCount ++;
                 click(pkVs);
-                Util.sleep(600);
+                sleep(600);
             }
         }
         return true;

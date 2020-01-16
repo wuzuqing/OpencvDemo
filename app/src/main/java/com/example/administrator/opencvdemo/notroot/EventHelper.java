@@ -11,6 +11,7 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
 import com.example.administrator.opencvdemo.util.LogUtils;
+import com.example.administrator.opencvdemo.util.Util;
 
 /**
  * 作者：士元
@@ -141,7 +142,7 @@ public class EventHelper {
 
     private static void sleep(long time) {
         try {
-            Thread.sleep(time);
+            Util.sleep(time);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

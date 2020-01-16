@@ -41,17 +41,17 @@ public class KuaFuJiangLiTaskElement extends AbsHuoDongElement {
             PointModel pointModel = PointManagerV2.getPointModel(row, col);
             //第一排 第二排
             click(pointModel);
-            Thread.sleep(800);
+           sleep(800);
             return false;
         } else if (checkPage("府外")) {
             PointManagerV2.execShellCmdChuFuV2();
-            Thread.sleep(800);
+           sleep(800);
             return false;
         } else if (Util.checkColor(kaFuIndex)) {
             int count = 0;
             if (!Util.checkColor(kuaFuEnter)) { // F6EADD
                 click(kuaFuEnter);
-                Util.sleep(1400);
+               sleep(1400);
             } else {
                 return false;
             }
@@ -64,20 +64,20 @@ public class KuaFuJiangLiTaskElement extends AbsHuoDongElement {
                 } else {
                     count++;
                     click(yiLingQU);
-                    Util.sleep(800);
+                   sleep(800);
                     click(yiLingQU);
                 }
                 if (count == 2) {
                     break;
                 }
-                Util.sleep(800);
+               sleep(800);
             }
             PointModel huangGongClose = PointManagerV2.get(HUANG_GONG_CLOSE);
             click(kuaFuDialogClose);
-            Util.sleep(800);
+           sleep(800);
             click(huangGongClose);
             // PointManagerV2.execShellCmdChuFuV2();
-            Thread.sleep(800);
+           sleep(800);
             return true;
         } else if (check(6)) {
             return true;

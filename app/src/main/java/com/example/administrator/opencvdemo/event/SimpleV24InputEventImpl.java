@@ -1,6 +1,7 @@
 package com.example.administrator.opencvdemo.event;
 
 import com.example.administrator.opencvdemo.notroot.EventHelper;
+import com.example.administrator.opencvdemo.util.Util;
 import com.example.module_orc.OrcConfig;
 
 /**
@@ -39,9 +40,9 @@ public class SimpleV24InputEventImpl implements IInputEvent {
     public void killApp() {
         try {
             InputEventManager.getInstance().keyBack();
-            Thread.sleep(800);
+            Util.sleep(800);
             InputEventManager.getInstance().click(899, 1117 + OrcConfig.offsetHeight);
-            Thread.sleep(1200);
+            Util.sleep(1200);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

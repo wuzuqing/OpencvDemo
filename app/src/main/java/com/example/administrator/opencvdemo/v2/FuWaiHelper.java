@@ -55,7 +55,7 @@ public class FuWaiHelper {
 
     private static void reqNet(final String page) {
         try {
-            Thread.sleep(2000);
+            Util.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
