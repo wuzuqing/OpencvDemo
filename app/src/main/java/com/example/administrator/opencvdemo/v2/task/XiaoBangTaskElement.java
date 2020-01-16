@@ -35,10 +35,10 @@ public class XiaoBangTaskElement extends AbsTaskElement {
     @Override
     protected boolean doTaskBefore() {
         // 0-5
-        row = SPUtils.getInt("etXsPosition", 5);
+        row = 1;
         xbBuy = SPUtils.getBoolean(Constant.KEY_XB_BUY);
         xbUse = SPUtils.getBoolean(Constant.KEY_XB_USE);
-        col = 1;
+        col = 5;
         return super.doTaskBefore();
     }
 
@@ -50,8 +50,8 @@ public class XiaoBangTaskElement extends AbsTaskElement {
         }
         defaultPoint = new PointModel("XB", "小榜");
 
-        int y = col == 1 ? firstY : secondY;
-        int x = row * oneWidth + oneWidth / 2 + 30;
+        int y = row == 1 ? firstY : secondY;
+        int x = col * oneWidth + oneWidth / 2 + 30;
         defaultPoint.setX(x);
         defaultPoint.setY(y);
         return defaultPoint;
@@ -84,34 +84,31 @@ public class XiaoBangTaskElement extends AbsTaskElement {
                 click(lingQuRuKou);
 
                 Util.sleep(600);
-
-                click(lingQu);
-                Util.sleep(600);
-
-                click(lianMengPaiMing);
-                Util.sleep(400);
-
-                click(lianMengPaiMing);
-                Util.sleep(240);
-                click(lingQu);
-                Util.sleep(600);
-                click(lianMengPaiMing);
-                Util.sleep(400);
-
-                while (true){
-                    Util.getCapBitmapNew();
-                    if (!Util.checkColor(lingQu)){
-                        //结束
-                        click(huangGongClose);
-                        Util.sleep(600);
-                        click(huangGongClose);
-                        Util.sleep(600);
-                        return true;
-                    }
+                if (Util.checkColor(lingQu)){
+                    click(lingQu);
+                    Util.sleep(600);
+                    click(lianMengPaiMing);
+                    Util.sleep(400);
                 }
+
+                click(lianMengPaiMing);
+                Util.sleep(600);
+
+                Util.getCapBitmapNew();
+                if (Util.checkColor(lingQu)){
+                    click(lingQu);
+                    Util.sleep(600);
+                    click(lianMengPaiMing);
+                    Util.sleep(400);
+                }
+
+                click(huangGongClose);
+                Util.sleep(600);
+                click(huangGongClose);
+                Util.sleep(600);
+                return true;
+
             }
-
-
             //是否已购买
             boolean checkTime = checkTime(KEY_XB_BUY, ACache.getTodayEndTime());
             if (!checkTime) {

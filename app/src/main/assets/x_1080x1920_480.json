@@ -659,24 +659,101 @@
 
   {
     "key": "XIAO_BANG_JIANGLI_RUKOU",
-    "name": "排名奖励",
+    "name": "小榜奖励入口",
     "normalColor": "#E19137",
     "x": 924,
     "y": 1732
   },
   {
     "key": "XIAO_BANG_LING_QU_JIANG_LI",
-    "name": "排名奖励",
+    "name": "小榜奖励领取",
     "normalColor": "#8A4719",
     "x": 699,
     "y": 1846
   },
   {
     "key": "XIAO_BANG_LIANMENG_PAIMENG",
-    "name": "排名奖励",
+    "name": "小榜联盟奖励",
     "normalColor": "#E6F6FF",
     "x": 488,
     "y": 200
+  },
+  {
+    "key": "LEI_TAI_LINGQU",
+    "name": "擂台已领取",
+    "normalColor": "#D63400",
+    "x": 735,
+    "y": 1695
+  },
+  {
+    "key": "LEI_TAI_DUIWU_JL",
+    "name": "擂台队伍奖励",
+    "normalColor": "#484B61",
+    "x": 387,
+    "y": 821
+  },
+  {
+    "key": "KUAFU_INDEX",
+    "name": "跨服活动",
+    "normalColor": "#231E1B",
+    "x": 693,
+    "y": 59
+  },
+  {
+    "key": "KUAFU_DIALOG_CLOSE",
+    "name": "跨服领取关闭",
+    "normalColor": "#223143",
+    "x": 976,
+    "y": 143
+  },
+  {
+    "key": "KUAFU_ENTER",
+    "name": "跨服进入活动",
+    "normalColor": "#1D1918",
+    "x": 904,
+    "y": 623
+  },
+  {
+    "key": "KUAFU_YILINGQU",
+    "name": "跨服已领取",
+    "normalColor": "#D12900",
+    "x": 755,
+    "y": 1706
+  },
+  {
+    "key": "KUAFU_QUFU",
+    "name": "跨服区服奖励",
+    "normalColor": "#172333",
+    "x": 499,
+    "y": 522
+  },
+  {
+    "key": "CHONG_BANG_INDEX",
+    "name": "冲榜活动",
+    "normalColor": "#705932",
+    "x": 352,
+    "y": 132
+  },
+  {
+    "key": "CHONG_BANG_ENTER_1",
+    "name": "冲榜活动进入1",
+    "normalColor": "#313348",
+    "x": 913,
+    "y": 683
+  },
+  {
+    "key": "CHONG_BANG_ENTER_2",
+    "name": "冲榜活动进入2",
+    "normalColor": "#313348",
+    "x": 913,
+    "y": 1274
+  },
+  {
+    "key": "CHONG_BANG_CLOSE",
+    "name": "冲榜活动进入2",
+    "normalColor": "#FCEBC3",
+    "x": 998,
+    "y": 133
   },
   {
     "key": "SHUYUAN_GET_6",

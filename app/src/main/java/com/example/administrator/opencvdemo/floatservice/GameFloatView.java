@@ -20,8 +20,12 @@ import com.example.administrator.opencvdemo.notroot.WPZMGService3;
 import com.example.administrator.opencvdemo.util.HandlerUtil;
 import com.example.administrator.opencvdemo.util.LaunchManager;
 import com.example.administrator.opencvdemo.util.MenKeFenShuHelper;
+import com.example.administrator.opencvdemo.util.PointManagerV2;
 import com.example.administrator.opencvdemo.util.Util;
 import com.example.administrator.opencvdemo.v2.TaskState;
+import com.example.administrator.opencvdemo.v2.task.ChongBangTaskElement;
+import com.example.administrator.opencvdemo.v2.task.KuaFuJiangLiTaskElement;
+import com.example.administrator.opencvdemo.v2.task.MenKeLeiTaiTaskElement;
 import com.example.administrator.opencvdemo.v2.task.XiaoBangTaskElement;
 
 /**
@@ -154,7 +158,8 @@ public class GameFloatView extends BaseFloatView {
                         // }
 
                         try {
-                            MenKeFenShuHelper.getInstance().getPkModel();
+                            PointManagerV2.execShellCmdClose();
+                            // MenKeFenShuHelper.getInstance().getPkModel();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -169,6 +174,7 @@ public class GameFloatView extends BaseFloatView {
                 if (!ServiceHelper.getInstance().goAccess()){
                     hidePanel1();
                     TaskState.isWorking = true;
+                    // MenKeLeiTaiTaskElement
                     AsyncTask.THREAD_POOL_EXECUTOR.execute(new XiaoBangTaskElement(new TaskModel("邮件",true)));
                 }
             }

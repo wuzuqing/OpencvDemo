@@ -12,7 +12,6 @@ package com.example.administrator.opencvdemo.util;
 
 public interface Constant {
 
-
     String KEY_LAO_FANG = "KEY_LAO_FANG";
     String KEY_MO_BAI_KUA_FU = "KEY_MO_BAI_KUA_FU";
     String KEY_ZHAO_HUAN = "KEY_ZHAO_HUAN";
@@ -50,9 +49,7 @@ public interface Constant {
     String KEY_SPACE_TIME_SHU_YUAN = "KEY_SPACE_TIME_SHU_YUAN";
     String KEY_SPACE_TIME_ONE = "KEY_SPACE_TIME_ONE";
 
-
     String COORDINATE_KEY = "COORDINATE_KEY";
-
 
     String SCREEN_CLOSE = "SCREEN_CLOSE";
     String CHU_FU = "CHU_FU";
@@ -63,14 +60,12 @@ public interface Constant {
     String JYZC_SB = "JYZC_SB";    //士兵
     String JYZC_ZS = "JYZC_ZS";    //征收
 
-
     String UPGRADE = "UPGRADE";    //升级
     String LOGIN_GAME = "LOGIN_GAME"; //登陆游戏
     String START_GAME = "START_GAME"; //进入游戏
     String GAME_NOTICE_DIALOG_CLOSE = "GAME_NOTICE_DIALOG_CLOSE";
     String GEN_XIN = "GEN_XIN";
     String HUA_AN = "HUA_AN";
-
 
     String CLZW_BG = "CLZW_BG";               //政绩
     String CLZW_GET = "CLZW_GET";               //政绩
@@ -89,7 +84,6 @@ public interface Constant {
     String BANG_DAN_GET = "BANG_DAN_GET";//膜拜
     String BANG_DAN_KF_GET = "BANG_DAN_KF_GET";//膜拜
 
-
     String TAB_TASK = "TAB_TASK";//任务
 
     String TASK_TOP_10 = "TASK_TOP_10";
@@ -100,10 +94,9 @@ public interface Constant {
 
     String TASK_RIGHT_1 = "TASK_RIGHT_1";
     String TASK_RIGHT_2 = "TASK_RIGHT_2";
-    String TASK_RIGHT_3=  "TASK_RIGHT_3";
+    String TASK_RIGHT_3 = "TASK_RIGHT_3";
     String TASK_RIGHT_4 = "TASK_RIGHT_4";
     String TASK_RIGHT_5 = "TASK_RIGHT_5";
-
 
     String TASK_DIALOG_CLOSE = "TASK_DIALOG_CLOSE";
     String TASK_DIALOG_CLOSE_140 = "TASK_DIALOG_CLOSE_140";
@@ -111,9 +104,7 @@ public interface Constant {
     String TASK_RIGHT_START_GET = "TASK_RIGHT_START_GET";  //福利
     String TASK_RIGHT_END_GET = "TASK_RIGHT_END_GET";       //福利领取
 
-
     String ACADEMY = "ACADEMY";//书院
-
 
     String ACADEMY_GET_1 = "ACADEMY_GET_1";//书院背景
     String ACADEMY_GET_2 = "ACADEMY_GET_2";//书院背景
@@ -150,8 +141,6 @@ public interface Constant {
     String YAN_HUI_OK = "YAN_HUI_OK";
     String YAN_HUI_DIALOG_CLOSE = "YAN_HUI_DIALOG_CLOSE";
 
-
-
     String CHENG_JIU_CLICK = "CHENG_JIU_CLICK";
     String CHENG_JIU_RED_POINT = "CHENG_JIU_RED_POINT";
     String CHENG_JIU_LEFT = "CHENG_JIU_LEFT";
@@ -163,9 +152,9 @@ public interface Constant {
     String CHENG_JIU_GET_4 = "CHENG_JIU_GET_4";
     String CHENG_JIU_GET_5 = "CHENG_JIU_GET_5";
 
-    String CURRENT_TASK_STEP  = "CURRENT_TASK_STEP";
-    String CURRENT_PAGE  = "CURRENT_PAGE";
-    String REGISTER_CLICK  = "REGISTER_CLICK";
+    String CURRENT_TASK_STEP = "CURRENT_TASK_STEP";
+    String CURRENT_PAGE = "CURRENT_PAGE";
+    String REGISTER_CLICK = "REGISTER_CLICK";
     String REALY_NAME_OK = "REALY_NAME_OK";
     String REGISTER_OK = "REGISTER_OK";
     String CREATE_USER = "CREATE_USER";
@@ -190,7 +179,6 @@ public interface Constant {
     String SHI_JI_ZHAO_HUAN_ZI_SI = "SHI_JI_ZHAO_HUAN_ZI_SI";
     String SHI_JI_ONE_KEY_ZH = "SHI_JI_ONE_KEY_ZH";
 
-
     String LIAN_MENG = "LIAN_MENG";
     String LIAN_MENG_CHA_XUN = "LIAN_MENG_CHA_XUN";
     String LIAN_MENG_SEARCH_INPUT = "LIAN_MENG_SEARCH_INPUT";
@@ -213,7 +201,6 @@ public interface Constant {
 
     String KUA_FU_LJ_JOIN = "KUA_FU_LJ_JOIN";
     String KUA_FU_LJ_GET = "KUA_FU_LJ_GET";
-
 
     String ZHENG_JIU_POINT = "ZHENG_JIU_POINT";
     String LAO_FANG_MAP = "LAO_FANG_MAP";
@@ -258,9 +245,9 @@ public interface Constant {
     int TASK_TOAST_COUNT_DOWN = 1500;
     int SCREEN_OFF = 999;
     int SHOW_ORC_PAGE = 300;
-//     int SCREEN_ON = 992;
+    //     int SCREEN_ON = 992;
 
-
+    //小榜
     String HUO_DONG_SHANG_PU = "HUO_DONG_SHANG_PU";
     String HUO_DONG_LI_BAO_1 = "HUO_DONG_LI_BAO_1";
     String HUO_DONG_LI_BAO_2 = "HUO_DONG_LI_BAO_2";
@@ -271,8 +258,24 @@ public interface Constant {
     String XIAO_BANG_LING_QU_JIANG_LI = "XIAO_BANG_LING_QU_JIANG_LI";
     String XIAO_BANG_LIANMENG_PAIMENG = "XIAO_BANG_LIANMENG_PAIMENG";
 
+    //擂台
+    String LEI_TAI_LINGQU = "LEI_TAI_LINGQU";
+    String LEI_TAI_DUIWU_JL = "LEI_TAI_DUIWU_JL";
 
-    interface Login{
+    //跨服
+    String KUAFU_INDEX = "KUAFU_INDEX";
+    String KUAFU_ENTER = "KUAFU_ENTER";
+    String KUAFU_YILINGQU = "KUAFU_YILINGQU";
+    String KUAFU_QUFU = "KUAFU_QUFU";
+    String KUAFU_DIALOG_CLOSE = "KUAFU_DIALOG_CLOSE";
+
+    //冲榜
+    String CHONG_BANG_INDEX = "CHONG_BANG_INDEX";
+    String CHONG_BANG_ENTER_1 = "CHONG_BANG_ENTER_1";
+    String CHONG_BANG_ENTER_2 = "CHONG_BANG_ENTER_2";
+    String CHONG_BANG_CLOSE = "CHONG_BANG_CLOSE";
+
+    interface Login {
         String TY_OVER = "TY_OVER";//是否激活码到期
         String IS_TY = "IS_TY"; //是否是体验
     }

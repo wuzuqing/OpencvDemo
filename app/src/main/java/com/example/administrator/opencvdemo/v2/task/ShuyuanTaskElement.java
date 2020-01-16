@@ -54,7 +54,7 @@ public class ShuyuanTaskElement extends AbsTaskElement {
             pageData = Util.getBitmapAndPageData();
             if (checkExp(netPoint, "当前网络异常")) continue;//检查网络环境
             if (checkPage("府内")) {
-                PointManagerV2.execShellCmdChuFu();
+                PointManagerV2.execShellCmdChuFuV2();
                 Thread.sleep(1200);
                 continue;
             } else if (checkPage("府外")) {
@@ -113,7 +113,7 @@ public class ShuyuanTaskElement extends AbsTaskElement {
             }
             PointManagerV2.execShellCmdClose();
             Thread.sleep(600);
-            PointManagerV2.execShellCmdChuFu();
+            PointManagerV2.execShellCmdChuFuV2();
             Thread.sleep(600);
             Util.saveLastRefreshTime(KEY_SHU_YUAN, ACache.TIME_HOUR * 3);
             break;

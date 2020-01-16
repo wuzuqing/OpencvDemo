@@ -89,8 +89,12 @@ public class MenKeFenShuHelper {
         menKeList.add(new MenKe("韩信", "#C69E86", 960));
         menKeList.add(new MenKe("韩信", "#C7A28A", 960));
         menKeList.add(new MenKe("韩信", "#C7A088", 960));
+        menKeList.add(new MenKe("韩信", "#794B3A", 960));
 
-        menKeList.add(new MenKe("樊梨花", "#95493E", 890));
+        menKeList.add(new MenKe("樊梨花", "#95493E", 970));
+        menKeList.add(new MenKe("樊梨花", "#D5B6AC", 970));
+        menKeList.add(new MenKe("樊梨花", "#D2B5AB", 970));
+        menKeList.add(new MenKe("樊梨花", "#D4B6AB", 970));
 
         menKeList.add(new MenKe("花木兰", "#C4A090", 880));
         menKeList.add(new MenKe("花木兰", "#C29E8E", 880));
@@ -100,14 +104,15 @@ public class MenKeFenShuHelper {
         menKeList.add(new MenKe("穆桂英", "#CEB2A7", 850));
 
 
-        menKeList.add(new MenKe("秦良玉", "#D9B7AB", 810));
-        menKeList.add(new MenKe("秦良玉", "#D8B6AA", 810));
-        menKeList.add(new MenKe("秦良玉", "#DAB9AD", 810));
-        menKeList.add(new MenKe("秦良玉", "#D0AFA5", 810));
+        menKeList.add(new MenKe("梁红玉", "#D9B7AB", 810));
+        menKeList.add(new MenKe("梁红玉", "#D8B6AA", 810));
+        menKeList.add(new MenKe("梁红玉", "#DAB9AD", 810));
+        menKeList.add(new MenKe("梁红玉", "#D0AFA5", 810));
+        menKeList.add(new MenKe("梁红玉", "#D2B1A7", 810));
 
-        menKeList.add(new MenKe("梁红玉", "#CCB0A6", 800));
-        menKeList.add(new MenKe("梁红玉", "#CEADA3", 800));
-        menKeList.add(new MenKe("梁红玉", "#CEADA3", 800));
+        menKeList.add(new MenKe("秦良玉", "#CCB0A6", 800));
+        menKeList.add(new MenKe("秦良玉", "#CEADA3", 800));
+        menKeList.add(new MenKe("秦良玉", "#CEADA3", 800));
 
         menKeList.add(new MenKe("赵高", "#C69B83", 780));
         menKeList.add(new MenKe("赵高", "#C49981", 780));
@@ -119,6 +124,7 @@ public class MenKeFenShuHelper {
 
         menKeList.add(new MenKe("李莲英", "#B27C53", 750));
         menKeList.add(new MenKe("李莲英", "#B07951", 750));
+        menKeList.add(new MenKe("李莲英", "#B17A52", 750));
 
         menKeMap = new HashMap<>();
 
@@ -202,9 +208,9 @@ public class MenKeFenShuHelper {
         }
 
         // 根据得分计算要pk的门客
-        if (leftValue==midValue&& midColorValue  ==rightValue){
+        if (leftValue==midValue&& midValue  ==rightValue){
             int minValue = Math.min(Math.min(leftColorValue,midColorValue),rightColorValue);
-            if (minValue==leftValue){
+            if (minValue==leftColorValue){
                 pkIndex=0;
             }else if (midValue==midColorValue){
                 pkIndex=1;
@@ -230,7 +236,7 @@ public class MenKeFenShuHelper {
         String color = Util.getColor(src, left + tempW / 2, top + tempH / 2);
         LogUtils.logd("left:"+left + " color:"+color);
         List<MenKe> list = getInstance().menKeMap.get(color);
-        if (list == null) {
+        if (list == null || list.isEmpty()) {
             return -1;
         }
         int value = 0;

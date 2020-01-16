@@ -28,6 +28,14 @@ import java.util.TreeMap;
 
 public class PointManagerV2 implements Constant {
 
+    private static int width = 1028;
+    private static int oneWidth = width / 6;
+
+    private static int firstY = 386;
+    private static int secondY = 558;
+    private static final float originalWidth = 1080f;
+    private static final float originalHeight = 1920f;
+
     public static File saveFilePath = new File(Environment.getExternalStorageDirectory(), "/cap/1.jpg");
     public static String screenCap = "screencap -p /sdcard/cap/1.jpg";
     public static Map<String, PointModel> coordinateMap = new TreeMap<>();
@@ -39,9 +47,9 @@ public class PointManagerV2 implements Constant {
 
     public static void initCoordinate() {
         String string = HttpManager.getBasePoints().getData().getTotalPoints();
-//        if (TextUtils.isEmpty(string)) {
-//            string = Util.getFileStringAndSp(COORDINATE_KEY);
-//        }
+        //        if (TextUtils.isEmpty(string)) {
+        //            string = Util.getFileStringAndSp(COORDINATE_KEY);
+        //        }
         if (TextUtils.isEmpty(string)) {
             string = JsonUtils.getJson("x_1080x1920_480.json", BaseApplication.getAppContext());
         }
@@ -65,7 +73,7 @@ public class PointManagerV2 implements Constant {
         for (PointModel pointModel : coordinateList) {
             //没有重置或者尺寸与原始不一致则需要计算新的x y坐标
             if (!pointModel.isReset() && (originalWidth != selfWidth || originalHeight != selfHeight)
-                    ) {
+            ) {
                 //重新计算坐标
                 compute(pointModel, selfHeight, tempTop, radioX, radioY);
             }
@@ -73,11 +81,8 @@ public class PointManagerV2 implements Constant {
         }
     }
 
-    private static final float originalWidth = 1080f;
-    private static final float originalHeight = 1920f;
-
     private static void compute(PointModel pointModel,
-                                int selfHeight, int tempTop, float radioX, float radioY) {
+        int selfHeight, int tempTop, float radioX, float radioY) {
         if (selfHeight < originalHeight) {
             return;
         }
@@ -87,8 +92,7 @@ public class PointManagerV2 implements Constant {
         int realY = (int) (oldY * radioY) + tempTop;
         pointModel.setComputeX(realX);
         pointModel.setComputeY(realY);
-        LogUtils.logd("compute " +pointModel.getName() +" : "+oldX+","+oldY + " real:"+realX +","+realY);
-
+        LogUtils.logd("compute " + pointModel.getName() + " : " + oldX + "," + oldY + " real:" + realX + "," + realY);
     }
 
     public static void init() {
@@ -100,12 +104,11 @@ public class PointManagerV2 implements Constant {
                     initCoordinate();
                     Util.init();
                     AccountManager.init();
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
-
     }
 
     public static List<PointModel> getChengJiuGet() {
@@ -163,12 +166,6 @@ public class PointManagerV2 implements Constant {
         InputEventManager.getInstance().click(pointModel);
     }
 
-    public static void execShellCmdChuFu() {
-        if (chuFUPointModel == null) {
-            chuFUPointModel = PointManagerV2.get(CHU_FU);
-        }
-        InputEventManager.getInstance().click(chuFUPointModel);
-    }
 
     public static void execShellCmdChuFuV2() {
         if (chuFUPointModel == null) {
@@ -181,5 +178,22 @@ public class PointManagerV2 implements Constant {
         String jsonList = JsonUtils.toJson(PointManagerV2.coordinateList);
         Util.setFileStrAndSp(COORDINATE_KEY, jsonList);
         HttpManager.updatePoint("total", jsonList);
+    }
+
+    // 府内活动的位置
+    private static PointModel defaultPoint;
+
+    /**
+     * 获取府内的活动按钮
+     */
+    public static PointModel getPointModel(int row, int col) {
+        if (defaultPoint == null) {
+            defaultPoint = new PointModel("XB", "榜单");
+        }
+        int y = row == 1 ? firstY : secondY;
+        int x = col * oneWidth + oneWidth / 2 + 30;
+        defaultPoint.setX(x);
+        defaultPoint.setY(y);
+        return defaultPoint;
     }
 }
